@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Http\Controllers\Api\Auth;
+
+use App\Http\Controllers\Concerns\ApiResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ChangePasswordRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\UpdateProfileRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
+class AuthController extends Controller
+{
+    use ApiResponse;
+
+    public function register(RegisterRequest $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => User::ROLE_BASIC_USER,
+            'status' => User::STATUS_ACTIVE,
+        ]);
+
+        $token = $user->createToken('api')->plainTextToken;
+
+        return $this->success([
+            'user' => new UserResource($user),
+            'token' => $token,
+        ], 'Registration successful', 201);
+    }
+
+    public function login(LoginRequest $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => 'These credentials do not match our records.',
+            ]);
+        }
+
+        if ($user->status !== User::STATUS_ACTIVE) {
+            return $this->error('Your account is '.$user->status.'. Contact support for assistance.', null, 403);
+        }
+
+        $token = $user->createToken('api')->plainTextToken;
+
+        return $this->success([
+            'user' => new UserResource($user),
+            'token' => $token,
+        ], 'Login successful');
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return $this->success(null, 'Logged out successfully');
+    }
+
+    public function me(Request $request)
+    {
+        return $this->success(new UserResource($request->user()), 'OK');
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $user = $request->user();
+        $user->update($request->only(['name', 'email']));
+
+        return $this->success(new UserResource($user), 'Profile updated successfully');
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        $user = $request->user();
+        $user->update(['password' => Hash::make($request->password)]);
+
+        return $this->success(null, 'Password changed successfully');
+    }
+}
