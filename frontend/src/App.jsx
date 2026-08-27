@@ -23,6 +23,9 @@ import CryptoPaymentPage from './pages/user/CryptoPaymentPage'
 
 import AdminDashboardPage from './pages/admin/AdminDashboardPage'
 import AdminCategoriesPage from './pages/admin/AdminCategoriesPage'
+import AdminProductsPage from './pages/admin/AdminProductsPage'
+import AdminOrdersPage from './pages/admin/AdminOrdersPage'
+import AdminUsersPage from './pages/admin/AdminUsersPage'
 
 function NotFoundPage() {
   return (
@@ -62,6 +65,9 @@ function App() {
             <Route element={<AdminLayout />}>
               <Route path="/admin" element={<AdminDashboardPage />} />
               <Route path="/admin/categories" element={<AdminCategoriesPage />} />
+              <Route path="/admin/products" element={<AdminProductsPage />} />
+              <Route path="/admin/orders" element={<AdminOrdersPage />} />
+              <Route path="/admin/users" element={<AdminUsersPage />} />
             </Route>
           </Route>
         </Route>
