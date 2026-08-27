@@ -51,14 +51,13 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/checkout/:orderId" element={<CryptoPaymentPage />} />
-
           <Route element={<UserRoute />}>
             <Route element={<UserDashboardLayout />}>
               <Route path="/dashboard" element={<UserDashboardHome />} />
               <Route path="/dashboard/orders" element={<OrdersPage />} />
               <Route path="/dashboard/orders/:orderId" element={<OrderDetailsPage />} />
               <Route path="/dashboard/payments" element={<PaymentsPage />} />
+              <Route path="/dashboard/payments/:orderId" element={<CryptoPaymentPage />} />
               <Route path="/dashboard/downloads" element={<DownloadsPage />} />
               <Route path="/dashboard/profile" element={<ProfilePage />} />
             </Route>
