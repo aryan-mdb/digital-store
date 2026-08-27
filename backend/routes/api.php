@@ -23,7 +23,7 @@ Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
 Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{product}', [ProductController::class, 'show']);
+Route::get('/products/{product:slug}', [ProductController::class, 'show']);
 
 // Provider webhook — authenticated by signature header, not Sanctum.
 Route::post('/payments/crypto/webhook', [PaymentController::class, 'webhook']);
