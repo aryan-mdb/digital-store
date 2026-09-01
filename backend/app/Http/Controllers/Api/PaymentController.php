@@ -36,10 +36,15 @@ class PaymentController extends Controller
         $existing = $order->cryptoPayments()
             ->where('status', CryptoPayment::STATUS_PENDING)
             ->where('expires_at', '>', now())
+            ->whereNotNull('transaction_id')
             ->latest()
             ->first();
 
-        $payment = $existing ?? $this->payments->createPayment($order);
+        try {
+            $payment = $existing ?? $this->payments->createPayment($order);
+        } catch (\RuntimeException $e) {
+            return $this->error($e->getMessage(), null, 502);
+        }
 
         return $this->success(new CryptoPaymentResource($payment), 'Crypto payment created', 201);
     }

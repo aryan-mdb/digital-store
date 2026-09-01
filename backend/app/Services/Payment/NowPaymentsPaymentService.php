@@ -10,22 +10,20 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Coinbase Commerce implementation of CryptoPaymentServiceInterface.
+ * NOWPayments implementation of CryptoPaymentServiceInterface.
  *
- * API docs: https://docs.cdp.coinbase.com/commerce-onchain/docs/getting-started
+ * API docs: https://documenter.getpostman.com/view/7907941/S1a32n38
+ * (Replaces Coinbase Commerce, which was permanently shut down.)
  */
-class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
+class NowPaymentsPaymentService implements CryptoPaymentServiceInterface
 {
-    /** Preferred currency order when a charge exposes several addresses. */
-    private const CURRENCY_PRIORITY = ['USDC', 'USDT', 'BTC', 'ETH', 'LTC', 'BCH', 'DAI'];
-
     private readonly Client $client;
 
     public function __construct(
         private string $apiKey,
-        private string $apiSecret,
-        private string $webhookSecret,
+        private string $ipnSecret,
         private string $baseUrl,
+        private string $payCurrency,
         private int $expiryMinutes,
     ) {
         $this->client = new Client([
@@ -36,51 +34,42 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
 
     public function createPayment(Order $order): CryptoPayment
     {
-        $payload = [
-            'name' => 'Order ' . $order->order_number,
-            'description' => 'Digital marketplace order ' . $order->order_number,
-            'pricing_type' => 'fixed_price',
-            'local_price' => [
-                'amount' => number_format((float) $order->total_amount, 2, '.', ''),
-                'currency' => $order->currency,
-            ],
-            'metadata' => [
-                'order_id' => (string) $order->id,
-                'order_number' => $order->order_number,
-                'user_id' => (string) $order->user_id,
-            ],
-        ];
-
         $expiresAt = Carbon::now()->addMinutes($this->expiryMinutes);
+        $data = [];
 
         try {
-            $response = $this->client->post('charges', [
+            $response = $this->client->post('v1/payment', [
                 'headers' => [
-                    'X-CC-Api-Key' => $this->apiKey,
-                    'X-CC-Version' => '2018-03-22',
+                    'x-api-key' => $this->apiKey,
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
                 ],
-                'json' => $payload,
+                'json' => [
+                    'price_amount' => (float) $order->total_amount,
+                    'price_currency' => strtolower($order->currency),
+                    'pay_currency' => $this->payCurrency,
+                    'order_id' => $order->order_number,
+                    'order_description' => 'Digital marketplace order ' . $order->order_number,
+                    'ipn_callback_url' => rtrim(config('app.url'), '/') . '/api/payments/crypto/webhook',
+                ],
             ]);
 
-            $body = json_decode((string) $response->getBody(), true);
-            $data = $body['data'] ?? [];
+            $data = json_decode((string) $response->getBody(), true) ?? [];
 
-            $chargeId = $data['id'] ?? $data['code'] ?? null;
-            $hostedUrl = $data['hosted_url'] ?? null;
+            $chargeId = $data['payment_id'] ?? null;
+            $currency = ! empty($data['pay_currency']) ? strtoupper($data['pay_currency']) : null;
+            $address = $data['pay_address'] ?? null;
+            $cryptoAmount = isset($data['pay_amount']) ? (float) $data['pay_amount'] : null;
 
-            if (! empty($data['expires_at'])) {
-                $expiresAt = Carbon::parse($data['expires_at']);
+            if (! empty($data['expiration_estimate_date'])) {
+                $expiresAt = Carbon::parse($data['expiration_estimate_date']);
             }
-
-            [$currency, $address, $cryptoAmount] = $this->pickPreferredAddress($data);
         } catch (GuzzleException $e) {
             // Do NOT silently persist a broken "pending" payment with no
             // address/charge id — that leaves the frontend polling forever
             // with nothing to show. Log for ops and surface a real error to
             // the caller instead, so the UI can show a retry state.
-            Log::error('Coinbase Commerce charge creation failed', [
+            Log::error('NOWPayments charge creation failed', [
                 'order_id' => $order->id,
                 'error' => $e->getMessage(),
             ]);
@@ -94,36 +83,46 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
         return CryptoPayment::create([
             'order_id' => $order->id,
             'user_id' => $order->user_id,
-            'payment_provider' => 'coinbase_commerce',
+            'payment_provider' => 'now_payments',
             'cryptocurrency' => $currency,
             'wallet_address' => $address,
             'amount' => $order->total_amount,
             'crypto_amount' => $cryptoAmount,
             'transaction_id' => $chargeId,
-            'payment_url' => $hostedUrl,
+            // NOWPayments' direct /v1/payment endpoint has no hosted page;
+            // that only exists via the separate /v1/invoice endpoint.
+            'payment_url' => null,
             'status' => CryptoPayment::STATUS_PENDING,
             'expires_at' => $expiresAt,
             'response_data' => $data,
         ]);
     }
 
+    /**
+     * NOWPayments signs the deep-key-sorted JSON body with HMAC-SHA512 using
+     * the IPN secret, sent in the X-Nowpayments-Sig header.
+     */
     public function verifyWebhookSignature(string $payload, ?string $signature): bool
     {
-        if (empty($signature) || empty($this->webhookSecret)) {
+        if (empty($signature) || empty($this->ipnSecret)) {
             return false;
         }
 
-        $expected = hash_hmac('sha256', $payload, $this->webhookSecret);
+        $decoded = json_decode($payload, true);
+
+        if (! is_array($decoded)) {
+            return false;
+        }
+
+        $canonical = json_encode($this->sortKeysDeep($decoded), JSON_UNESCAPED_SLASHES);
+        $expected = hash_hmac('sha512', (string) $canonical, $this->ipnSecret);
 
         return hash_equals($expected, $signature);
     }
 
     public function handleWebhookPayload(array $payload): ?CryptoPayment
     {
-        $event = $payload['event'] ?? $payload;
-        $type = $event['type'] ?? null;
-        $data = $event['data'] ?? [];
-        $chargeId = $data['id'] ?? $data['code'] ?? null;
+        $chargeId = $payload['payment_id'] ?? null;
 
         if (! $chargeId) {
             return null;
@@ -135,19 +134,14 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
             return null;
         }
 
-        $status = match ($type) {
-            'charge:confirmed', 'charge:resolved' => CryptoPayment::STATUS_PAID,
-            'charge:failed' => CryptoPayment::STATUS_FAILED,
-            'charge:delayed' => CryptoPayment::STATUS_PENDING,
-            default => $payment->status,
-        };
+        $status = $this->mapStatus($payload['payment_status'] ?? null, $payment->status);
 
         if ($status === CryptoPayment::STATUS_PAID && $payment->status !== CryptoPayment::STATUS_PAID) {
             $payment->paid_at = Carbon::now();
         }
 
         $payment->status = $status;
-        $payment->response_data = array_merge($payment->response_data ?? [], ['last_webhook' => $event]);
+        $payment->response_data = array_merge($payment->response_data ?? [], ['last_webhook' => $payload]);
         $payment->save();
 
         $this->syncOrder($payment);
@@ -162,25 +156,15 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
         }
 
         try {
-            $response = $this->client->get('charges/' . $payment->transaction_id, [
+            $response = $this->client->get('v1/payment/' . $payment->transaction_id, [
                 'headers' => [
-                    'X-CC-Api-Key' => $this->apiKey,
-                    'X-CC-Version' => '2018-03-22',
+                    'x-api-key' => $this->apiKey,
                     'Accept' => 'application/json',
                 ],
             ]);
 
-            $body = json_decode((string) $response->getBody(), true);
-            $data = $body['data'] ?? [];
-            $timeline = $data['timeline'] ?? [];
-            $lastStatus = end($timeline)['status'] ?? null;
-
-            $status = match ($lastStatus) {
-                'COMPLETED', 'RESOLVED' => CryptoPayment::STATUS_PAID,
-                'EXPIRED' => CryptoPayment::STATUS_EXPIRED,
-                'CANCELED' => CryptoPayment::STATUS_FAILED,
-                default => $payment->status,
-            };
+            $data = json_decode((string) $response->getBody(), true) ?? [];
+            $status = $this->mapStatus($data['payment_status'] ?? null, $payment->status);
 
             if ($status === CryptoPayment::STATUS_PAID && $payment->status !== CryptoPayment::STATUS_PAID) {
                 $payment->paid_at = Carbon::now();
@@ -192,7 +176,7 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
 
             $this->syncOrder($payment);
         } catch (GuzzleException $e) {
-            Log::warning('Coinbase Commerce status refresh failed', [
+            Log::warning('NOWPayments status refresh failed', [
                 'payment_id' => $payment->id,
                 'error' => $e->getMessage(),
             ]);
@@ -202,31 +186,32 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
     }
 
     /**
-     * @return array{0: ?string, 1: ?string, 2: ?float}
+     * Map a raw NOWPayments payment_status to our internal CryptoPayment status.
+     * Raw values: waiting, confirming, confirmed, sending, partially_paid,
+     * finished, failed, refunded, expired.
      */
-    private function pickPreferredAddress(array $data): array
+    private function mapStatus(?string $rawStatus, string $fallback): string
     {
-        $addresses = $data['addresses'] ?? [];
-        $pricing = $data['pricing'] ?? [];
+        return match ($rawStatus) {
+            'finished' => CryptoPayment::STATUS_PAID,
+            'failed' => CryptoPayment::STATUS_FAILED,
+            'expired' => CryptoPayment::STATUS_EXPIRED,
+            'waiting', 'confirming', 'confirmed', 'sending', 'partially_paid' => CryptoPayment::STATUS_PENDING,
+            default => $fallback,
+        };
+    }
 
-        if (empty($addresses)) {
-            return [null, null, null];
-        }
+    private function sortKeysDeep(array $data): array
+    {
+        ksort($data);
 
-        foreach (self::CURRENCY_PRIORITY as $currency) {
-            $key = strtolower($currency);
-            if (isset($addresses[$key])) {
-                $amount = isset($pricing[$key]['amount']) ? (float) $pricing[$key]['amount'] : null;
-
-                return [$currency, $addresses[$key], $amount];
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = $this->sortKeysDeep($value);
             }
         }
 
-        // Fall back to whatever the provider returned first.
-        $key = array_key_first($addresses);
-        $amount = isset($pricing[$key]['amount']) ? (float) $pricing[$key]['amount'] : null;
-
-        return [strtoupper($key), $addresses[$key], $amount];
+        return $data;
     }
 
     private function syncOrder(CryptoPayment $payment): void

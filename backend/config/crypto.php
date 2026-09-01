@@ -12,7 +12,22 @@ return [
     | without touching any controller or service that consumes the interface.
     |
     */
-    'provider' => env('CRYPTO_PAYMENT_PROVIDER', 'coinbase_commerce'),
+    // Coinbase Commerce was permanently shut down (March 2026), so
+    // now_payments is the default. Keep the coinbase_commerce block below
+    // around only for reference / in case a self-run instance still needs it.
+    'provider' => env('CRYPTO_PAYMENT_PROVIDER', 'now_payments'),
+
+    'now_payments' => [
+        'api_key' => env('NOWPAYMENTS_API_KEY'),
+        'ipn_secret' => env('NOWPAYMENTS_IPN_SECRET'),
+        'base_url' => env(
+            'NOWPAYMENTS_API_BASE_URL',
+            'https://api.nowpayments.io'
+        ),
+        // Which crypto/network NOWPayments should generate a pay address
+        // for. usdttrc20 = USDT on Tron (low fees, fast confirmation).
+        'pay_currency' => env('NOWPAYMENTS_PAY_CURRENCY', 'usdttrc20'),
+    ],
 
     'coinbase_commerce' => [
         'api_key' => env('CRYPTO_API_KEY'),
