@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -33,6 +35,8 @@ class User extends Authenticatable
         'password',
         'role',
         'status',
+        'referral_code',
+        'referred_by',
     ];
 
     /**
@@ -90,5 +94,33 @@ class User extends Authenticatable
     public function cryptoPayments(): HasMany
     {
         return $this->hasMany(CryptoPayment::class);
+    }
+
+    /**
+     * @return HasOne<Wallet, $this>
+     */
+    public function wallet(): HasOne
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
+    /**
+     * The user who referred this user, if any.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function referredBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'referred_by');
+    }
+
+    /**
+     * Referral records for people this user has referred (as the referrer).
+     *
+     * @return HasMany<Referral, $this>
+     */
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(Referral::class, 'referrer_id');
     }
 }

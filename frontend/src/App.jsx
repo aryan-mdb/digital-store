@@ -19,6 +19,8 @@ import OrderDetailsPage from './pages/user/OrderDetailsPage'
 import PaymentsPage from './pages/user/PaymentsPage'
 import DownloadsPage from './pages/user/DownloadsPage'
 import ProfilePage from './pages/user/ProfilePage'
+import WalletPage from './pages/user/WalletPage'
+import ReferralPage from './pages/user/ReferralPage'
 import CryptoPaymentPage from './pages/user/CryptoPaymentPage'
 
 import AdminDashboardPage from './pages/admin/AdminDashboardPage'
@@ -60,6 +62,8 @@ function App() {
               <Route path="/dashboard/payments" element={<PaymentsPage />} />
               <Route path="/dashboard/payments/:orderId" element={<CryptoPaymentPage />} />
               <Route path="/dashboard/downloads" element={<DownloadsPage />} />
+              <Route path="/dashboard/wallet" element={<WalletPage />} />
+              <Route path="/dashboard/refer-earn" element={<ReferralPage />} />
               <Route path="/dashboard/profile" element={<ProfilePage />} />
             </Route>
           </Route>

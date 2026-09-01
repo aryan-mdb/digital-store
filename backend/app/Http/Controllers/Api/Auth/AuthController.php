@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\Referral\ReferralService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,10 @@ class AuthController extends Controller
 {
     use ApiResponse;
 
+    public function __construct(private readonly ReferralService $referrals)
+    {
+    }
+
     public function register(RegisterRequest $request)
     {
         $user = User::create([
@@ -27,7 +32,10 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => User::ROLE_BASIC_USER,
             'status' => User::STATUS_ACTIVE,
+            'referral_code' => $this->referrals->generateUniqueCode(),
         ]);
+
+        $this->referrals->attachReferral($user, $request->input('referral_code'));
 
         $token = $user->createToken('api')->plainTextToken;
 

@@ -45,12 +45,17 @@ class OrderController extends Controller
     {
         $request->validate([
             'product_id' => ['required', 'integer', Rule::exists('products', 'id')],
+            'use_wallet' => ['sometimes', 'boolean'],
         ]);
 
         $product = Product::findOrFail($request->integer('product_id'));
 
-        $order = $this->orders->createForProduct($request->user(), $product);
+        $order = $this->orders->createForProduct($request->user(), $product, $request->boolean('use_wallet'));
 
-        return $this->success(new OrderResource($order), 'Order created successfully. Proceed to crypto payment.', 201);
+        $message = $order->isPaid()
+            ? 'Order placed and paid using your wallet balance.'
+            : 'Order created successfully. Proceed to crypto payment.';
+
+        return $this->success(new OrderResource($order), $message, 201);
     }
 }

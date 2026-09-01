@@ -1,4 +1,4 @@
-import { Bitcoin, CheckCircle2, ImageOff, ShoppingCart } from 'lucide-react'
+import { Bitcoin, CheckCircle2, ImageOff, ShoppingCart, WalletCards } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -9,6 +9,7 @@ import { useAuth } from '../../context/AuthContext'
 import { apiErrorMessage } from '../../services/api'
 import { orderService } from '../../services/orderService'
 import { productService } from '../../services/productService'
+import { walletService } from '../../services/walletService'
 import { formatCurrency } from '../../utils/format'
 
 export default function ProductDetailsPage() {
@@ -17,12 +18,22 @@ export default function ProductDetailsPage() {
   const navigate = useNavigate()
   const [product, setProduct] = useState(null)
   const [buying, setBuying] = useState(false)
+  const [wallet, setWallet] = useState(null)
+  const [useWallet, setUseWallet] = useState(false)
 
   useEffect(() => {
     productService.get(slug).then((res) => setProduct(res.data))
   }, [slug])
 
+  useEffect(() => {
+    if (!user || user.role === 'admin') return
+    walletService.get().then((res) => setWallet(res.data)).catch(() => setWallet(null))
+  }, [user])
+
   if (!product) return <FullPageSpinner />
+
+  const walletCovers = wallet && wallet.balance > 0 ? Math.min(wallet.balance, product.price) : 0
+  const remainingAfterWallet = Math.max(product.price - walletCovers, 0)
 
   const handleBuyNow = async () => {
     if (!user) {
@@ -36,8 +47,13 @@ export default function ProductDetailsPage() {
 
     setBuying(true)
     try {
-      const { data: order } = await orderService.create(product.id)
-      navigate(`/dashboard/payments/${order.id}`)
+      const { data: order } = await orderService.create(product.id, useWallet)
+      if (order.payment_status === 'paid') {
+        toast.success('Order placed and paid using your wallet balance!')
+        navigate(`/dashboard/orders/${order.id}`)
+      } else {
+        navigate(`/dashboard/payments/${order.id}`)
+      }
     } catch (error) {
       toast.error(apiErrorMessage(error))
     } finally {
@@ -66,8 +82,31 @@ export default function ProductDetailsPage() {
           </div>
 
           <div className="mt-4 flex items-center gap-2 text-sm text-slate-500">
-            <Bitcoin className="h-4 w-4 text-amber-500" /> Payable with cryptocurrency only
+            <Bitcoin className="h-4 w-4 text-amber-500" /> Payable with cryptocurrency{wallet?.balance > 0 ? ' or wallet balance' : ' only'}
           </div>
+
+          {!product.is_purchased && wallet?.balance > 0 && (
+            <label className="mt-4 flex items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm">
+              <input
+                type="checkbox"
+                className="mt-0.5"
+                checked={useWallet}
+                onChange={(e) => setUseWallet(e.target.checked)}
+              />
+              <span className="flex-1">
+                <span className="flex items-center gap-1.5 font-medium text-slate-800">
+                  <WalletCards className="h-4 w-4 text-brand-500" /> Use wallet balance ({formatCurrency(wallet.balance, wallet.currency)} available)
+                </span>
+                {useWallet && (
+                  <span className="mt-0.5 block text-xs text-slate-500">
+                    {remainingAfterWallet > 0
+                      ? `${formatCurrency(walletCovers, wallet.currency)} from wallet, ${formatCurrency(remainingAfterWallet, product.currency)} remaining via crypto`
+                      : `Fully covered by your wallet — no crypto payment needed`}
+                  </span>
+                )}
+              </span>
+            </label>
+          )}
 
           <div className="mt-6">
             {product.is_purchased ? (

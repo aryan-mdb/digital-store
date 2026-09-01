@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\DownloadController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ReferralController;
+use App\Http\Controllers\Api\WalletController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +49,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/payments/crypto/{payment}', [PaymentController::class, 'show']);
 
     Route::get('/downloads/{orderItem}', DownloadController::class);
+
+    Route::get('/wallet', [WalletController::class, 'show']);
+    Route::get('/wallet/transactions', [WalletController::class, 'transactions']);
+
+    Route::get('/referrals', [ReferralController::class, 'show']);
 });
 
 /*

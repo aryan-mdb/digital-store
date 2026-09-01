@@ -15,6 +15,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'role' => $this->role,
             'status' => $this->status,
+            'referral_code' => $this->referral_code,
             'email_verified_at' => $this->email_verified_at,
             'created_at' => $this->created_at,
             'orders_count' => $this->when(isset($this->orders_count), $this->orders_count),

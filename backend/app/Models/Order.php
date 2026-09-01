@@ -28,6 +28,7 @@ class Order extends Model
         'user_id',
         'order_number',
         'total_amount',
+        'wallet_amount_used',
         'currency',
         'status',
         'payment_status',
@@ -37,6 +38,7 @@ class Order extends Model
     {
         return [
             'total_amount' => 'decimal:2',
+            'wallet_amount_used' => 'decimal:2',
         ];
     }
 

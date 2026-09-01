@@ -1,7 +1,7 @@
-import { ShieldCheck } from 'lucide-react'
+import { Gift, ShieldCheck } from 'lucide-react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { apiErrorMessage } from '../../services/api'
 import Button from '../../components/ui/Button'
@@ -10,6 +10,8 @@ import { Input } from '../../components/ui/Input'
 export default function RegisterPage() {
   const { register } = useAuth()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const referralCode = searchParams.get('ref') || ''
   const [form, setForm] = useState({ name: '', email: '', password: '', password_confirmation: '' })
   const [loading, setLoading] = useState(false)
 
@@ -17,7 +19,7 @@ export default function RegisterPage() {
     e.preventDefault()
     setLoading(true)
     try {
-      await register(form)
+      await register(referralCode ? { ...form, referral_code: referralCode } : form)
       toast.success('Account created! Welcome aboard.')
       navigate('/dashboard', { replace: true })
     } catch (error) {
@@ -35,6 +37,13 @@ export default function RegisterPage() {
           <h1 className="text-2xl font-bold text-slate-900">Create your account</h1>
           <p className="text-sm text-slate-500">Buy digital products with crypto</p>
         </div>
+
+        {referralCode && (
+          <div className="mb-4 flex items-center gap-2 rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-sm text-brand-700">
+            <Gift className="h-4 w-4 shrink-0" />
+            You were invited with referral code <span className="font-mono font-semibold">{referralCode}</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <Input

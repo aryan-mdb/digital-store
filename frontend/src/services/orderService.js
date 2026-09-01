@@ -3,7 +3,8 @@ import api from './api'
 export const orderService = {
   list: (params) => api.get('/orders', { params }).then((r) => r.data),
   get: (id) => api.get(`/orders/${id}`).then((r) => r.data),
-  create: (productId) => api.post('/orders', { product_id: productId }).then((r) => r.data),
+  create: (productId, useWallet = false) =>
+    api.post('/orders', { product_id: productId, use_wallet: useWallet }).then((r) => r.data),
 }
 
 export const paymentService = {

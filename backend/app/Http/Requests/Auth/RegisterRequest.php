@@ -17,6 +17,10 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // Intentionally not validated against users.referral_code — an
+            // invalid/unknown code should never block registration, it's
+            // just silently ignored.
+            'referral_code' => ['sometimes', 'nullable', 'string', 'max:12'],
         ];
     }
 

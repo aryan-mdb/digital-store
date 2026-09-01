@@ -1,4 +1,4 @@
-import { Download, LayoutDashboard, Package, ShoppingBag, User, Wallet } from 'lucide-react'
+import { Download, Gift, LayoutDashboard, Package, ShoppingBag, User, Wallet, WalletCards } from 'lucide-react'
 import { Outlet } from 'react-router-dom'
 import DashboardShell from '../components/layout/DashboardShell'
 
@@ -10,6 +10,8 @@ const sections = [
       { to: '/dashboard/orders', label: 'Orders', icon: ShoppingBag },
       { to: '/dashboard/payments', label: 'Payments', icon: Wallet },
       { to: '/dashboard/downloads', label: 'Downloads', icon: Download },
+      { to: '/dashboard/wallet', label: 'Wallet', icon: WalletCards },
+      { to: '/dashboard/refer-earn', label: 'Refer & Earn', icon: Gift },
       { to: '/dashboard/profile', label: 'Profile', icon: User },
     ],
   },
