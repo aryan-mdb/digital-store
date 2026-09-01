@@ -19,11 +19,14 @@ class CryptoPaymentServiceProvider extends ServiceProvider
             return match ($provider) {
                 'coinbase_commerce' => new CoinbaseCommercePaymentService(
                     apiKey: (string) config('crypto.coinbase_commerce.api_key'),
+                    apiSecret: (string) config('crypto.coinbase_commerce.api_secret'),
                     webhookSecret: (string) config('crypto.coinbase_commerce.webhook_secret'),
                     baseUrl: (string) config('crypto.coinbase_commerce.base_url'),
                     expiryMinutes: (int) config('crypto.expiry_minutes'),
                 ),
-                default => throw new \RuntimeException("Unsupported crypto payment provider [{$provider}]."),
+                default => throw new \RuntimeException(
+                    "Unsupported crypto payment provider [{$provider}]."
+                ),
             };
         });
     }

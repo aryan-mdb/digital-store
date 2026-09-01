@@ -22,13 +22,14 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
     private readonly Client $client;
 
     public function __construct(
-        private readonly string $apiKey,
-        private readonly string $webhookSecret,
-        private readonly string $baseUrl,
-        private readonly int $expiryMinutes,
+        private string $apiKey,
+        private string $apiSecret,
+        private string $webhookSecret,
+        private string $baseUrl,
+        private int $expiryMinutes,
     ) {
         $this->client = new Client([
-            'base_uri' => rtrim($this->baseUrl, '/').'/',
+            'base_uri' => rtrim($this->baseUrl, '/') . '/',
             'timeout' => 15,
         ]);
     }
@@ -36,8 +37,8 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
     public function createPayment(Order $order): CryptoPayment
     {
         $payload = [
-            'name' => 'Order '.$order->order_number,
-            'description' => 'Digital marketplace order '.$order->order_number,
+            'name' => 'Order ' . $order->order_number,
+            'description' => 'Digital marketplace order ' . $order->order_number,
             'pricing_type' => 'fixed_price',
             'local_price' => [
                 'amount' => number_format((float) $order->total_amount, 2, '.', ''),
@@ -162,7 +163,7 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
         }
 
         try {
-            $response = $this->client->get('charges/'.$payment->transaction_id, [
+            $response = $this->client->get('charges/' . $payment->transaction_id, [
                 'headers' => [
                     'X-CC-Api-Key' => $this->apiKey,
                     'X-CC-Version' => '2018-03-22',

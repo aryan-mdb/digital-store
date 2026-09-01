@@ -8,12 +8,14 @@ use App\Http\Resources\CryptoPaymentResource;
 use App\Models\CryptoPayment;
 use App\Models\Order;
 use App\Services\Payment\CryptoPaymentServiceInterface;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
     use ApiResponse;
+    use AuthorizesRequests;
 
     public function __construct(private readonly CryptoPaymentServiceInterface $payments)
     {

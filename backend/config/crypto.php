@@ -16,8 +16,12 @@ return [
 
     'coinbase_commerce' => [
         'api_key' => env('CRYPTO_API_KEY'),
+        'api_secret' => env('CRYPTO_API_SECRET'),
         'webhook_secret' => env('CRYPTO_WEBHOOK_SECRET'),
-        'base_url' => env('CRYPTO_COINBASE_BASE_URL', 'https://api.commerce.coinbase.com'),
+        'base_url' => env(
+            'CRYPTO_API_BASE_URL',
+            'https://api.commerce.coinbase.com'
+        ),
     ],
 
     // How long a generated invoice stays valid before it expires.
