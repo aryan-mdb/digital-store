@@ -54,6 +54,7 @@ function App() {
           <Route element={<UserRoute />}>
             <Route element={<UserDashboardLayout />}>
               <Route path="/dashboard" element={<UserDashboardHome />} />
+              <Route path="/dashboard/products" element={<ProductsPage />} />
               <Route path="/dashboard/orders" element={<OrdersPage />} />
               <Route path="/dashboard/orders/:orderId" element={<OrderDetailsPage />} />
               <Route path="/dashboard/payments" element={<PaymentsPage />} />
