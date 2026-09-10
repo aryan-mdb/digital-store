@@ -70,7 +70,7 @@ class PaymentController extends Controller
      */
     public function webhook(Request $request)
     {
-        $signature = $request->header('X-CC-Webhook-Signature');
+        $signature = $request->header($this->payments->webhookSignatureHeader());
         $rawPayload = $request->getContent();
 
         if (! $this->payments->verifyWebhookSignature($rawPayload, $signature)) {

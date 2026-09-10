@@ -22,6 +22,14 @@ interface CryptoPaymentServiceInterface
     public function createPayment(Order $order): CryptoPayment;
 
     /**
+     * The HTTP header this provider sends its webhook signature in (e.g.
+     * "X-CC-Webhook-Signature" for Coinbase Commerce, "x-nowpayments-sig"
+     * for NOWPayments) — every provider uses a different one, so the
+     * controller asks the active provider rather than hardcoding it.
+     */
+    public function webhookSignatureHeader(): string;
+
+    /**
      * Verify that an incoming webhook request really came from the
      * provider (HMAC/signature check). Must be constant-time safe.
      */

@@ -107,6 +107,11 @@ class CoinbaseCommercePaymentService implements CryptoPaymentServiceInterface
         ]);
     }
 
+    public function webhookSignatureHeader(): string
+    {
+        return 'X-CC-Webhook-Signature';
+    }
+
     public function verifyWebhookSignature(string $payload, ?string $signature): bool
     {
         if (empty($signature) || empty($this->webhookSecret)) {

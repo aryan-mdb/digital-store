@@ -98,6 +98,11 @@ class NowPaymentsPaymentService implements CryptoPaymentServiceInterface
         ]);
     }
 
+    public function webhookSignatureHeader(): string
+    {
+        return 'x-nowpayments-sig';
+    }
+
     /**
      * NOWPayments signs the deep-key-sorted JSON body with HMAC-SHA512 using
      * the IPN secret, sent in the X-Nowpayments-Sig header.
