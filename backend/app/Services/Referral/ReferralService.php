@@ -4,6 +4,7 @@ namespace App\Services\Referral;
 
 use App\Models\Order;
 use App\Models\Referral;
+use App\Models\Setting;
 use App\Models\User;
 use App\Models\WalletTransaction;
 use App\Services\Wallet\WalletService;
@@ -11,8 +12,19 @@ use Illuminate\Support\Str;
 
 class ReferralService
 {
+    public const SETTING_KEY = 'referral_reward_percentage';
+
     public function __construct(private readonly WalletService $wallet)
     {
+    }
+
+    /**
+     * The reward percentage currently in effect — admin-editable at
+     * runtime via Setting, falling back to the .env-configured default.
+     */
+    public function currentRewardPercentage(): float
+    {
+        return (float) Setting::get(self::SETTING_KEY, config('referral.reward_percentage'));
     }
 
     /**
@@ -61,10 +73,12 @@ class ReferralService
         $newUser->referred_by = $referrer->id;
         $newUser->save();
 
+        // reward_percentage is intentionally left null here — it's decided
+        // by whatever the admin has the setting at when the reward is
+        // actually earned, not frozen at signup time.
         Referral::create([
             'referrer_id' => $referrer->id,
             'referred_id' => $newUser->id,
-            'reward_percentage' => (float) config('referral.reward_percentage'),
             'status' => Referral::STATUS_PENDING,
         ]);
     }
@@ -93,7 +107,8 @@ class ReferralService
             return;
         }
 
-        $rewardAmount = round((float) $order->total_amount * ((float) $referral->reward_percentage / 100), 2);
+        $rewardPercentage = $this->currentRewardPercentage();
+        $rewardAmount = round((float) $order->total_amount * ($rewardPercentage / 100), 2);
 
         if ($rewardAmount <= 0) {
             return;
@@ -108,6 +123,7 @@ class ReferralService
         );
 
         $referral->update([
+            'reward_percentage' => $rewardPercentage,
             'reward_amount' => $rewardAmount,
             'order_id' => $order->id,
             'status' => Referral::STATUS_REWARDED,

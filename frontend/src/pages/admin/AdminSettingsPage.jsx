@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { Gift } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import Badge from '../../components/ui/Badge'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import { Input } from '../../components/ui/Input'
 import { useAuth } from '../../context/AuthContext'
+import { adminService } from '../../services/adminService'
 import { apiErrorMessage } from '../../services/api'
 import { authService } from '../../services/authService'
 
@@ -14,6 +16,31 @@ export default function AdminSettingsPage() {
   const [passwordForm, setPasswordForm] = useState({ current_password: '', password: '', password_confirmation: '' })
   const [savingProfile, setSavingProfile] = useState(false)
   const [savingPassword, setSavingPassword] = useState(false)
+
+  const [rewardPercentage, setRewardPercentage] = useState('')
+  const [loadingReferral, setLoadingReferral] = useState(true)
+  const [savingReferral, setSavingReferral] = useState(false)
+
+  useEffect(() => {
+    adminService.referralSettings
+      .get()
+      .then((res) => setRewardPercentage(String(res.data.reward_percentage)))
+      .finally(() => setLoadingReferral(false))
+  }, [])
+
+  const handleReferralSubmit = async (e) => {
+    e.preventDefault()
+    setSavingReferral(true)
+    try {
+      const { data } = await adminService.referralSettings.update({ reward_percentage: Number(rewardPercentage) })
+      setRewardPercentage(String(data.reward_percentage))
+      toast.success('Refer & Earn reward updated successfully')
+    } catch (error) {
+      toast.error(apiErrorMessage(error))
+    } finally {
+      setSavingReferral(false)
+    }
+  }
 
   const handleProfileSubmit = async (e) => {
     e.preventDefault()
@@ -68,6 +95,33 @@ export default function AdminSettingsPage() {
           />
           <Button type="submit" loading={savingProfile}>
             Save Changes
+          </Button>
+        </form>
+      </Card>
+
+      <Card className="p-6">
+        <h2 className="mb-4 flex items-center gap-2 font-semibold text-slate-900">
+          <Gift className="h-4 w-4 text-brand-500" /> Affiliate Program (Refer & Earn)
+        </h2>
+        <p className="mb-4 text-sm text-slate-500">
+          When a referred user makes their first purchase, this percentage of that order is credited to the
+          referrer's wallet. Applies live to every reward from now on — existing pending referrals use whatever
+          value is set when their friend actually completes a purchase.
+        </p>
+        <form onSubmit={handleReferralSubmit} className="space-y-4">
+          <Input
+            label="Reward percentage"
+            type="number"
+            min="0"
+            max="100"
+            step="0.01"
+            required
+            disabled={loadingReferral}
+            value={rewardPercentage}
+            onChange={(e) => setRewardPercentage(e.target.value)}
+          />
+          <Button type="submit" loading={savingReferral} disabled={loadingReferral}>
+            Save Reward %
           </Button>
         </form>
       </Card>

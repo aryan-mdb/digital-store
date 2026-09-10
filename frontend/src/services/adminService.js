@@ -24,4 +24,9 @@ export const adminService = {
   transactions: {
     list: (params) => api.get('/admin/transactions', { params }).then((r) => r.data),
   },
+
+  referralSettings: {
+    get: () => api.get('/admin/settings/referral').then((r) => r.data),
+    update: (payload) => api.put('/admin/settings/referral', payload).then((r) => r.data),
+  },
 }

@@ -33,7 +33,7 @@ class ReferralController extends Controller
 
         return $this->success([
             'referral_code' => $code,
-            'reward_percentage' => (float) config('referral.reward_percentage'),
+            'reward_percentage' => $this->referrals->currentRewardPercentage(),
             'total_referred' => Referral::where('referrer_id', $user->id)->count(),
             'total_earned' => (float) $totalEarned,
             'referrals' => $referrals->through(fn ($r) => new ReferralResource($r)),

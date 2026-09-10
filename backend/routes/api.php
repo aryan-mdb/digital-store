@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Api\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Api\Admin\PaymentController as AdminPaymentController;
+use App\Http\Controllers\Api\Admin\ReferralSettingController as AdminReferralSettingController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CategoryController;
@@ -86,4 +87,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
     Route::get('/users/{user}/orders', [AdminUserController::class, 'orders']);
     Route::put('/users/{user}', [AdminUserController::class, 'update']);
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy']);
+
+    Route::get('/settings/referral', [AdminReferralSettingController::class, 'show']);
+    Route::put('/settings/referral', [AdminReferralSettingController::class, 'update']);
 });
