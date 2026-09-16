@@ -28,6 +28,10 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        if (Category::query()->exists()) {
+            return;
+        }
+
         User::factory(5)->create();
 
         $categories = [
