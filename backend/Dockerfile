@@ -20,6 +20,9 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
     && printf '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>\n' > /etc/apache2/conf-available/laravel.conf \
     && a2enconf laravel
 
+RUN printf 'upload_max_filesize=120M\npost_max_size=120M\nmemory_limit=256M\nmax_execution_time=300\nmax_input_time=300\n' \
+    > /usr/local/etc/php/conf.d/uploads.ini
+
 COPY scripts/start.sh /start.sh
 RUN chmod +x /start.sh
 

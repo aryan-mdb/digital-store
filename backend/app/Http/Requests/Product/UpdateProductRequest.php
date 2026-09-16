@@ -21,8 +21,8 @@ class UpdateProductRequest extends FormRequest
             'price' => ['sometimes', 'required', 'numeric', 'min:0'],
             'currency' => ['nullable', 'string', 'max:10'],
             'status' => ['nullable', 'in:active,inactive'],
-            'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-            'product_file' => ['nullable', 'file', 'max:51200', 'mimes:zip,pdf,epub,mp4,mp3,rar,7z'],
+            'thumbnail' => ['nullable', 'image', 'max:20480'],
+            'product_file' => ['nullable', 'file', 'max:102400'],
         ];
     }
 }
