@@ -24,6 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\HandleCors::class,
         ]);
 
+        $middleware->trustProxies(at: '*');
+
         $middleware->throttleApi();
     })
     ->withExceptions(function (Exceptions $exceptions): void {

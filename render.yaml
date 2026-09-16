@@ -1,0 +1,85 @@
+services:
+  - type: web
+    name: digital-store-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: APP_NAME
+        value: DigitalMarketplace
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        fromService:
+          type: web
+          name: digital-store-backend
+          property: hostport
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: digital-store-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: digital-store-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: digital-store-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: digital-store-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: digital-store-db
+          property: password
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: FRONTEND_URL
+        sync: false
+      - key: SANCTUM_STATEFUL_DOMAINS
+        sync: false
+      - key: SESSION_SECURE_COOKIE
+        value: "true"
+      - key: ADMIN_NAME
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: REFERRAL_REWARD_PERCENTAGE
+        value: "10"
+      - key: CRYPTO_PAYMENT_PROVIDER
+        value: now_payments
+      - key: NOWPAYMENTS_API_KEY
+        sync: false
+      - key: NOWPAYMENTS_IPN_SECRET
+        sync: false
+      - key: NOWPAYMENTS_PUBLIC_KEY
+        sync: false
+      - key: NOWPAYMENTS_API_BASE_URL
+        value: https://api.nowpayments.io
+      - key: NOWPAYMENTS_PAY_CURRENCY
+        value: usdttrc20
+      - key: CRYPTO_PAYMENT_EXPIRY_MINUTES
+        value: "15"
+
+databases:
+  - name: digital-store-db
+    plan: free
+    databaseName: digital_store
+    user: digital_store
