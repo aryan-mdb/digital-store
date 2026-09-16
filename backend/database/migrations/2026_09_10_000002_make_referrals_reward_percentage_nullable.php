@@ -15,11 +15,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::statement('ALTER TABLE referrals MODIFY reward_percentage DECIMAL(5,2) NULL');
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('ALTER TABLE referrals ALTER COLUMN reward_percentage DROP NOT NULL');
+        } else {
+            DB::statement('ALTER TABLE referrals MODIFY reward_percentage DECIMAL(5,2) NULL');
+        }
     }
 
     public function down(): void
     {
-        DB::statement('ALTER TABLE referrals MODIFY reward_percentage DECIMAL(5,2) NOT NULL');
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('ALTER TABLE referrals ALTER COLUMN reward_percentage SET NOT NULL');
+        } else {
+            DB::statement('ALTER TABLE referrals MODIFY reward_percentage DECIMAL(5,2) NOT NULL');
+        }
     }
 };
