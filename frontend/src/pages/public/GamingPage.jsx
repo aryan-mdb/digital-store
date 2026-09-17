@@ -31,7 +31,7 @@ export default function GamingPage() {
           <span className="mx-auto mb-4 inline-flex items-center gap-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-300">
             <Gamepad2 className="h-3.5 w-3.5" /> Arcade
           </span>
-          <h1 className="text-3xl font-extrabold text-white sm:text-5xl">
+          <h1 className="text-3xl font-extrabold text-slate-900 sm:text-5xl">
             Gaming <span className="text-gradient-gold">Arcade</span>
           </h1>
           <p className="mx-auto mt-3 max-w-lg text-slate-400">
@@ -47,7 +47,7 @@ export default function GamingPage() {
               className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
                 active === game.key
                   ? 'border-brand-500/50 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 text-white'
-                  : 'border-white/10 bg-white/5 text-slate-300 hover:border-brand-500/30 hover:bg-white/10'
+                  : 'border-slate-200 bg-slate-100 text-slate-600 hover:border-brand-500/30 hover:bg-slate-200'
               }`}
             >
               <game.icon className="h-4 w-4" /> {game.label}
@@ -55,24 +55,24 @@ export default function GamingPage() {
           ))}
         </div>
 
-        <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-surface-1 p-6 shadow-lg shadow-black/30 sm:p-10">
+        <div className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-surface-1 p-6 shadow-lg shadow-black/30 sm:p-10">
           {ActiveGame && <ActiveGame />}
         </div>
 
         <div className="mt-16">
-          <h2 className="mb-5 flex items-center gap-2 text-lg font-bold text-white">
+          <h2 className="mb-5 flex items-center gap-2 text-lg font-bold text-slate-900">
             <Sparkles className="h-5 w-5 text-brand-400" /> More games, coming soon
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {comingSoon.map((game) => (
               <div
                 key={game.title}
-                className="group relative overflow-hidden rounded-xl border border-white/10 bg-surface-1 p-5 opacity-70"
+                className="group relative overflow-hidden rounded-xl border border-slate-200 bg-surface-1 p-5 opacity-70"
               >
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400">
                   <game.icon className="h-5 w-5" />
                 </div>
-                <p className="font-semibold text-white">{game.title}</p>
+                <p className="font-semibold text-slate-900">{game.title}</p>
                 <p className="mt-1 text-sm text-slate-500">{game.desc}</p>
                 <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-[10px] font-medium text-slate-400">
                   <Lock className="h-3 w-3" /> Soon

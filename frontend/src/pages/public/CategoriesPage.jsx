@@ -12,7 +12,7 @@ function CategoryCard({ category }) {
   return (
     <Link
       to={`/products?category_id=${category.id}`}
-      className="group flex items-start gap-4 overflow-hidden rounded-xl border border-white/10 bg-surface-1 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-lg hover:shadow-brand-900/20"
+      className="group flex items-start gap-4 overflow-hidden rounded-xl border border-slate-200 bg-surface-1 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-lg hover:shadow-brand-900/20"
     >
       {category.image_url && !imgFailed ? (
         <img
@@ -27,7 +27,7 @@ function CategoryCard({ category }) {
         </div>
       )}
       <div>
-        <h3 className="font-semibold text-white group-hover:text-brand-300">{category.name}</h3>
+        <h3 className="font-semibold text-slate-900 group-hover:text-brand-300">{category.name}</h3>
         <p className="mt-1 line-clamp-2 text-sm text-slate-500">{category.description}</p>
         <p className="mt-2 text-xs font-medium text-brand-400">{category.products_count ?? 0} products</p>
       </div>
@@ -52,7 +52,7 @@ export default function CategoriesPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <h1 className="mb-6 text-2xl font-bold text-white">Digital Products by Category</h1>
+      <h1 className="mb-6 text-2xl font-bold text-slate-900">Digital Products by Category</h1>
 
       {loading ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

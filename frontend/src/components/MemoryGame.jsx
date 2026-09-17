@@ -62,7 +62,7 @@ export default function MemoryGame() {
         <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-brand-500/50 bg-brand-500/10">
           <Trophy className="h-10 w-10 text-brand-400" />
         </div>
-        <h3 className="text-2xl font-bold text-white">Matched in {moves} moves!</h3>
+        <h3 className="text-2xl font-bold text-slate-900">Matched in {moves} moves!</h3>
         <p className="text-slate-500">Great memory — give it another shuffle?</p>
         <button
           onClick={handleRestart}
@@ -98,13 +98,13 @@ export default function MemoryGame() {
                   ? 'border-emerald-500/40 bg-emerald-500/10'
                   : isFlipped
                     ? 'border-brand-500/50 bg-brand-500/10'
-                    : 'border-white/10 bg-white/5 hover:border-brand-500/30 hover:bg-white/10'
+                    : 'border-slate-200 bg-slate-100 hover:border-brand-500/30 hover:bg-slate-200'
               }`}
             >
               {isFlipped ? (
                 <Icon className={`h-6 w-6 sm:h-7 sm:w-7 ${isMatched ? 'text-emerald-400' : 'text-brand-400'}`} />
               ) : (
-                <span className="h-2 w-2 rounded-full bg-white/20" />
+                <span className="h-2 w-2 rounded-full bg-slate-300" />
               )}
             </button>
           )

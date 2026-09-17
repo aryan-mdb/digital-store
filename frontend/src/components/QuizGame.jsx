@@ -92,7 +92,7 @@ export default function QuizGame() {
         <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-brand-500/50 bg-brand-500/10">
           <Award className="h-10 w-10 text-brand-400" />
         </div>
-        <h3 className="text-2xl font-bold text-white">
+        <h3 className="text-2xl font-bold text-slate-900">
           {score} / {QUESTIONS.length} correct
         </h3>
         <p className="text-slate-500">
@@ -121,14 +121,14 @@ export default function QuizGame() {
         <span>Score: {score}</span>
       </div>
 
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/5">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
         <div
           className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-600 transition-all duration-300"
           style={{ width: `${((step + (selected !== null ? 1 : 0)) / order.length) * 100}%` }}
         />
       </div>
 
-      <h3 key={step} className="text-lg font-semibold text-white">
+      <h3 key={step} className="text-lg font-semibold text-slate-900">
         {question.q}
       </h3>
 
@@ -148,7 +148,7 @@ export default function QuizGame() {
                   ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-300'
                   : showResult && isChosen
                     ? 'border-red-500/50 bg-red-500/10 text-red-300'
-                    : 'border-white/10 bg-white/5 text-slate-200 hover:border-brand-500/40 hover:bg-white/10'
+                    : 'border-slate-200 bg-slate-100 text-slate-700 hover:border-brand-500/40 hover:bg-slate-200'
               }`}
             >
               {opt}

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import clsx from 'clsx'
+import ThemeToggle from '../ui/ThemeToggle'
 
 /**
  * Shared shell for both the user dashboard and the admin panel — a
@@ -89,6 +90,7 @@ export default function DashboardShell({ sections, brandLabel, children }) {
           </button>
           <div className="flex-1" />
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <div className="text-right">
               <p className="text-sm font-medium text-slate-900">{user?.name}</p>
               <p className="text-xs capitalize text-slate-500">{user?.role?.replace('_', ' ')}</p>

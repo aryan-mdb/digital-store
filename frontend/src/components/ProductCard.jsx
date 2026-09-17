@@ -42,7 +42,7 @@ export default function ProductCard({ product }) {
         transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) ${hovering ? 'scale(1.02)' : 'scale(1)'}`,
         transition: hovering ? 'transform 80ms linear' : 'transform 400ms ease-out',
       }}
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface-1 shadow-sm shadow-black/30 will-change-transform hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-900/30"
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface-1 shadow-sm shadow-black/30 will-change-transform hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-900/30"
     >
       {hovering && (
         <div
@@ -74,7 +74,7 @@ export default function ProductCard({ product }) {
             {product.category.name}
           </span>
         )}
-        <h3 className="line-clamp-1 font-semibold text-white group-hover:text-brand-300">{product.name}</h3>
+        <h3 className="line-clamp-1 font-semibold text-slate-900 group-hover:text-brand-300">{product.name}</h3>
         <p className="line-clamp-2 text-sm text-slate-500">{product.short_description}</p>
         <div className="mt-auto flex items-center justify-between pt-2">
           <span className="text-lg font-bold text-gradient-gold transition-transform duration-300 group-hover:scale-105">
