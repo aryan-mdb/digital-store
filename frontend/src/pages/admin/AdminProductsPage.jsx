@@ -173,7 +173,7 @@ export default function AdminProductsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search products..."
-            className="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+            className="w-full rounded-lg border border-slate-300 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
           />
         </form>
         <Select value={categoryFilter} onChange={(e) => { setPage(1); setCategoryFilter(e.target.value) }} className="sm:w-48">

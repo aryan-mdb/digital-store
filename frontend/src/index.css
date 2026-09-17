@@ -40,6 +40,11 @@
 
 :root {
   --ink: #f7f1e4;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
 }
 
 html, body, #root {
