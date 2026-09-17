@@ -53,38 +53,37 @@ function App() {
         <Route path="/gaming" element={<GamingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
 
-        <Route element={<ProtectedRoute />}>
-          <Route element={<UserRoute />}>
-            <Route element={<UserDashboardLayout />}>
-              <Route path="/dashboard" element={<UserDashboardHome />} />
-              <Route path="/dashboard/products" element={<ProductsPage />} />
-              <Route path="/dashboard/orders" element={<OrdersPage />} />
-              <Route path="/dashboard/orders/:orderId" element={<OrderDetailsPage />} />
-              <Route path="/dashboard/payments" element={<PaymentsPage />} />
-              <Route path="/dashboard/payments/:orderId" element={<CryptoPaymentPage />} />
-              <Route path="/dashboard/downloads" element={<DownloadsPage />} />
-              <Route path="/dashboard/wallet" element={<WalletPage />} />
-              <Route path="/dashboard/refer-earn" element={<ReferralPage />} />
-              <Route path="/dashboard/profile" element={<ProfilePage />} />
-            </Route>
-          </Route>
-
-          <Route element={<AdminRoute />}>
-            <Route element={<AdminLayout />}>
-              <Route path="/admin" element={<AdminDashboardPage />} />
-              <Route path="/admin/categories" element={<AdminCategoriesPage />} />
-              <Route path="/admin/products" element={<AdminProductsPage />} />
-              <Route path="/admin/orders" element={<AdminOrdersPage />} />
-              <Route path="/admin/payments" element={<AdminPaymentsPage />} />
-              <Route path="/admin/transactions" element={<AdminTransactionsPage />} />
-              <Route path="/admin/users" element={<AdminUsersPage />} />
-              <Route path="/admin/settings" element={<AdminSettingsPage />} />
-            </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route element={<UserRoute />}>
+          <Route element={<UserDashboardLayout />}>
+            <Route path="/dashboard" element={<UserDashboardHome />} />
+            <Route path="/dashboard/products" element={<ProductsPage />} />
+            <Route path="/dashboard/orders" element={<OrdersPage />} />
+            <Route path="/dashboard/orders/:orderId" element={<OrderDetailsPage />} />
+            <Route path="/dashboard/payments" element={<PaymentsPage />} />
+            <Route path="/dashboard/payments/:orderId" element={<CryptoPaymentPage />} />
+            <Route path="/dashboard/downloads" element={<DownloadsPage />} />
+            <Route path="/dashboard/wallet" element={<WalletPage />} />
+            <Route path="/dashboard/refer-earn" element={<ReferralPage />} />
+            <Route path="/dashboard/profile" element={<ProfilePage />} />
           </Route>
         </Route>
 
-        <Route path="*" element={<NotFoundPage />} />
+        <Route element={<AdminRoute />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<AdminDashboardPage />} />
+            <Route path="/admin/categories" element={<AdminCategoriesPage />} />
+            <Route path="/admin/products" element={<AdminProductsPage />} />
+            <Route path="/admin/orders" element={<AdminOrdersPage />} />
+            <Route path="/admin/payments" element={<AdminPaymentsPage />} />
+            <Route path="/admin/transactions" element={<AdminTransactionsPage />} />
+            <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/settings" element={<AdminSettingsPage />} />
+          </Route>
+        </Route>
       </Route>
     </Routes>
   )
