@@ -17,7 +17,7 @@ class MediaController extends Controller
     {
         abort_if(! $product->thumbnail_data, 404);
 
-        return response($product->thumbnail_data, 200, [
+        return response(base64_decode($product->thumbnail_data), 200, [
             'Content-Type' => $product->thumbnail_mime ?? 'application/octet-stream',
             'Cache-Control' => 'public, max-age=31536000, immutable',
         ]);
@@ -27,7 +27,7 @@ class MediaController extends Controller
     {
         abort_if(! $category->image_data, 404);
 
-        return response($category->image_data, 200, [
+        return response(base64_decode($category->image_data), 200, [
             'Content-Type' => $category->image_mime ?? 'application/octet-stream',
             'Cache-Control' => 'public, max-age=31536000, immutable',
         ]);

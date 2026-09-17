@@ -48,7 +48,7 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $data['image_data'] = file_get_contents($request->file('image')->getRealPath());
+            $data['image_data'] = base64_encode(file_get_contents($request->file('image')->getRealPath()));
             $data['image_mime'] = $request->file('image')->getMimeType();
         }
 
@@ -62,7 +62,7 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $data['image_data'] = file_get_contents($request->file('image')->getRealPath());
+            $data['image_data'] = base64_encode(file_get_contents($request->file('image')->getRealPath()));
             $data['image_mime'] = $request->file('image')->getMimeType();
         }
 

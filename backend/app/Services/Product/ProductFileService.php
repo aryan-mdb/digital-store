@@ -5,7 +5,6 @@ namespace App\Services\Product;
 use App\Models\Product;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 /**
  * Handles storage of digital product files (private disk) and safe
@@ -41,7 +40,7 @@ class ProductFileService
     public function thumbnailDataFromUpload(UploadedFile $file): array
     {
         return [
-            'thumbnail_data' => file_get_contents($file->getRealPath()),
+            'thumbnail_data' => base64_encode(file_get_contents($file->getRealPath())),
             'thumbnail_mime' => $file->getMimeType(),
         ];
     }
