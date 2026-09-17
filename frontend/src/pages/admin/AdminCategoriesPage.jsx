@@ -110,7 +110,7 @@ export default function AdminCategoriesPage() {
                   <p className="font-medium text-slate-900">{category.name}</p>
                   <p className="line-clamp-1 text-xs text-slate-500">{category.description}</p>
                 </td>
-                <td className="px-4 py-3">{category.products_count ?? 0}</td>
+                <td className="px-4 py-3 text-slate-700">{category.products_count ?? 0}</td>
                 <td className="px-4 py-3">
                   <button onClick={() => handleToggle(category)}>
                     <Badge status={category.status} />

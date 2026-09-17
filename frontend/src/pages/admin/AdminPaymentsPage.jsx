@@ -91,7 +91,7 @@ export default function AdminPaymentsPage() {
                 <tr key={payment.id} className="hover:bg-slate-50">
                   <td className="px-4 py-3 font-medium text-slate-900">{payment.order_number}</td>
                   <td className="px-4 py-3 text-slate-600">{payment.cryptocurrency || '—'}</td>
-                  <td className="px-4 py-3">{formatCurrency(payment.amount)}</td>
+                  <td className="px-4 py-3 text-slate-700">{formatCurrency(payment.amount)}</td>
                   <td className="px-4 py-3"><Badge status={payment.status} /></td>
                   <td className="px-4 py-3 text-slate-500">{formatDateTime(payment.paid_at)}</td>
                   <td className="px-4 py-3 text-right">

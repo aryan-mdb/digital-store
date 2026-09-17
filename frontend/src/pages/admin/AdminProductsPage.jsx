@@ -208,8 +208,8 @@ export default function AdminProductsPage() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-slate-600">{product.category?.name || '—'}</td>
-                  <td className="px-4 py-3">{formatCurrency(product.price, product.currency)}</td>
-                  <td className="px-4 py-3">{product.sales_count ?? 0}</td>
+                  <td className="px-4 py-3 text-slate-700">{formatCurrency(product.price, product.currency)}</td>
+                  <td className="px-4 py-3 text-slate-700">{product.sales_count ?? 0}</td>
                   <td className="px-4 py-3">
                     <button onClick={() => handleToggle(product)}>
                       <Badge status={product.status} />

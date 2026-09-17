@@ -38,11 +38,11 @@ export default function PaymentsPage() {
                   {order.order_number}
                 </td>
 
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 text-slate-700">
                   {payment.cryptocurrency || 'USDT'}
                 </td>
 
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 text-slate-700">
                   {payment.amount
                     ? `${payment.amount} ${payment.cryptocurrency || 'USDT'}`
                     : '—'}

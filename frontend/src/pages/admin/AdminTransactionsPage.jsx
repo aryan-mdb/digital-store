@@ -64,10 +64,10 @@ export default function AdminTransactionsPage() {
                   <td className="px-4 py-3 font-mono text-xs text-slate-600">{tx.transaction_id || '—'}</td>
                   <td className="px-4 py-3 font-medium text-slate-900">{tx.order_number}</td>
                   <td className="px-4 py-3 text-slate-600">{tx.payment_provider || '—'}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 text-slate-700">
                     {tx.crypto_amount ?? '—'} {tx.cryptocurrency}
                   </td>
-                  <td className="px-4 py-3">{formatCurrency(tx.amount)}</td>
+                  <td className="px-4 py-3 text-slate-700">{formatCurrency(tx.amount)}</td>
                   <td className="px-4 py-3"><Badge status={tx.status} /></td>
                   <td className="px-4 py-3 text-slate-500">{formatDateTime(tx.created_at)}</td>
                 </tr>

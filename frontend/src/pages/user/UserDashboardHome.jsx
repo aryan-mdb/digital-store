@@ -65,7 +65,7 @@ export default function UserDashboardHome() {
                     {order.order_number}
                   </Link>
                 </td>
-                <td className="px-4 py-3">{formatCurrency(order.total_amount, order.currency)}</td>
+                <td className="px-4 py-3 text-slate-700">{formatCurrency(order.total_amount, order.currency)}</td>
                 <td className="px-4 py-3"><Badge status={order.status} /></td>
                 <td className="px-4 py-3"><Badge status={order.payment_status} /></td>
                 <td className="px-4 py-3 text-slate-500">{formatDate(order.created_at)}</td>

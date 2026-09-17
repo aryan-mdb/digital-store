@@ -25,10 +25,18 @@
   --color-surface-3: #202a3d;
 }
 
+:root {
+  --ink: #f7f1e4;
+  color-scheme: dark;
+}
+
 /* ---------------------------------------------------------------------
    Light theme token overrides. data-theme is set on <html> (by an
    inline script in index.html, before paint, and kept in sync by
-   ThemeContext) — dark is the default with no attribute needed.
+   ThemeContext) — dark is the default with no attribute needed. This
+   must come after the :root block above: both selectors have equal
+   specificity, so source order decides the winner when data-theme
+   is "light".
 --------------------------------------------------------------------- */
 [data-theme="light"] {
   --color-surface-0: #f8fafc;
@@ -36,14 +44,6 @@
   --color-surface-2: #f1f5f9;
   --color-surface-3: #e2e8f0;
   --ink: #0f172a;
-}
-
-:root {
-  --ink: #f7f1e4;
-  color-scheme: dark;
-}
-
-[data-theme="light"] {
   color-scheme: light;
 }
 

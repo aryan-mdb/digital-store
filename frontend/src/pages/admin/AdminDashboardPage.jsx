@@ -47,7 +47,7 @@ export default function AdminDashboardPage() {
                 <tr key={o.id}>
                   <td className="px-4 py-3 font-medium text-slate-900">{o.order_number}</td>
                   <td className="px-4 py-3 text-slate-600">{o.user?.name}</td>
-                  <td className="px-4 py-3">{formatCurrency(o.total_amount, o.currency)}</td>
+                  <td className="px-4 py-3 text-slate-700">{formatCurrency(o.total_amount, o.currency)}</td>
                   <td className="px-4 py-3"><Badge status={o.status} /></td>
                 </tr>
               ))}
@@ -86,8 +86,8 @@ export default function AdminDashboardPage() {
               {best_selling_products.map((p) => (
                 <tr key={p.id}>
                   <td className="px-4 py-3 font-medium text-slate-900">{p.name}</td>
-                  <td className="px-4 py-3">{p.sales_count}</td>
-                  <td className="px-4 py-3">{formatCurrency(p.revenue)}</td>
+                  <td className="px-4 py-3 text-slate-700">{p.sales_count}</td>
+                  <td className="px-4 py-3 text-slate-700">{formatCurrency(p.revenue)}</td>
                 </tr>
               ))}
             </Table>
@@ -105,8 +105,8 @@ export default function AdminDashboardPage() {
               {sales_by_category.map((c) => (
                 <tr key={c.id}>
                   <td className="px-4 py-3 font-medium text-slate-900">{c.name}</td>
-                  <td className="px-4 py-3">{c.sales_count}</td>
-                  <td className="px-4 py-3">{formatCurrency(c.revenue)}</td>
+                  <td className="px-4 py-3 text-slate-700">{c.sales_count}</td>
+                  <td className="px-4 py-3 text-slate-700">{formatCurrency(c.revenue)}</td>
                 </tr>
               ))}
             </Table>
@@ -126,8 +126,8 @@ export default function AdminDashboardPage() {
               <tr key={p.id}>
                 <td className="px-4 py-3 font-medium text-slate-900">{p.order_number}</td>
                 <td className="px-4 py-3 text-slate-600">{p.user}</td>
-                <td className="px-4 py-3">{formatCurrency(p.amount)}</td>
-                <td className="px-4 py-3">{p.cryptocurrency || '—'}</td>
+                <td className="px-4 py-3 text-slate-700">{formatCurrency(p.amount)}</td>
+                <td className="px-4 py-3 text-slate-700">{p.cryptocurrency || '—'}</td>
                 <td className="px-4 py-3"><Badge status={p.status} /></td>
               </tr>
             ))}

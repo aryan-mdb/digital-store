@@ -130,7 +130,7 @@ export default function AdminUsersPage() {
                   <td className="px-4 py-3 text-slate-600">{user.email}</td>
                   <td className="px-4 py-3"><Badge status={user.role} /></td>
                   <td className="px-4 py-3"><Badge status={user.status} /></td>
-                  <td className="px-4 py-3">{user.orders_count ?? 0}</td>
+                  <td className="px-4 py-3 text-slate-700">{user.orders_count ?? 0}</td>
                   <td className="px-4 py-3 text-slate-500">{formatDate(user.created_at)}</td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-2">

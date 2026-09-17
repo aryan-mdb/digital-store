@@ -91,7 +91,7 @@ export default function AdminOrdersPage() {
                     <p>{order.user?.name}</p>
                     <p className="text-xs text-slate-400">{order.user?.email}</p>
                   </td>
-                  <td className="px-4 py-3">{formatCurrency(order.total_amount, order.currency)}</td>
+                  <td className="px-4 py-3 text-slate-700">{formatCurrency(order.total_amount, order.currency)}</td>
                   <td className="px-4 py-3"><Badge status={order.status} /></td>
                   <td className="px-4 py-3"><Badge status={order.payment_status} /></td>
                   <td className="px-4 py-3 text-slate-500">{formatDateTime(order.created_at)}</td>
@@ -143,8 +143,8 @@ export default function AdminOrdersPage() {
                 {viewing.items?.map((item) => (
                   <tr key={item.id}>
                     <td className="px-4 py-3 text-slate-900">{item.product_name}</td>
-                    <td className="px-4 py-3">{formatCurrency(item.price, viewing.currency)}</td>
-                    <td className="px-4 py-3">{item.quantity}</td>
+                    <td className="px-4 py-3 text-slate-700">{formatCurrency(item.price, viewing.currency)}</td>
+                    <td className="px-4 py-3 text-slate-700">{item.quantity}</td>
                   </tr>
                 ))}
               </Table>

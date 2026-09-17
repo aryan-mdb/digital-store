@@ -39,7 +39,7 @@ export default function OrdersPage() {
                 <tr key={order.id} className="hover:bg-slate-50">
                   <td className="px-4 py-3 font-medium text-slate-900">{order.order_number}</td>
                   <td className="px-4 py-3 text-slate-600">{order.items?.[0]?.product_name}</td>
-                  <td className="px-4 py-3">{formatCurrency(order.total_amount, order.currency)}</td>
+                  <td className="px-4 py-3 text-slate-700">{formatCurrency(order.total_amount, order.currency)}</td>
                   <td className="px-4 py-3"><Badge status={order.status} /></td>
                   <td className="px-4 py-3"><Badge status={order.payment_status} /></td>
                   <td className="px-4 py-3 text-slate-500">{formatDate(order.created_at)}</td>
