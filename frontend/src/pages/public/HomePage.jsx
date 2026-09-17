@@ -5,8 +5,13 @@ import ProductCard from '../../components/ProductCard'
 import { productService } from '../../services/productService'
 import { categoryService } from '../../services/categoryService'
 import { unwrapPaginated } from '../../utils/pagination'
+import usePageMeta from '../../hooks/usePageMeta'
 
 export default function HomePage() {
+  usePageMeta(
+    null,
+    'Premium software, templates, ebooks, courses and graphics — instant download after a secure cryptocurrency payment. Plus daily spin-the-wheel and quiz mini-games.'
+  )
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
 

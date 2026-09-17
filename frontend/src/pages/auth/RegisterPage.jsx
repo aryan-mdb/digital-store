@@ -6,8 +6,10 @@ import { useAuth } from '../../context/AuthContext'
 import { apiErrorMessage } from '../../services/api'
 import Button from '../../components/ui/Button'
 import { Input } from '../../components/ui/Input'
+import usePageMeta from '../../hooks/usePageMeta'
 
 export default function RegisterPage() {
+  usePageMeta('Sign Up', 'Create a free DigitalMarketplace account and get instant access to premium digital products.')
   const { register } = useAuth()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()

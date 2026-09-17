@@ -6,8 +6,10 @@ import { useAuth } from '../../context/AuthContext'
 import { apiErrorMessage } from '../../services/api'
 import Button from '../../components/ui/Button'
 import { Input } from '../../components/ui/Input'
+import usePageMeta from '../../hooks/usePageMeta'
 
 export default function LoginPage() {
+  usePageMeta('Login', 'Sign in to your DigitalMarketplace account.')
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()

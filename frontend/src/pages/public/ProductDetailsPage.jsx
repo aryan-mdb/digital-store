@@ -11,6 +11,7 @@ import { orderService } from '../../services/orderService'
 import { productService } from '../../services/productService'
 import { walletService } from '../../services/walletService'
 import { formatCurrency } from '../../utils/format'
+import usePageMeta from '../../hooks/usePageMeta'
 
 export default function ProductDetailsPage() {
   const { slug } = useParams()
@@ -20,6 +21,8 @@ export default function ProductDetailsPage() {
   const [buying, setBuying] = useState(false)
   const [wallet, setWallet] = useState(null)
   const [useWallet, setUseWallet] = useState(false)
+
+  usePageMeta(product?.name, product?.short_description)
 
   useEffect(() => {
     productService.get(slug).then((res) => setProduct(res.data))

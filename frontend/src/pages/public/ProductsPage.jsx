@@ -8,8 +8,13 @@ import { Select } from '../../components/ui/Input'
 import { categoryService } from '../../services/categoryService'
 import { productService } from '../../services/productService'
 import { unwrapPaginated } from '../../utils/pagination'
+import usePageMeta from '../../hooks/usePageMeta'
 
 export default function ProductsPage() {
+  usePageMeta(
+    'Shop All Products',
+    'Browse premium software, templates, ebooks, courses and graphics — instant download after a secure cryptocurrency payment.'
+  )
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
   const [meta, setMeta] = useState(null)
