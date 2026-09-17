@@ -9,7 +9,6 @@ use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -49,7 +48,8 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('categories', 'public');
+            $data['image_data'] = file_get_contents($request->file('image')->getRealPath());
+            $data['image_mime'] = $request->file('image')->getMimeType();
         }
 
         $category = Category::create($data);
@@ -62,10 +62,8 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            if ($category->image) {
-                Storage::disk('public')->delete($category->image);
-            }
-            $data['image'] = $request->file('image')->store('categories', 'public');
+            $data['image_data'] = file_get_contents($request->file('image')->getRealPath());
+            $data['image_mime'] = $request->file('image')->getMimeType();
         }
 
         $category->update($data);

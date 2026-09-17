@@ -79,7 +79,7 @@ class ProductController extends Controller
         $data['currency'] = $data['currency'] ?? 'USD';
 
         if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $this->files->storeThumbnail($request->file('thumbnail'));
+            $data = array_merge($data, $this->files->thumbnailDataFromUpload($request->file('thumbnail')));
         }
 
         $data['product_file'] = $this->files->storeProductFile($request->file('product_file'));
@@ -94,7 +94,7 @@ class ProductController extends Controller
         $data = $request->safe()->except(['thumbnail', 'product_file']);
 
         if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $this->files->replaceThumbnail($product, $request->file('thumbnail'));
+            $data = array_merge($data, $this->files->thumbnailDataFromUpload($request->file('thumbnail')));
         }
 
         if ($request->hasFile('product_file')) {

@@ -26,6 +26,8 @@ class Product extends Model
         'currency',
         'product_file',
         'thumbnail',
+        'thumbnail_data',
+        'thumbnail_mime',
         'status',
         'created_by',
     ];

@@ -1,10 +1,11 @@
-import { Bitcoin, CheckCircle2, ImageOff, ShoppingCart, WalletCards } from 'lucide-react'
+import { Bitcoin, CheckCircle2, ShoppingCart, WalletCards } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate, useParams } from 'react-router-dom'
 import Badge from '../../components/ui/Badge'
 import Button from '../../components/ui/Button'
 import FullPageSpinner from '../../components/ui/FullPageSpinner'
+import ImagePlaceholder from '../../components/ui/ImagePlaceholder'
 import { useAuth } from '../../context/AuthContext'
 import { apiErrorMessage } from '../../services/api'
 import { orderService } from '../../services/orderService'
@@ -21,6 +22,7 @@ export default function ProductDetailsPage() {
   const [buying, setBuying] = useState(false)
   const [wallet, setWallet] = useState(null)
   const [useWallet, setUseWallet] = useState(false)
+  const [imgFailed, setImgFailed] = useState(false)
 
   usePageMeta(product?.name, product?.short_description)
 
@@ -67,11 +69,16 @@ export default function ProductDetailsPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <div className="flex aspect-video items-center justify-center rounded-xl border border-slate-200 bg-slate-100">
-          {product.thumbnail_url ? (
-            <img src={product.thumbnail_url} alt={product.name} className="h-full w-full rounded-xl object-cover" />
+        <div className="flex aspect-video items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
+          {product.thumbnail_url && !imgFailed ? (
+            <img
+              src={product.thumbnail_url}
+              alt={product.name}
+              onError={() => setImgFailed(true)}
+              className="h-full w-full rounded-xl object-cover"
+            />
           ) : (
-            <ImageOff className="h-12 w-12 text-slate-300" />
+            <ImagePlaceholder iconClassName="h-12 w-12" />
           )}
         </div>
 

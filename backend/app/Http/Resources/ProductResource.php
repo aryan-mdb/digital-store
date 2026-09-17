@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class ProductResource extends JsonResource
 {
@@ -20,7 +19,7 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'price' => (float) $this->price,
             'currency' => $this->currency,
-            'thumbnail_url' => $this->thumbnail ? Storage::disk('public')->url($this->thumbnail) : null,
+            'thumbnail_url' => $this->thumbnail_mime ? url("/media/products/{$this->id}/thumbnail") : null,
             'status' => $this->status,
             'has_file' => (bool) $this->product_file, // never expose the actual path/url
             'category' => new CategoryResource($this->whenLoaded('category')),

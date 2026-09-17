@@ -1,8 +1,8 @@
-import { ImageOff } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatCurrency } from '../utils/format'
 import Badge from './ui/Badge'
+import ImagePlaceholder from './ui/ImagePlaceholder'
 
 const MAX_TILT = 8
 
@@ -11,6 +11,7 @@ export default function ProductCard({ product }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [glow, setGlow] = useState({ x: 50, y: 50 })
   const [hovering, setHovering] = useState(false)
+  const [imgFailed, setImgFailed] = useState(false)
 
   const handleMouseMove = (e) => {
     const rect = cardRef.current?.getBoundingClientRect()
@@ -53,15 +54,16 @@ export default function ProductCard({ product }) {
       )}
 
       <div className="relative flex h-40 items-center justify-center overflow-hidden bg-surface-2">
-        {product.thumbnail_url ? (
+        {product.thumbnail_url && !imgFailed ? (
           <img
             src={product.thumbnail_url}
             alt={product.name}
             loading="lazy"
+            onError={() => setImgFailed(true)}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
-          <ImageOff className="h-8 w-8 text-slate-600" />
+          <ImagePlaceholder />
         )}
         <div className="animate-shimmer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>

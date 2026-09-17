@@ -20,6 +20,8 @@ class Category extends Model
         'slug',
         'description',
         'image',
+        'image_data',
+        'image_mime',
         'status',
     ];
 
