@@ -66,7 +66,7 @@ export default function MemoryGame() {
         <p className="text-slate-500">Great memory — give it another shuffle?</p>
         <button
           onClick={handleRestart}
-          className="glow-gold mt-2 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 px-6 py-3 font-bold text-surface-0 transition hover:brightness-110"
+          className="glow-gold mt-2 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 px-6 py-3 font-bold text-white transition hover:brightness-110"
         >
           <RotateCcw className="h-4 w-4" /> Play Again
         </button>

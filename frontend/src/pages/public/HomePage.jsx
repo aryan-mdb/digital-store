@@ -47,7 +47,7 @@ export default function HomePage() {
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               to="/products"
-              className="glow-gold relative overflow-hidden rounded-xl bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 px-6 py-3 font-bold text-surface-0 transition hover:brightness-110"
+              className="glow-gold relative overflow-hidden rounded-xl bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 px-6 py-3 font-bold text-white transition hover:brightness-110"
             >
               <span className="animate-shimmer absolute inset-0" />
               <span className="relative">Browse Products</span>

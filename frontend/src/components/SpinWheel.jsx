@@ -3,14 +3,14 @@ import { Sparkles } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const SEGMENTS = [
-  { label: '5% OFF', color: '#f5a623', text: '#08070c' },
-  { label: 'Try Again', color: '#1e1a2a', text: '#948a76' },
-  { label: '10% OFF', color: '#ffb020', text: '#08070c' },
-  { label: 'Bonus Badge', color: '#292335', text: '#f5a623' },
-  { label: '15% OFF', color: '#d9860f', text: '#f7f1e4' },
-  { label: 'Nothing', color: '#1e1a2a', text: '#948a76' },
-  { label: '20% OFF', color: '#ffdd8a', text: '#08070c' },
-  { label: 'Free Spin', color: '#292335', text: '#f5a623' },
+  { label: '5% OFF', color: '#3b82f6', text: '#ffffff' },
+  { label: 'Try Again', color: '#182030', text: '#7c8aa0' },
+  { label: '10% OFF', color: '#60a5fa', text: '#05070d' },
+  { label: 'Bonus Badge', color: '#202a3d', text: '#60a5fa' },
+  { label: '15% OFF', color: '#2563eb', text: '#ffffff' },
+  { label: 'Nothing', color: '#182030', text: '#7c8aa0' },
+  { label: '20% OFF', color: '#93c5fd', text: '#05070d' },
+  { label: 'Free Spin', color: '#202a3d', text: '#93c5fd' },
 ]
 
 const SEGMENT_ANGLE = 360 / SEGMENTS.length
@@ -83,7 +83,7 @@ export default function SpinWheel() {
     <div className="flex flex-col items-center gap-6">
       <div className="relative">
         <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/3">
-          <div className="h-6 w-6 rotate-180 border-x-[10px] border-b-[16px] border-x-transparent border-b-brand-400 drop-shadow-[0_0_6px_rgba(245,166,35,0.7)]" />
+          <div className="h-6 w-6 rotate-180 border-x-[10px] border-b-[16px] border-x-transparent border-b-brand-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.7)]" />
         </div>
 
         <div className="glow-gold-lg rounded-full border-4 border-brand-500/50 p-2">
@@ -123,7 +123,7 @@ export default function SpinWheel() {
       <button
         onClick={handleSpin}
         disabled={locked}
-        className="glow-gold relative overflow-hidden rounded-xl bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 px-8 py-3 text-base font-bold text-surface-0 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100"
+        className="glow-gold relative overflow-hidden rounded-xl bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 px-8 py-3 text-base font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100"
       >
         {!locked && <span className="animate-shimmer absolute inset-0" />}
         <span className="relative">

@@ -46,7 +46,7 @@ export default function GamingPage() {
               onClick={() => setActive(game.key)}
               className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
                 active === game.key
-                  ? 'border-brand-500/50 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 text-surface-0'
+                  ? 'border-brand-500/50 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 text-white'
                   : 'border-white/10 bg-white/5 text-slate-300 hover:border-brand-500/30 hover:bg-white/10'
               }`}
             >

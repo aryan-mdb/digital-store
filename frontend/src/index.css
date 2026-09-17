@@ -1,27 +1,27 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------
-   Brand palette — gold, replacing the old blue. Every bg-brand-*,
-   text-brand-*, border-brand-* class in the app is driven by these
-   tokens, so this single block re-themes every button, link and active
-   nav state across the whole site.
+   Brand palette — electric blue, on a black + white base. Every
+   bg-brand-*, text-brand-*, border-brand-* class in the app is driven
+   by these tokens, so this single block re-themes every button, link
+   and active nav state across the whole site.
 --------------------------------------------------------------------- */
 @theme {
-  --color-brand-50: #fff9ec;
-  --color-brand-100: #ffefc7;
-  --color-brand-200: #ffdd8a;
-  --color-brand-300: #ffc84d;
-  --color-brand-400: #ffb020;
-  --color-brand-500: #f5a623;
-  --color-brand-600: #d9860f;
-  --color-brand-700: #b3660a;
-  --color-brand-800: #8a4f0e;
-  --color-brand-900: #5c3608;
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
 
-  --color-surface-0: #08070c;
-  --color-surface-1: #15121d;
-  --color-surface-2: #1e1a2a;
-  --color-surface-3: #292335;
+  --color-surface-0: #05070d;
+  --color-surface-1: #10141f;
+  --color-surface-2: #182030;
+  --color-surface-3: #202a3d;
 }
 
 html, body, #root {
@@ -31,8 +31,8 @@ html, body, #root {
 body {
   @apply bg-surface-0 text-slate-100 antialiased;
   background-image:
-    radial-gradient(ellipse 80% 50% at 15% -10%, rgba(245, 166, 35, 0.16), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(245, 166, 35, 0.08), transparent);
+    radial-gradient(ellipse 80% 50% at 15% -10%, rgba(59, 130, 246, 0.18), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(59, 130, 246, 0.1), transparent);
   background-attachment: fixed;
 }
 
@@ -49,48 +49,48 @@ body {
 .bg-white { background-color: var(--color-surface-1) !important; }
 .bg-slate-50 { background-color: var(--color-surface-0) !important; }
 .bg-slate-100 { background-color: var(--color-surface-2) !important; }
-.bg-slate-900 { background-color: #0b0910 !important; }
+.bg-slate-900 { background-color: #060810 !important; }
 .hover\:bg-slate-50:hover { background-color: var(--color-surface-2) !important; }
 .hover\:bg-slate-100:hover { background-color: var(--color-surface-3) !important; }
 
-.border-slate-100 { border-color: rgba(245, 166, 35, 0.1) !important; }
-.border-slate-200 { border-color: rgba(245, 166, 35, 0.14) !important; }
-.border-slate-300 { border-color: rgba(245, 166, 35, 0.24) !important; }
-.divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: rgba(245, 166, 35, 0.1) !important; }
+.border-slate-100 { border-color: rgba(59, 130, 246, 0.1) !important; }
+.border-slate-200 { border-color: rgba(59, 130, 246, 0.16) !important; }
+.border-slate-300 { border-color: rgba(59, 130, 246, 0.26) !important; }
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: rgba(59, 130, 246, 0.1) !important; }
 
-.text-slate-900 { color: #f7f1e4 !important; }
-.text-slate-800 { color: #ece3d0 !important; }
-.text-slate-700 { color: #d6cbb2 !important; }
-.text-slate-600 { color: #b3a68c !important; }
-.text-slate-500 { color: #948a76 !important; }
-.text-slate-400 { color: #7d7564 !important; }
-.hover\:text-slate-900:hover { color: #f7f1e4 !important; }
-.hover\:text-slate-600:hover { color: #d6cbb2 !important; }
+.text-slate-900 { color: #f8fafc !important; }
+.text-slate-800 { color: #e2e8f0 !important; }
+.text-slate-700 { color: #cbd5e1 !important; }
+.text-slate-600 { color: #94a3b8 !important; }
+.text-slate-500 { color: #7c8aa0 !important; }
+.text-slate-400 { color: #64748b !important; }
+.hover\:text-slate-900:hover { color: #f8fafc !important; }
+.hover\:text-slate-600:hover { color: #cbd5e1 !important; }
 
-.placeholder-slate-400::placeholder { color: #6b6458; }
+.placeholder-slate-400::placeholder { color: #56637a; }
 
 /* ---------------------------------------------------------------------
    Gaming flourishes
 --------------------------------------------------------------------- */
 .text-gradient-gold {
-  background: linear-gradient(135deg, #ffe9b8 0%, #f5a623 45%, #d9860f 100%);
+  background: linear-gradient(135deg, #dbeafe 0%, #3b82f6 45%, #1d4ed8 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .glow-gold {
-  box-shadow: 0 0 0 1px rgba(245, 166, 35, 0.25), 0 8px 30px -8px rgba(245, 166, 35, 0.45);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3), 0 8px 30px -8px rgba(59, 130, 246, 0.5);
 }
 
 .glow-gold-lg {
-  box-shadow: 0 0 0 1px rgba(245, 166, 35, 0.3), 0 20px 60px -12px rgba(245, 166, 35, 0.55);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.35), 0 20px 60px -12px rgba(59, 130, 246, 0.6);
 }
 
 .bg-grid-pattern {
   background-image:
-    linear-gradient(rgba(245, 166, 35, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245, 166, 35, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
   background-size: 40px 40px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black, transparent);
 }
@@ -118,6 +118,6 @@ body {
   height: 6px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: rgba(245, 166, 35, 0.35);
+  background-color: rgba(59, 130, 246, 0.4);
   border-radius: 999px;
 }

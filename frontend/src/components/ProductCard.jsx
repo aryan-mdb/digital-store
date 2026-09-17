@@ -47,7 +47,7 @@ export default function ProductCard({ product }) {
         <div
           className="pointer-events-none absolute inset-0 z-10 opacity-70 transition-opacity"
           style={{
-            background: `radial-gradient(320px circle at ${glow.x}% ${glow.y}%, rgba(245,166,35,0.16), transparent 60%)`,
+            background: `radial-gradient(320px circle at ${glow.x}% ${glow.y}%, rgba(59,130,246,0.18), transparent 60%)`,
           }}
         />
       )}
