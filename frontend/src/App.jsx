@@ -10,6 +10,7 @@ import HomePage from './pages/public/HomePage'
 import ProductsPage from './pages/public/ProductsPage'
 import ProductDetailsPage from './pages/public/ProductDetailsPage'
 import CategoriesPage from './pages/public/CategoriesPage'
+import GamingPage from './pages/public/GamingPage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 
@@ -49,6 +50,7 @@ function App() {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:slug" element={<ProductDetailsPage />} />
         <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/gaming" element={<GamingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
