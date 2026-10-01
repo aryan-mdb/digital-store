@@ -171,6 +171,61 @@ class CheckoutAndTrackingTest extends TestCase
         $this->get("/media/sliders/{$id}/image")->assertOk();
     }
 
+    public function test_admin_can_save_razorpay_keys_when_env_has_none(): void
+    {
+        config(['services.razorpay.key_id' => null, 'services.razorpay.key_secret' => null]);
+        $this->getJson('/api/site-settings')->assertJsonPath('data.payment_methods.razorpay', false);
+
+        // Fake Razorpay: only the "right-secret" key pair authenticates.
+        Http::fake(function ($request) {
+            if ($request->header('Authorization')[0] !== 'Basic '.base64_encode('rzp_test_abc123:right-secret')) {
+                return Http::response(['error' => ['description' => 'Authentication failed']], 401);
+            }
+
+            return $request->method() === 'POST'
+                ? Http::response(['id' => 'order_DB1'], 200)
+                : Http::response(['items' => []], 200);
+        });
+
+        $this->actingAs($this->admin)
+            ->putJson('/api/admin/settings/razorpay', ['key_id' => 'rzp_test_abc123', 'key_secret' => 'wrong'])
+            ->assertStatus(422);
+        $this->getJson('/api/site-settings')->assertJsonPath('data.payment_methods.razorpay', false);
+
+        $this->actingAs($this->admin)
+            ->putJson('/api/admin/settings/razorpay', ['key_id' => 'rzp_test_abc123', 'key_secret' => 'right-secret'])
+            ->assertOk()
+            ->assertJsonPath('data.razorpay_configured', true)
+            ->assertJsonMissingPath('data.razorpay_key_secret');
+
+        // Secret is stored encrypted, never in plain text.
+        $this->assertNotSame('right-secret', Setting::get('razorpay_key_secret'));
+
+        $this->getJson('/api/site-settings')
+            ->assertJsonPath('data.payment_methods.razorpay', true)
+            ->assertJsonPath('data.razorpay_key_id', 'rzp_test_abc123');
+
+        // And the stored secret is what creates and verifies checkout payments.
+        $orderId = $this->actingAs($this->buyer)->postJson('/api/orders', [
+            'product_id' => $this->product->id,
+            'payment_method' => 'razorpay',
+            'shipping' => $this->shipping,
+        ])->json('data.id');
+        $this->actingAs($this->buyer)->postJson("/api/payments/razorpay/{$orderId}")->assertOk();
+        $this->actingAs($this->buyer)->postJson("/api/payments/razorpay/{$orderId}/verify", [
+            'razorpay_order_id' => 'order_DB1',
+            'razorpay_payment_id' => 'pay_9',
+            'razorpay_signature' => hash_hmac('sha256', 'order_DB1|pay_9', 'right-secret'),
+        ])->assertOk()->assertJsonPath('data.payment_status', 'paid');
+    }
+
+    public function test_ten_digit_whatsapp_number_gets_india_code(): void
+    {
+        Setting::set('whatsapp_number', '7973968515');
+
+        $this->getJson('/api/site-settings')->assertJsonPath('data.whatsapp.number', '917973968515');
+    }
+
     public function test_whatsapp_settings_are_public_only_when_number_set(): void
     {
         $this->getJson('/api/site-settings')->assertJsonPath('data.whatsapp.enabled', false);

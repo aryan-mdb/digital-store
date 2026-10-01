@@ -114,4 +114,5 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
 
     Route::get('/settings/store', [AdminStoreSettingController::class, 'show']);
     Route::put('/settings/store', [AdminStoreSettingController::class, 'update']);
+    Route::put('/settings/razorpay', [AdminStoreSettingController::class, 'updateRazorpayKeys']);
 });

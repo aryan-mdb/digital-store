@@ -34,6 +34,7 @@ export const adminService = {
   storeSettings: {
     get: () => api.get('/admin/settings/store').then((r) => r.data),
     update: (payload) => api.put('/admin/settings/store', payload).then((r) => r.data),
+    saveRazorpayKeys: (payload) => api.put('/admin/settings/razorpay', payload).then((r) => r.data),
   },
 
   payments: {

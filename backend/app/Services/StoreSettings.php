@@ -3,11 +3,16 @@
 namespace App\Services;
 
 use App\Models\Setting;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 
 /**
  * Admin-editable storefront settings: which payment methods are offered
- * at checkout and the WhatsApp contact details. Razorpay's *secret* is
- * deliberately kept in .env only — never stored in or returned from the DB.
+ * at checkout, Razorpay API keys and the WhatsApp contact details.
+ *
+ * Razorpay keys come from .env when set there (RAZORPAY_KEY_ID /
+ * RAZORPAY_KEY_SECRET); otherwise from the admin panel, where the secret
+ * is stored encrypted with APP_KEY and is never sent back to the browser.
  */
 class StoreSettings
 {
@@ -33,10 +38,43 @@ class StoreSettings
 
     public function razorpayConfigured(): bool
     {
+        return filled($this->razorpayKeyId()) && filled($this->razorpayKeySecret());
+    }
+
+    public function razorpayKeysFromEnv(): bool
+    {
         return filled(config('services.razorpay.key_id')) && filled(config('services.razorpay.key_secret'));
     }
 
-    /** Full settings for the admin panel. */
+    public function razorpayKeyId(): ?string
+    {
+        if ($this->razorpayKeysFromEnv()) {
+            return config('services.razorpay.key_id');
+        }
+
+        return Setting::get('razorpay_key_id') ?: null;
+    }
+
+    public function razorpayKeySecret(): ?string
+    {
+        if ($this->razorpayKeysFromEnv()) {
+            return config('services.razorpay.key_secret');
+        }
+
+        $encrypted = Setting::get('razorpay_key_secret');
+
+        if (! $encrypted) {
+            return null;
+        }
+
+        try {
+            return Crypt::decryptString($encrypted);
+        } catch (DecryptException) {
+            return null; // APP_KEY rotated — the admin needs to re-enter the secret
+        }
+    }
+
+    /** Full settings for the admin panel. Never includes the secret itself. */
     public function adminSettings(): array
     {
         return [
@@ -44,6 +82,8 @@ class StoreSettings
                 ->mapWithKeys(fn ($m) => [$m => $this->bool("payment_{$m}_enabled")])
                 ->all(),
             'razorpay_configured' => $this->razorpayConfigured(),
+            'razorpay_keys_from_env' => $this->razorpayKeysFromEnv(),
+            'razorpay_key_id' => $this->razorpayKeyId(),
             'whatsapp_enabled' => $this->bool('whatsapp_enabled'),
             'whatsapp_number' => $this->get('whatsapp_number'),
             'whatsapp_message' => $this->get('whatsapp_message'),
@@ -53,13 +93,13 @@ class StoreSettings
     /** What the storefront needs — only methods that will actually work. */
     public function publicSettings(): array
     {
-        $number = preg_replace('/\D+/', '', $this->get('whatsapp_number'));
+        $number = $this->whatsappDigits();
 
         return [
             'payment_methods' => collect(self::PAYMENT_METHODS)
                 ->mapWithKeys(fn ($m) => [$m => $this->isMethodEnabled($m)])
                 ->all(),
-            'razorpay_key_id' => $this->isMethodEnabled('razorpay') ? config('services.razorpay.key_id') : null,
+            'razorpay_key_id' => $this->isMethodEnabled('razorpay') ? $this->razorpayKeyId() : null,
             'whatsapp' => [
                 'enabled' => $this->bool('whatsapp_enabled') && $number !== '',
                 'number' => $number,
@@ -85,6 +125,24 @@ class StoreSettings
                 Setting::set($key, $data[$key] ?? '');
             }
         }
+    }
+
+    public function saveRazorpayKeys(string $keyId, string $keySecret): void
+    {
+        Setting::set('razorpay_key_id', $keyId);
+        Setting::set('razorpay_key_secret', Crypt::encryptString($keySecret));
+    }
+
+    /**
+     * wa.me needs the country code. A bare 10-digit Indian mobile number
+     * (as most admins type it) gets +91 prepended.
+     */
+    private function whatsappDigits(): string
+    {
+        $digits = preg_replace('/\D+/', '', $this->get('whatsapp_number'));
+        $digits = ltrim($digits, '0');
+
+        return strlen($digits) === 10 ? '91'.$digits : $digits;
     }
 
     private function get(string $key): string

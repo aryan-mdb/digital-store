@@ -3,6 +3,7 @@
 namespace App\Services\Payment;
 
 use App\Models\Order;
+use App\Services\StoreSettings;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
@@ -13,6 +14,10 @@ use RuntimeException;
 class RazorpayService
 {
     private const API_BASE = 'https://api.razorpay.com/v1';
+
+    public function __construct(private readonly StoreSettings $settings)
+    {
+    }
 
     /**
      * Creates (once) the Razorpay order backing our order and returns its id.
@@ -69,13 +74,27 @@ class RazorpayService
         return hash_equals(hash_hmac('sha256', $payload, $secret), $signature);
     }
 
+    /**
+     * Checks a key pair against Razorpay before the admin saves it, so a
+     * typo shows up in Settings instead of at a customer's checkout.
+     */
+    public function credentialsAreValid(string $keyId, string $keySecret): bool
+    {
+        $response = Http::withBasicAuth($keyId, $keySecret)
+            ->acceptJson()
+            ->timeout(15)
+            ->get(self::API_BASE.'/orders', ['count' => 1]);
+
+        return $response->successful();
+    }
+
     public function keyId(): string
     {
-        return (string) config('services.razorpay.key_id');
+        return (string) $this->settings->razorpayKeyId();
     }
 
     private function keySecret(): string
     {
-        return (string) config('services.razorpay.key_secret');
+        return (string) $this->settings->razorpayKeySecret();
     }
 }

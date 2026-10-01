@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Concerns\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Services\Payment\RazorpayService;
 use App\Services\StoreSettings;
 use Illuminate\Http\Request;
 
@@ -45,5 +46,37 @@ class StoreSettingController extends Controller
         }
 
         return $this->success($updated, 'Store settings updated successfully');
+    }
+
+    /**
+     * Save Razorpay API keys from the admin panel (used when they are not
+     * set in the server's .env). Keys are verified with Razorpay first.
+     */
+    public function updateRazorpayKeys(Request $request, RazorpayService $razorpay)
+    {
+        $data = $request->validate([
+            'key_id' => ['required', 'string', 'regex:/^rzp_(test|live)_[A-Za-z0-9]+$/'],
+            'key_secret' => ['required', 'string', 'max:100'],
+        ], [
+            'key_id.regex' => 'The Key ID should look like rzp_test_xxxx or rzp_live_xxxx.',
+        ]);
+
+        $keyId = trim($data['key_id']);
+        $keySecret = trim($data['key_secret']);
+
+        if (! $razorpay->credentialsAreValid($keyId, $keySecret)) {
+            return $this->error('Razorpay rejected these keys. Please copy the Key ID and Key Secret again from your Razorpay dashboard.', [
+                'key_secret' => ['Razorpay rejected these keys.'],
+            ], 422);
+        }
+
+        $this->settings->saveRazorpayKeys($keyId, $keySecret);
+
+        return $this->success(
+            $this->settings->adminSettings(),
+            str_starts_with($keyId, 'rzp_test_')
+                ? 'Razorpay connected in TEST mode — no real money will be charged.'
+                : 'Razorpay connected in LIVE mode.'
+        );
     }
 }

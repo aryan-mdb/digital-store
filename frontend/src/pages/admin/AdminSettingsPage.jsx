@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { AlertTriangle, Banknote, Bitcoin, CreditCard, Gift, MessageCircle } from 'lucide-react'
+import { AlertTriangle, Banknote, Bitcoin, CheckCircle2, CreditCard, Gift, MessageCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import Badge from '../../components/ui/Badge'
@@ -123,11 +123,15 @@ export default function AdminSettingsPage() {
               checked={store.payment_methods.razorpay}
               disabled={savingStore}
               onChange={(v) => saveStore({ payment_methods: { razorpay: v } })}
-              warning={
-                !store.razorpay_configured &&
-                'Razorpay keys are not set on the server (RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET in backend .env), so it stays hidden from customers.'
-              }
-            />
+            >
+              <RazorpayKeys
+                store={store}
+                onSaved={(data) => {
+                  setStore(data)
+                  refreshSiteSettings()
+                }}
+              />
+            </MethodRow>
             <MethodRow
               icon={Banknote}
               title="Cash on Delivery"
@@ -297,7 +301,90 @@ function Switch({ checked, onChange, disabled }) {
   )
 }
 
-function MethodRow({ icon: Icon, title, desc, checked, onChange, disabled, warning }) {
+function RazorpayKeys({ store, onSaved }) {
+  const [editing, setEditing] = useState(!store.razorpay_configured)
+  const [form, setForm] = useState({ key_id: store.razorpay_key_id || '', key_secret: '' })
+  const [saving, setSaving] = useState(false)
+
+  if (store.razorpay_keys_from_env) {
+    return (
+      <p className="mt-3 flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+        <CheckCircle2 className="h-3.5 w-3.5" /> Connected using keys from the server environment ({store.razorpay_key_id}).
+      </p>
+    )
+  }
+
+  const isTest = store.razorpay_key_id?.startsWith('rzp_test_')
+
+  if (!editing) {
+    return (
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+        <span className="flex items-center gap-2">
+          <CheckCircle2 className="h-3.5 w-3.5" /> Connected — {store.razorpay_key_id}
+          {isTest && <span className="rounded-full bg-amber-100 px-2 py-0.5 font-semibold text-amber-700">TEST MODE</span>}
+        </span>
+        <button type="button" className="font-semibold underline" onClick={() => setEditing(true)}>
+          Change keys
+        </button>
+      </div>
+    )
+  }
+
+  const submit = async (e) => {
+    e.preventDefault()
+    setSaving(true)
+    try {
+      const res = await adminService.storeSettings.saveRazorpayKeys(form)
+      toast.success(res.message)
+      setForm((f) => ({ ...f, key_secret: '' }))
+      setEditing(false)
+      onSaved(res.data)
+    } catch (error) {
+      toast.error(apiErrorMessage(error))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-3 space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+      <p className="flex items-start gap-2 text-xs text-amber-700">
+        <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+        Enter your Razorpay API keys (Razorpay Dashboard → Account &amp; Settings → API Keys). Razorpay appears at checkout
+        once they are saved.
+      </p>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <Input
+          label="Key ID"
+          required
+          placeholder="rzp_test_xxxxxxxx"
+          value={form.key_id}
+          onChange={(e) => setForm({ ...form, key_id: e.target.value })}
+        />
+        <Input
+          label="Key Secret"
+          type="password"
+          required
+          autoComplete="off"
+          value={form.key_secret}
+          onChange={(e) => setForm({ ...form, key_secret: e.target.value })}
+        />
+      </div>
+      <div className="flex gap-2">
+        <Button type="submit" size="sm" loading={saving}>
+          Verify &amp; Save Keys
+        </Button>
+        {store.razorpay_configured && (
+          <Button type="button" size="sm" variant="ghost" onClick={() => setEditing(false)}>
+            Cancel
+          </Button>
+        )}
+      </div>
+    </form>
+  )
+}
+
+function MethodRow({ icon: Icon, title, desc, checked, onChange, disabled, warning, children }) {
   return (
     <div className="p-4">
       <div className="flex items-center gap-4">
@@ -318,6 +405,7 @@ function MethodRow({ icon: Icon, title, desc, checked, onChange, disabled, warni
           <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {warning}
         </p>
       )}
+      {children}
     </div>
   )
 }
