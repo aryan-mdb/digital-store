@@ -1,4 +1,4 @@
-import { Award, Leaf, MapPin, ShieldCheck, Sparkles, Truck } from 'lucide-react'
+import { Award, Droplet, Flame, Hand, Leaf, MapPin, Milk, Sparkles, Sun } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import HeroSlider from '../../components/HeroSlider'
@@ -12,17 +12,25 @@ import { unwrapPaginated } from '../../utils/pagination'
 import { whatsappLink } from '../../utils/whatsapp'
 import usePageMeta from '../../hooks/usePageMeta'
 
+// The four roundels printed on the back of the jar.
 const PROMISES = [
-  { icon: Award, title: '100% Genuine', desc: 'Quality you can trust' },
-  { icon: Leaf, title: 'Natural & Pure', desc: 'Made with traditional care' },
-  { icon: ShieldCheck, title: 'Secure Payments', desc: 'Razorpay, COD & more' },
-  { icon: Truck, title: 'Live Tracking', desc: 'Doorstep delivery' },
+  { icon: Award, title: '100% Pure', desc: 'Cow ghee, nothing else' },
+  { icon: Leaf, title: 'Natural', desc: '& chemical free' },
+  { icon: Droplet, title: 'Rich Aroma', desc: '& homely taste' },
+  { icon: Flame, title: 'Traditional Care', desc: 'Slow-cooked in small batches' },
+]
+
+const PROCESS = [
+  { icon: Sun, title: 'Grass-fed desi cows', desc: 'Our cows graze freely in open village pastures.' },
+  { icon: Milk, title: 'Curd is set overnight', desc: 'Fresh milk is boiled and set into curd the natural way.' },
+  { icon: Hand, title: 'Hand-churned bilona', desc: 'Curd is churned by hand to gather pure makhan.' },
+  { icon: Flame, title: 'Slow-cooked to gold', desc: 'Makhan is simmered on a low flame into danedar ghee.' },
 ]
 
 export default function HomePage() {
   usePageMeta(
     null,
-    'Premium quality products with secure payments (Razorpay UPI, cards, Cash on Delivery) and live order tracking to your doorstep.'
+    'PAYAN Pure Cow Ghee — A2 desi cow ghee and hand-churned bilona ghee, natural and chemical free. Pay with UPI, cards or Cash on Delivery and track your order live.'
   )
   const { whatsapp } = useSiteSettings()
   const [products, setProducts] = useState([])
@@ -58,8 +66,8 @@ export default function HomePage() {
 
       {categories.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-          <SectionHeading eyebrow="Explore" title="Shop by Category" />
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <SectionHeading eyebrow="Explore" title="Shop by Category" subtitle="पवित्र स्वाद • शुद्धता का भरोसा" />
+          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {categories.map((category) => (
               <Link
                 key={category.id}
@@ -83,9 +91,32 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* How PAYAN ghee is made — mirrors the village illustration on the label */}
+      <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+        <SectionHeading
+          eyebrow="Made the traditional way"
+          title="From our village to your kitchen"
+          subtitle="The same bilona method our grandmothers used — no shortcuts, no chemicals."
+        />
+        <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {PROCESS.map((step, i) => (
+            <li key={step.title} className="card-label relative rounded-2xl p-6 text-center">
+              <span className="absolute left-4 top-3 font-display text-3xl font-extrabold text-brand-500/30">{i + 1}</span>
+              <div className="bg-gold-foil mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full p-[3px]">
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-maroon-ink">
+                  <step.icon className="h-7 w-7" strokeWidth={1.6} />
+                </div>
+              </div>
+              <p className="font-display text-lg font-bold text-slate-900">{step.title}</p>
+              <p className="mt-1 text-sm text-slate-500">{step.desc}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
       {products.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
-          <SectionHeading eyebrow="Fresh arrivals" title="Our Latest Products" />
+          <SectionHeading eyebrow="Pure · Natural · Traditional" title="Our Ghee Collection" />
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -96,7 +127,7 @@ export default function HomePage() {
               to="/products"
               className="inline-flex items-center gap-2 rounded-xl border-2 border-maroon-600 px-6 py-2.5 font-semibold text-maroon-ink transition hover:bg-maroon-600 hover:text-brand-100"
             >
-              View all products
+              View all ghee
             </Link>
           </div>
         </section>

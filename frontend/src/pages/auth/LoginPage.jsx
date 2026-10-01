@@ -9,7 +9,7 @@ import { Input } from '../../components/ui/Input'
 import usePageMeta from '../../hooks/usePageMeta'
 
 export default function LoginPage() {
-  usePageMeta('Login', 'Sign in to your DigitalMarketplace account.')
+  usePageMeta('Login', 'Sign in to your PAYAN account.')
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()

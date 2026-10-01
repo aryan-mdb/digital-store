@@ -16,7 +16,7 @@ const comingSoon = [{ icon: Trophy, title: 'Weekly Leaderboard', desc: 'Compete 
 export default function GamingPage() {
   usePageMeta(
     'Gaming Arcade',
-    'Play the daily spin wheel, test your knowledge in the quiz challenge, or race the clock in memory match — free mini-games on DigitalMarketplace.'
+    'Play the daily spin wheel, test your knowledge in the quiz challenge, or race the clock in memory match — free mini-games on PAYAN.'
   )
   const [active, setActive] = useState('spin')
   const ActiveGame = GAMES.find((g) => g.key === active)?.Component

@@ -1,7 +1,8 @@
-import { Mail, MapPin, ShieldCheck } from 'lucide-react'
+import { MapPin } from 'lucide-react'
 import { Link, Outlet } from 'react-router-dom'
 import PublicNavbar from '../components/layout/PublicNavbar'
 import WhatsAppButton, { WhatsAppIcon } from '../components/WhatsAppButton'
+import BrandLogo from '../components/ui/BrandLogo'
 import { useSiteSettings } from '../context/SiteSettingsContext'
 import { whatsappLink } from '../utils/whatsapp'
 
@@ -23,12 +24,11 @@ export default function PublicLayout() {
         <div className="ornament-band flip" />
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <p className="flex items-center gap-2 font-display text-2xl font-bold text-[#fdf3dc]">
-              <ShieldCheck className="h-6 w-6 text-brand-300" />
-              Digital<span className="text-foil-bright">Marketplace</span>
-            </p>
-            <p className="mt-3 max-w-sm text-sm text-[#f1dfb8]/80">
-              Purity you can taste, quality you can trust — delivered to your doorstep with live order tracking.
+            <BrandLogo onDark />
+            <p className="mt-3 font-display text-lg text-brand-200">पवित्र स्वाद • शुद्धता का भरोसा</p>
+            <p className="mt-2 max-w-sm text-sm text-[#f1dfb8]/80">
+              100% pure cow ghee, slow-cooked the traditional way from the milk of grass-fed desi cows — natural,
+              chemical free and full of rich aroma.
             </p>
             {payLabels.length > 0 && (
               <p className="mt-4 text-xs uppercase tracking-wider text-brand-300">We accept: {payLabels.join(' · ')}</p>
@@ -55,13 +55,12 @@ export default function PublicLayout() {
                   </a>
                 </li>
               )}
-              <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> support@digitalmarketplace.com</li>
               <li className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Delivering across India</li>
             </ul>
           </div>
         </div>
         <div className="border-t border-brand-300/15 py-4 text-center text-xs text-[#f1dfb8]/70">
-          © {new Date().getFullYear()} DigitalMarketplace. All rights reserved.
+          © {new Date().getFullYear()} PAYAN Pure Cow Ghee. All rights reserved.
         </div>
       </footer>
 

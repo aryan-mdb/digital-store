@@ -1,8 +1,9 @@
-import { Gamepad2, MapPin, LayoutDashboard, LogOut, Menu, ShieldCheck, User, X } from 'lucide-react'
+import { Gamepad2, MapPin, LayoutDashboard, LogOut, Menu, User, X } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import Button from '../ui/Button'
+import BrandLogo from '../ui/BrandLogo'
 import ThemeToggle from '../ui/ThemeToggle'
 
 const navLinkClass = ({ isActive }) =>
@@ -31,14 +32,11 @@ export default function PublicNavbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-surface-1/90 backdrop-blur-lg">
       <div className="bg-maroon-velvet px-4 py-1.5 text-center text-xs font-medium tracking-wide text-brand-100">
-        Pure quality · Secure payments · Live order tracking
+        पवित्र स्वाद • शुद्धता का भरोसा<span className="hidden sm:inline">  ·  100% Pure Cow Ghee  ·  Free doorstep delivery</span>
       </div>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold text-maroon-ink" onClick={closeMobile}>
-          <ShieldCheck className="h-7 w-7 text-brand-600" />
-          <span>
-            Digital<span className="text-gradient-gold">Marketplace</span>
-          </span>
+        <Link to="/" onClick={closeMobile} aria-label="PAYAN home">
+          <BrandLogo />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">

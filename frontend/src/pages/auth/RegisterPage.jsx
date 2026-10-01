@@ -9,7 +9,7 @@ import { Input } from '../../components/ui/Input'
 import usePageMeta from '../../hooks/usePageMeta'
 
 export default function RegisterPage() {
-  usePageMeta('Sign Up', 'Create a free DigitalMarketplace account and get instant access to premium digital products.')
+  usePageMeta('Sign Up', 'Create a free PAYAN account to order pure cow ghee and track your deliveries.')
   const { register } = useAuth()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -37,7 +37,7 @@ export default function RegisterPage() {
         <div className="mb-8 flex flex-col items-center gap-2 text-center">
           <ShieldCheck className="h-9 w-9 text-brand-500" />
           <h1 className="text-2xl font-bold text-slate-900">Create your account</h1>
-          <p className="text-sm text-slate-500">Buy digital products with crypto</p>
+          <p className="text-sm text-slate-500">Pure cow ghee, delivered to your door</p>
         </div>
 
         {referralCode && (

@@ -13,7 +13,7 @@ import usePageMeta from '../../hooks/usePageMeta'
 export default function ProductsPage() {
   usePageMeta(
     'Shop All Products',
-    'Browse premium software, templates, ebooks, courses and graphics — instant download after a secure cryptocurrency payment.'
+    'Shop PAYAN pure cow ghee — A2 desi ghee, hand-churned bilona ghee and gift packs. Pay online or Cash on Delivery.'
   )
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])

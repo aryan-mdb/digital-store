@@ -3,29 +3,29 @@ import { useState } from 'react'
 
 const QUESTIONS = [
   {
-    q: 'What do you need to buy a product on DigitalMarketplace?',
-    options: ['A credit card', 'Cryptocurrency', 'A gift card', 'Cash on delivery'],
-    answer: 1,
-  },
-  {
-    q: 'Which of these is NOT a product category on the site?',
-    options: ['Software', 'Ebooks', 'Furniture', 'Graphics'],
-    answer: 2,
-  },
-  {
-    q: 'When is a digital product unlocked for download?',
+    q: 'What is the traditional "bilona" method of making ghee?',
     options: [
-      'Immediately after adding to cart',
-      'After the payment is confirmed',
-      'Only after emailing support',
-      'Never — it ships physically',
+      'Boiling milk directly',
+      'Churning curd by hand to get makhan, then slow-cooking it',
+      'Mixing oil with butter',
+      'Using a machine to separate cream',
     ],
     answer: 1,
   },
   {
-    q: 'Which cryptocurrency is commonly used for payments?',
-    options: ['USDT', 'Monopoly money', 'Airline miles', 'Gift points'],
+    q: 'PAYAN ghee is made from the milk of which cows?',
+    options: ['Desi cows', 'Buffaloes', 'Goats', 'Camels'],
     answer: 0,
+  },
+  {
+    q: 'Which of these is NOT a way to pay at PAYAN?',
+    options: ['UPI via Razorpay', 'Cash on Delivery', 'Debit / credit card', 'Cheque by post'],
+    answer: 3,
+  },
+  {
+    q: 'What does a good desi ghee look like when it sets?',
+    options: ['Thin and watery', 'Grainy (danedar) and golden', 'Bright white', 'Green'],
+    answer: 1,
   },
   {
     q: 'What can you use your wallet balance for?',

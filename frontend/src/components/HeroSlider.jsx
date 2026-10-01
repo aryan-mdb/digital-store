@@ -156,7 +156,7 @@ function ImageSlide({ slide, isActive }) {
       <img
         src={slide.image_url}
         alt={slide.title || 'Banner'}
-        className={clsx('h-full w-full object-cover', isActive && 'animate-ken-burns')}
+        className={clsx('h-full w-full object-cover object-[76%_center] sm:object-center', isActive && 'animate-ken-burns')}
       />
       {hasText && (
         <>
@@ -294,11 +294,11 @@ function buildDefaultSlides({ payment_methods: methods = {}, whatsapp = {} }) {
   const slides = [
     {
       id: 'd-tradition',
-      eyebrow: 'Pure · Trusted · Traditional',
-      title: 'Crafted with tradition,',
-      highlight: 'delivered with care',
-      subtitle: 'Hand-picked quality products, packed with love and shipped straight to your doorstep.',
-      button_text: 'Shop Now',
+      eyebrow: 'पवित्र स्वाद • शुद्धता का भरोसा',
+      title: 'PAYAN',
+      highlight: 'Pure Cow Ghee',
+      subtitle: 'Hand-churned the bilona way from the milk of grass-fed desi cows — golden, granular and full of aroma.',
+      button_text: 'Shop Ghee',
       button_link: '/products',
       icon: Sparkles,
     },

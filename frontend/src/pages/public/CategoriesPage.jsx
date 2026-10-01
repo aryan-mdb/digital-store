@@ -38,7 +38,7 @@ function CategoryCard({ category }) {
 export default function CategoriesPage() {
   usePageMeta(
     'Browse Categories',
-    'Explore digital products by category — software, templates, ebooks, courses and graphics.'
+    'Explore PAYAN ghee by category — A2 desi cow ghee, bilona ghee, pooja ghee and gift packs.'
   )
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)

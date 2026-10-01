@@ -3,21 +3,19 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database with a default admin, 5 basic users,
-     * 5 categories and 15 digital products (3 per category).
+     * Seed the default admin, the PAYAN ghee catalog and (on a fresh
+     * database) 5 demo basic users.
      */
     public function run(): void
     {
-        $admin = User::updateOrCreate(
+        User::updateOrCreate(
             ['email' => (string) env('ADMIN_EMAIL', 'admin@example.com')],
             [
                 'name' => (string) env('ADMIN_NAME', 'Super Admin'),
@@ -28,32 +26,12 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        if (Category::query()->exists()) {
-            return;
-        }
+        $isFreshDatabase = ! Category::query()->exists();
 
-        User::factory(5)->create();
+        $this->call(GheeCatalogSeeder::class);
 
-        $categories = [
-            'Software' => 'Apps, plugins and developer tools ready to download.',
-            'Templates' => 'Website, presentation and document templates.',
-            'Ebooks' => 'Guides and ebooks on a range of topics.',
-            'Courses' => 'Self-paced video and text courses.',
-            'Graphics' => 'Icon packs, UI kits and design assets.',
-        ];
-
-        foreach ($categories as $name => $description) {
-            $category = Category::create([
-                'name' => $name,
-                'slug' => Str::slug($name),
-                'description' => $description,
-                'status' => Category::STATUS_ACTIVE,
-            ]);
-
-            Product::factory(3)->create([
-                'category_id' => $category->id,
-                'created_by' => $admin->id,
-            ]);
+        if ($isFreshDatabase) {
+            User::factory(5)->create();
         }
     }
 }
