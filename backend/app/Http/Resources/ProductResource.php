@@ -26,7 +26,8 @@ class ProductResource extends JsonResource
             'created_by' => $this->creator?->name,
             'is_purchased' => $this->when(
                 $user !== null,
-                fn () => $this->isPurchasedBy($user)
+                // Only digital (downloadable) products are "owned" — physical ones can be re-ordered.
+                fn () => $this->product_file && $this->isPurchasedBy($user)
             ),
             'sales_count' => $this->when(isset($this->order_items_count), $this->order_items_count),
             'created_at' => $this->created_at,

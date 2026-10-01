@@ -60,7 +60,7 @@ export default function MemoryGame() {
     return (
       <div className="flex flex-col items-center gap-4 py-6 text-center">
         <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-brand-500/50 bg-brand-500/10">
-          <Trophy className="h-10 w-10 text-brand-400" />
+          <Trophy className="h-10 w-10 text-brand-600" />
         </div>
         <h3 className="text-2xl font-bold text-slate-900">Matched in {moves} moves!</h3>
         <p className="text-slate-500">Great memory — give it another shuffle?</p>
@@ -102,7 +102,7 @@ export default function MemoryGame() {
               }`}
             >
               {isFlipped ? (
-                <Icon className={`h-6 w-6 sm:h-7 sm:w-7 ${isMatched ? 'text-emerald-400' : 'text-brand-400'}`} />
+                <Icon className={`h-6 w-6 sm:h-7 sm:w-7 ${isMatched ? 'text-emerald-400' : 'text-brand-600'}`} />
               ) : (
                 <span className="h-2 w-2 rounded-full bg-slate-300" />
               )}

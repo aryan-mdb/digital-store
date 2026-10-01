@@ -1,17 +1,30 @@
-import { Bitcoin, Gamepad2, ShieldCheck, Sparkles, Zap } from 'lucide-react'
+import { Award, Leaf, MapPin, ShieldCheck, Sparkles, Truck } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import HeroSlider from '../../components/HeroSlider'
 import ProductCard from '../../components/ProductCard'
+import { WhatsAppIcon } from '../../components/WhatsAppButton'
+import SectionHeading from '../../components/ui/SectionHeading'
+import { useSiteSettings } from '../../context/SiteSettingsContext'
 import { productService } from '../../services/productService'
 import { categoryService } from '../../services/categoryService'
 import { unwrapPaginated } from '../../utils/pagination'
+import { whatsappLink } from '../../utils/whatsapp'
 import usePageMeta from '../../hooks/usePageMeta'
+
+const PROMISES = [
+  { icon: Award, title: '100% Genuine', desc: 'Quality you can trust' },
+  { icon: Leaf, title: 'Natural & Pure', desc: 'Made with traditional care' },
+  { icon: ShieldCheck, title: 'Secure Payments', desc: 'Razorpay, COD & more' },
+  { icon: Truck, title: 'Live Tracking', desc: 'Doorstep delivery' },
+]
 
 export default function HomePage() {
   usePageMeta(
     null,
-    'Premium software, templates, ebooks, courses and graphics — instant download after a secure cryptocurrency payment. Plus daily spin-the-wheel and quiz mini-games.'
+    'Premium quality products with secure payments (Razorpay UPI, cards, Cash on Delivery) and live order tracking to your doorstep.'
   )
+  const { whatsapp } = useSiteSettings()
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
 
@@ -26,59 +39,43 @@ export default function HomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden border-b border-slate-200 px-4 py-20 text-center sm:px-6 sm:py-28">
-        <div className="bg-grid-pattern pointer-events-none absolute inset-0" />
-        <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-brand-500/20 blur-3xl" />
+      <HeroSlider />
 
-        <div className="relative">
-          <span className="mx-auto mb-5 inline-flex items-center gap-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-300">
-            <Sparkles className="h-3.5 w-3.5" /> Level up your downloads
-          </span>
-
-          <h1 className="mx-auto max-w-3xl text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl">
-            Premium digital loot,
-            <br />
-            paid for in <span className="text-gradient-gold">crypto</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-xl text-base text-slate-400 sm:text-lg">
-            Software, templates, ebooks, courses and graphics — instant download after a secure
-            cryptocurrency payment.
-          </p>
-          <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link
-              to="/products"
-              className="glow-gold relative overflow-hidden rounded-xl bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 px-6 py-3 font-bold text-white transition hover:brightness-110"
-            >
-              <span className="animate-shimmer absolute inset-0" />
-              <span className="relative">Browse Products</span>
-            </Link>
-            <Link
-              to="/gaming"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-brand-500/40 bg-slate-100 px-6 py-3 font-semibold text-brand-600 hover:bg-slate-200"
-            >
-              <Gamepad2 className="h-5 w-5" /> Spin & Win
-            </Link>
-          </div>
-
-          <div className="mx-auto mt-14 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-3">
-            <Feature icon={Bitcoin} title="Crypto only" desc="Pay securely with BTC, ETH, USDC and more." />
-            <Feature icon={Zap} title="Instant delivery" desc="Download the moment payment is confirmed." />
-            <Feature icon={ShieldCheck} title="Verified on-chain" desc="Payments verified server-side, never trusted from the browser." />
-          </div>
+      {/* Promise strip — echoes the four icon roundels on the label */}
+      <section className="relative z-10 mx-auto -mt-2 max-w-6xl px-4 pt-10 sm:px-6">
+        <div className="card-label grid grid-cols-2 gap-y-6 rounded-2xl px-4 py-6 sm:grid-cols-4">
+          {PROMISES.map((p) => (
+            <div key={p.title} className="flex flex-col items-center gap-2 px-2 text-center">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-maroon-600/70 text-maroon-ink">
+                <p.icon className="h-6 w-6" strokeWidth={1.6} />
+              </div>
+              <p className="text-sm font-bold uppercase tracking-wide text-slate-900">{p.title}</p>
+              <p className="text-xs text-slate-500">{p.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {categories.length > 0 && (
-        <section className="px-4 py-12 sm:px-6">
-          <h2 className="mb-5 text-xl font-bold text-slate-900">Shop by Category</h2>
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+          <SectionHeading eyebrow="Explore" title="Shop by Category" />
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 to={`/products?category_id=${category.id}`}
-                className="group rounded-xl border border-slate-200 bg-surface-1 p-4 text-center shadow-sm transition hover:border-brand-500/40 hover:shadow-md"
+                className="group flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-brand-400 hover:shadow-lg"
               >
-                <p className="font-medium text-slate-900 group-hover:text-brand-300">{category.name}</p>
+                <div className="bg-gold-foil mb-3 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full p-[3px]">
+                  <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-white">
+                    {category.image_url ? (
+                      <img src={category.image_url} alt="" className="h-full w-full object-cover" />
+                    ) : (
+                      <Sparkles className="h-6 w-6 text-brand-600" />
+                    )}
+                  </div>
+                </div>
+                <p className="font-semibold text-slate-900 group-hover:text-brand-600">{category.name}</p>
                 <p className="text-xs text-slate-500">{category.products_count ?? 0} products</p>
               </Link>
             ))}
@@ -87,27 +84,71 @@ export default function HomePage() {
       )}
 
       {products.length > 0 && (
-        <section className="px-4 py-12 sm:px-6">
-          <h2 className="mb-5 text-xl font-bold text-slate-900">Latest Products</h2>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
+          <SectionHeading eyebrow="Fresh arrivals" title="Our Latest Products" />
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+          <div className="mt-10 text-center">
+            <Link
+              to="/products"
+              className="inline-flex items-center gap-2 rounded-xl border-2 border-maroon-600 px-6 py-2.5 font-semibold text-maroon-ink transition hover:bg-maroon-600 hover:text-brand-100"
+            >
+              View all products
+            </Link>
+          </div>
         </section>
       )}
-    </div>
-  )
-}
 
-function Feature({ icon: Icon, title, desc }) {
-  return (
-    <div className="flex flex-col items-center gap-2 text-center">
-      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-500/15 text-brand-400">
-        <Icon className="h-5 w-5" />
-      </div>
-      <p className="font-medium text-slate-900">{title}</p>
-      <p className="text-sm text-slate-500">{desc}</p>
+      {/* Tracking + WhatsApp band */}
+      <section className="bg-maroon-velvet relative overflow-hidden">
+        <div className="ornament-band flip" />
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-4 py-14 sm:px-6 md:grid-cols-2">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-300">Always in the loop</p>
+            <h2 className="mt-2 text-3xl font-bold text-[#fdf3dc] sm:text-4xl">
+              Track your order <span className="text-foil-bright">live</span>
+            </h2>
+            <p className="mt-3 max-w-md text-[#f1dfb8]/85">
+              From packing to your doorstep — see every step and the current location on the map, any time.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                to="/track"
+                className="inline-flex items-center gap-2 rounded-xl bg-gold-foil px-5 py-2.5 font-bold text-maroon-900 transition hover:brightness-105"
+              >
+                <MapPin className="h-4 w-4" /> Track Order
+              </Link>
+              {whatsapp?.enabled && (
+                <a
+                  href={whatsappLink(whatsapp.number, whatsapp.message)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-2.5 font-semibold text-white transition hover:bg-[#1ebe5b]"
+                >
+                  <WhatsAppIcon className="h-5 w-5" /> Chat on WhatsApp
+                </a>
+              )}
+            </div>
+          </div>
+          <ol className="space-y-3">
+            {['Order placed', 'Packed with care', 'Shipped & on the way', 'Delivered to your door'].map((step, i) => (
+              <li
+                key={step}
+                className="flex items-center gap-4 rounded-xl border border-brand-300/20 bg-black/15 px-4 py-3 text-[#fdf3dc] backdrop-blur"
+              >
+                <span className="bg-gold-foil flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-display font-bold text-maroon-900">
+                  {i + 1}
+                </span>
+                <span className="font-medium">{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="ornament-band" />
+      </section>
     </div>
   )
 }

@@ -4,9 +4,9 @@ const ThemeContext = createContext(null)
 const STORAGE_KEY = 'theme'
 
 function getInitialTheme() {
-  if (typeof window === 'undefined') return 'dark'
+  if (typeof window === 'undefined') return 'light'
   const stored = window.localStorage.getItem(STORAGE_KEY)
-  return stored === 'light' || stored === 'dark' ? stored : 'dark'
+  return stored === 'light' || stored === 'dark' ? stored : 'light'
 }
 
 export function ThemeProvider({ children }) {

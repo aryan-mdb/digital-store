@@ -91,11 +91,6 @@ export default function AdminProductsPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!editing && !form.product_file) {
-      toast.error('A downloadable file is required')
-      return
-    }
-
     setSaving(true)
     try {
       const payload = new FormData()
@@ -297,9 +292,8 @@ export default function AdminProductsPage() {
             onChange={(e) => setForm({ ...form, thumbnail: e.target.files[0] })}
           />
           <Input
-            label={editing ? 'Downloadable File (leave blank to keep current)' : 'Downloadable File'}
+            label={editing ? 'Downloadable File (leave blank to keep current)' : 'Downloadable File (optional — leave blank for physical products)'}
             type="file"
-            required={!editing}
             onChange={(e) => setForm({ ...form, product_file: e.target.files[0] })}
           />
         </form>

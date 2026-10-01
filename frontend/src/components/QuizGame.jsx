@@ -90,7 +90,7 @@ export default function QuizGame() {
     return (
       <div className="flex flex-col items-center gap-4 py-6 text-center">
         <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-brand-500/50 bg-brand-500/10">
-          <Award className="h-10 w-10 text-brand-400" />
+          <Award className="h-10 w-10 text-brand-600" />
         </div>
         <h3 className="text-2xl font-bold text-slate-900">
           {score} / {QUESTIONS.length} correct

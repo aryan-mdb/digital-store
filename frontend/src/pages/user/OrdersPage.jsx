@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Badge from '../../components/ui/Badge'
+import Badge, { PAYMENT_METHOD_LABELS } from '../../components/ui/Badge'
 import Button from '../../components/ui/Button'
 import EmptyState from '../../components/ui/EmptyState'
 import FullPageSpinner from '../../components/ui/FullPageSpinner'
@@ -34,18 +34,23 @@ export default function OrdersPage() {
           <EmptyState title="No orders yet" />
         ) : (
           <>
-            <Table columns={['Order', 'Product', 'Amount', 'Status', 'Payment', 'Date', '']}>
+            <Table columns={['Order', 'Product', 'Amount', 'Payment', 'Delivery', 'Date', '']}>
               {orders.map((order) => (
                 <tr key={order.id} className="hover:bg-slate-50">
                   <td className="px-4 py-3 font-medium text-slate-900">{order.order_number}</td>
                   <td className="px-4 py-3 text-slate-600">{order.items?.[0]?.product_name}</td>
                   <td className="px-4 py-3 text-slate-700">{formatCurrency(order.total_amount, order.currency)}</td>
-                  <td className="px-4 py-3"><Badge status={order.status} /></td>
-                  <td className="px-4 py-3"><Badge status={order.payment_status} /></td>
+                  <td className="px-4 py-3">
+                    <Badge status={order.payment_status} />
+                    <p className="mt-1 text-xs text-slate-400">{PAYMENT_METHOD_LABELS[order.payment_method] || ''}</p>
+                  </td>
+                  <td className="px-4 py-3">
+                    {order.tracking?.status ? <Badge status={order.tracking.status} /> : <span className="text-xs text-slate-400">—</span>}
+                  </td>
                   <td className="px-4 py-3 text-slate-500">{formatDate(order.created_at)}</td>
                   <td className="px-4 py-3 text-right">
-                    {order.payment_status === 'pending' ? (
-                      <Link to={`/dashboard/payments/${order.id}`}>
+                    {order.payment_status === 'pending' && order.payment_method !== 'cod' ? (
+                      <Link to={order.payment_method === 'crypto' ? `/dashboard/payments/${order.id}` : `/dashboard/orders/${order.id}`}>
                         <Button size="sm">Pay Now</Button>
                       </Link>
                     ) : (

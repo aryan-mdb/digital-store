@@ -3,7 +3,9 @@ import { Loader2 } from 'lucide-react'
 
 const variants = {
   primary:
-    'bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 text-white font-semibold shadow-lg shadow-brand-900/30 hover:brightness-110 focus-visible:outline-brand-500',
+    'bg-gold-foil text-maroon-900 font-bold shadow-md shadow-brand-900/25 hover:brightness-105 focus-visible:outline-brand-500',
+  maroon: 'bg-maroon-600 text-brand-100 font-semibold shadow-md shadow-maroon-900/30 hover:bg-maroon-700 focus-visible:outline-maroon-500',
+  whatsapp: 'bg-[#25D366] text-white font-semibold hover:bg-[#1ebe5b] focus-visible:outline-[#25D366]',
   secondary: 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50',
   danger: 'bg-red-600 text-white hover:bg-red-700',
   ghost: 'bg-transparent text-slate-600 hover:bg-slate-100',

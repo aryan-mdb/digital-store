@@ -1,5 +1,6 @@
 import {
   FolderTree,
+  Images,
   LayoutDashboard,
   Package,
   Receipt,
@@ -20,6 +21,7 @@ const sections = [
     items: [
       { to: '/admin/categories', label: 'Categories', icon: FolderTree },
       { to: '/admin/products', label: 'Products', icon: Package },
+      { to: '/admin/sliders', label: 'Sliders', icon: Images },
     ],
   },
   {

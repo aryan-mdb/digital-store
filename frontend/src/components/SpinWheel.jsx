@@ -3,14 +3,14 @@ import { Sparkles } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const SEGMENTS = [
-  { label: '5% OFF', color: '#3b82f6', text: '#ffffff' },
-  { label: 'Try Again', color: '#182030', text: '#7c8aa0' },
-  { label: '10% OFF', color: '#60a5fa', text: '#05070d' },
-  { label: 'Bonus Badge', color: '#202a3d', text: '#60a5fa' },
-  { label: '15% OFF', color: '#2563eb', text: '#ffffff' },
-  { label: 'Nothing', color: '#182030', text: '#7c8aa0' },
-  { label: '20% OFF', color: '#93c5fd', text: '#05070d' },
-  { label: 'Free Spin', color: '#202a3d', text: '#93c5fd' },
+  { label: '5% OFF', color: '#c4952a', text: '#33100b' },
+  { label: 'Try Again', color: '#4b150f', text: '#e8b8a4' },
+  { label: '10% OFF', color: '#e6c35c', text: '#33100b' },
+  { label: 'Bonus Badge', color: '#7a2318', text: '#f1da8c' },
+  { label: '15% OFF', color: '#a67a1e', text: '#fffaee' },
+  { label: 'Nothing', color: '#4b150f', text: '#e8b8a4' },
+  { label: '20% OFF', color: '#f1da8c', text: '#33100b' },
+  { label: 'Free Spin', color: '#7a2318', text: '#f1da8c' },
 ]
 
 const SEGMENT_ANGLE = 360 / SEGMENTS.length
@@ -83,7 +83,7 @@ export default function SpinWheel() {
     <div className="flex flex-col items-center gap-6">
       <div className="relative">
         <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/3">
-          <div className="h-6 w-6 rotate-180 border-x-[10px] border-b-[16px] border-x-transparent border-b-brand-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.7)]" />
+          <div className="h-6 w-6 rotate-180 border-x-[10px] border-b-[16px] border-x-transparent border-b-brand-400 drop-shadow-[0_0_6px_rgba(216,171,56,0.7)]" />
         </div>
 
         <div className="glow-gold-lg rounded-full border-4 border-brand-500/50 p-2">
@@ -116,7 +116,7 @@ export default function SpinWheel() {
         </div>
 
         <div className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-brand-400 bg-surface-0 shadow-lg">
-          <Sparkles className="h-6 w-6 text-brand-400" />
+          <Sparkles className="h-6 w-6 text-brand-600" />
         </div>
       </div>
 

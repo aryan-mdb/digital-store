@@ -82,7 +82,9 @@ class ProductController extends Controller
             $data = array_merge($data, $this->files->thumbnailDataFromUpload($request->file('thumbnail')));
         }
 
-        $data['product_file'] = $this->files->storeProductFile($request->file('product_file'));
+        if ($request->hasFile('product_file')) {
+            $data['product_file'] = $this->files->storeProductFile($request->file('product_file'));
+        }
 
         $product = Product::create($data);
 

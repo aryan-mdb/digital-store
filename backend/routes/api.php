@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Admin\DashboardController as AdminDashboardControll
 use App\Http\Controllers\Api\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Api\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Api\Admin\ReferralSettingController as AdminReferralSettingController;
+use App\Http\Controllers\Api\Admin\StoreSettingController as AdminStoreSettingController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CategoryController;
@@ -11,6 +12,9 @@ use App\Http\Controllers\Api\DownloadController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\RazorpayController;
+use App\Http\Controllers\Api\SiteSettingsController;
+use App\Http\Controllers\Api\SliderController;
 use App\Http\Controllers\Api\ReferralController;
 use App\Http\Controllers\Api\WalletController;
 use Illuminate\Support\Facades\Route;
@@ -28,8 +32,13 @@ Route::get('/categories/{category}', [CategoryController::class, 'show']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product:slug}', [ProductController::class, 'show']);
 
-// Provider webhook — authenticated by signature header, not Sanctum.
+Route::get('/site-settings', SiteSettingsController::class);
+Route::get('/sliders', [SliderController::class, 'index']);
+Route::post('/track-order', [OrderController::class, 'track'])->middleware('throttle:10,1');
+
+// Provider webhooks — authenticated by signature header, not Sanctum.
 Route::post('/payments/crypto/webhook', [PaymentController::class, 'webhook']);
+Route::post('/payments/razorpay/webhook', [RazorpayController::class, 'webhook']);
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +57,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/payments/crypto/{order}', [PaymentController::class, 'create'])->middleware('role:basic_user');
     Route::get('/payments/crypto/{payment}', [PaymentController::class, 'show']);
+
+    Route::post('/payments/razorpay/{order}', [RazorpayController::class, 'create'])->middleware('role:basic_user');
+    Route::post('/payments/razorpay/{order}/verify', [RazorpayController::class, 'verify'])->middleware('role:basic_user');
 
     Route::get('/downloads/{orderItem}', DownloadController::class);
 
@@ -77,6 +89,15 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
 
     Route::get('/orders', [AdminOrderController::class, 'index']);
     Route::get('/orders/{order}', [AdminOrderController::class, 'show']);
+    Route::post('/orders/{order}/tracking', [AdminOrderController::class, 'updateTracking']);
+    Route::post('/orders/{order}/location', [AdminOrderController::class, 'updateLocation']);
+    Route::patch('/orders/{order}/mark-cod-paid',[AdminOrderController::class, 'markCodPaid']);
+
+    Route::get('/sliders', [SliderController::class, 'adminIndex']);
+    Route::post('/sliders', [SliderController::class, 'store']);
+    Route::put('/sliders/{slider}', [SliderController::class, 'update']);
+    Route::patch('/sliders/{slider}/toggle-status', [SliderController::class, 'toggleStatus']);
+    Route::delete('/sliders/{slider}', [SliderController::class, 'destroy']);
 
     Route::get('/payments', [AdminPaymentController::class, 'index']);
     Route::get('/transactions', [AdminPaymentController::class, 'index']);
@@ -90,4 +111,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
 
     Route::get('/settings/referral', [AdminReferralSettingController::class, 'show']);
     Route::put('/settings/referral', [AdminReferralSettingController::class, 'update']);
+
+    Route::get('/settings/store', [AdminStoreSettingController::class, 'show']);
+    Route::put('/settings/store', [AdminStoreSettingController::class, 'update']);
 });

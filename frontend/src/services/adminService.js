@@ -14,6 +14,26 @@ export const adminService = {
   orders: {
     list: (params) => api.get('/admin/orders', { params }).then((r) => r.data),
     get: (id) => api.get(`/admin/orders/${id}`).then((r) => r.data),
+    updateTracking: (id, payload) => api.post(`/admin/orders/${id}/tracking`, payload).then((r) => r.data),
+    updateLocation: (id, payload) => api.post(`/admin/orders/${id}/location`, payload).then((r) => r.data),
+    markCodPaid: (id) => api.patch(`/admin/orders/${id}/mark-cod-paid`).then((r) => r.data),
+  },
+
+  sliders: {
+    list: () => api.get('/admin/sliders').then((r) => r.data),
+    create: (formData) =>
+      api.post('/admin/sliders', formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then((r) => r.data),
+    update: (id, formData) =>
+      api
+        .post(`/admin/sliders/${id}?_method=PUT`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+        .then((r) => r.data),
+    toggleStatus: (id) => api.patch(`/admin/sliders/${id}/toggle-status`).then((r) => r.data),
+    remove: (id) => api.delete(`/admin/sliders/${id}`).then((r) => r.data),
+  },
+
+  storeSettings: {
+    get: () => api.get('/admin/settings/store').then((r) => r.data),
+    update: (payload) => api.put('/admin/settings/store', payload).then((r) => r.data),
   },
 
   payments: {

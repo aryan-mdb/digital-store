@@ -3,13 +3,23 @@ import api from './api'
 export const orderService = {
   list: (params) => api.get('/orders', { params }).then((r) => r.data),
   get: (id) => api.get(`/orders/${id}`).then((r) => r.data),
-  create: (productId, useWallet = false) =>
-    api.post('/orders', { product_id: productId, use_wallet: useWallet }).then((r) => r.data),
+  /**
+   * @param {{ productId: number, useWallet?: boolean, paymentMethod?: 'razorpay'|'cod'|'crypto', shipping?: object }} args
+   */
+  create: ({ productId, useWallet = false, paymentMethod = 'crypto', shipping }) =>
+    api
+      .post('/orders', { product_id: productId, use_wallet: useWallet, payment_method: paymentMethod, shipping })
+      .then((r) => r.data),
 }
 
 export const paymentService = {
   create: (orderId) => api.post(`/payments/crypto/${orderId}`).then((r) => r.data),
   get: (paymentId) => api.get(`/payments/crypto/${paymentId}`).then((r) => r.data),
+}
+
+export const razorpayService = {
+  create: (orderId) => api.post(`/payments/razorpay/${orderId}`).then((r) => r.data),
+  verify: (orderId, payload) => api.post(`/payments/razorpay/${orderId}/verify`, payload).then((r) => r.data),
 }
 
 export const downloadService = {

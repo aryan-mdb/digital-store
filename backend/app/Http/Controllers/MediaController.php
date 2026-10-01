@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Slider;
 use Illuminate\Http\Response;
 
 /**
@@ -19,6 +20,16 @@ class MediaController extends Controller
 
         return response(base64_decode($product->thumbnail_data), 200, [
             'Content-Type' => $product->thumbnail_mime ?? 'application/octet-stream',
+            'Cache-Control' => 'public, max-age=31536000, immutable',
+        ]);
+    }
+
+    public function sliderImage(Slider $slider): Response
+    {
+        abort_if(! $slider->image_data, 404);
+
+        return response(base64_decode($slider->image_data), 200, [
+            'Content-Type' => $slider->image_mime ?? 'application/octet-stream',
             'Cache-Control' => 'public, max-age=31536000, immutable',
         ]);
     }

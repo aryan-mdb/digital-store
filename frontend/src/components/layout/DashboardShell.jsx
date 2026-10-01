@@ -23,8 +23,8 @@ export default function DashboardShell({ sections, brandLabel, children }) {
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-2 px-5 py-5 text-white">
-        <ShieldCheck className="h-6 w-6 text-brand-400" />
+      <div className="flex items-center gap-2 border-b border-brand-300/15 px-5 py-5 font-display text-lg text-[#fdf3dc]">
+        <ShieldCheck className="h-6 w-6 text-brand-300" />
         <span className="font-bold">{brandLabel}</span>
       </div>
 
@@ -32,7 +32,7 @@ export default function DashboardShell({ sections, brandLabel, children }) {
         {sections.map((section, idx) => (
           <div key={idx}>
             {section.title && (
-              <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-300/70">
                 {section.title}
               </p>
             )}
@@ -47,8 +47,8 @@ export default function DashboardShell({ sections, brandLabel, children }) {
                     clsx(
                       'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                       isActive
-                        ? 'bg-brand-500/15 text-brand-300'
-                        : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                        ? 'bg-gold-foil text-maroon-900 shadow-md shadow-black/20'
+                        : 'text-[#f1dfb8]/80 hover:bg-white/10 hover:text-[#fdf3dc]'
                     )
                   }
                 >
@@ -64,7 +64,7 @@ export default function DashboardShell({ sections, brandLabel, children }) {
       <div className="border-t border-white/10 px-3 py-4">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#f1dfb8]/80 hover:bg-white/10 hover:text-[#fdf3dc]"
         >
           <LogOut className="h-4 w-4" /> Logout
         </button>
@@ -74,11 +74,11 @@ export default function DashboardShell({ sections, brandLabel, children }) {
 
   return (
     <div className="flex min-h-screen bg-slate-50">
-      <aside className="hidden w-64 shrink-0 bg-slate-900 lg:block">{SidebarContent}</aside>
+      <aside className="bg-maroon-velvet sticky top-0 hidden h-screen w-64 shrink-0 lg:block">{SidebarContent}</aside>
 
       {mobileOpen && (
         <div className="fixed inset-0 z-50 flex lg:hidden">
-          <div className="w-64 bg-slate-900">{SidebarContent}</div>
+          <div className="bg-maroon-velvet w-64">{SidebarContent}</div>
           <div className="flex-1 bg-slate-900/50" onClick={() => setMobileOpen(false)} />
         </div>
       )}
@@ -95,7 +95,7 @@ export default function DashboardShell({ sections, brandLabel, children }) {
               <p className="text-sm font-medium text-slate-900">{user?.name}</p>
               <p className="text-xs capitalize text-slate-500">{user?.role?.replace('_', ' ')}</p>
             </div>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-700">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-foil text-sm font-bold text-maroon-900">
               {user?.name?.charAt(0).toUpperCase()}
             </div>
           </div>

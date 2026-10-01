@@ -22,14 +22,14 @@ function CategoryCard({ category }) {
           className="h-12 w-12 shrink-0 rounded-lg object-cover"
         />
       ) : (
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-brand-500/15 text-brand-600">
           <FolderOpen className="h-6 w-6" />
         </div>
       )}
       <div>
-        <h3 className="font-semibold text-slate-900 group-hover:text-brand-300">{category.name}</h3>
+        <h3 className="font-semibold text-slate-900 group-hover:text-brand-600">{category.name}</h3>
         <p className="mt-1 line-clamp-2 text-sm text-slate-500">{category.description}</p>
-        <p className="mt-2 text-xs font-medium text-brand-400">{category.products_count ?? 0} products</p>
+        <p className="mt-2 text-xs font-medium text-brand-600">{category.products_count ?? 0} products</p>
       </div>
     </Link>
   )

@@ -22,7 +22,7 @@ class StoreProductRequest extends FormRequest
             'currency' => ['nullable', 'string', 'max:10'],
             'status' => ['nullable', 'in:active,inactive'],
             'thumbnail' => ['nullable', 'image', 'max:20480'],
-            'product_file' => ['required', 'file', 'max:102400'],
+            'product_file' => ['nullable', 'file', 'max:102400'], // optional: physical products have no download,
         ];
     }
 }

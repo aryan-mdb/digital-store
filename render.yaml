@@ -77,6 +77,12 @@ services:
         value: usdttrc20
       - key: CRYPTO_PAYMENT_EXPIRY_MINUTES
         value: "15"
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
 
 databases:
   - name: digital-store-db

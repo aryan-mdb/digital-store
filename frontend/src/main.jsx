@@ -6,15 +6,23 @@ import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { SiteSettingsProvider } from './context/SiteSettingsContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider>
-        <AuthProvider>
-          <App />
-          <Toaster position="top-right" />
-        </AuthProvider>
+        <SiteSettingsProvider>
+          <AuthProvider>
+            <App />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                style: { background: 'var(--color-surface-1)', color: 'var(--ink)', border: '1px solid rgba(196,149,42,0.4)' },
+              }}
+            />
+          </AuthProvider>
+        </SiteSettingsProvider>
       </ThemeProvider>
     </BrowserRouter>
   </StrictMode>,

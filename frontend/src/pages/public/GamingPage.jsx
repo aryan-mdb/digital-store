@@ -28,7 +28,7 @@ export default function GamingPage() {
 
       <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
         <div className="mb-10 text-center">
-          <span className="mx-auto mb-4 inline-flex items-center gap-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-300">
+          <span className="mx-auto mb-4 inline-flex items-center gap-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700">
             <Gamepad2 className="h-3.5 w-3.5" /> Arcade
           </span>
           <h1 className="text-3xl font-extrabold text-slate-900 sm:text-5xl">
@@ -61,7 +61,7 @@ export default function GamingPage() {
 
         <div className="mt-16">
           <h2 className="mb-5 flex items-center gap-2 text-lg font-bold text-slate-900">
-            <Sparkles className="h-5 w-5 text-brand-400" /> More games, coming soon
+            <Sparkles className="h-5 w-5 text-brand-600" /> More games, coming soon
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {comingSoon.map((game) => (
@@ -69,7 +69,7 @@ export default function GamingPage() {
                 key={game.title}
                 className="group relative overflow-hidden rounded-xl border border-slate-200 bg-surface-1 p-5 opacity-70"
               >
-                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400">
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-brand-500/15 text-brand-600">
                   <game.icon className="h-5 w-5" />
                 </div>
                 <p className="font-semibold text-slate-900">{game.title}</p>

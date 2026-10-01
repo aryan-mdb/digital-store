@@ -11,6 +11,7 @@ import ProductsPage from './pages/public/ProductsPage'
 import ProductDetailsPage from './pages/public/ProductDetailsPage'
 import CategoriesPage from './pages/public/CategoriesPage'
 import GamingPage from './pages/public/GamingPage'
+import TrackOrderPage from './pages/public/TrackOrderPage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 
@@ -23,6 +24,7 @@ import ProfilePage from './pages/user/ProfilePage'
 import WalletPage from './pages/user/WalletPage'
 import ReferralPage from './pages/user/ReferralPage'
 import CryptoPaymentPage from './pages/user/CryptoPaymentPage'
+import CheckoutPage from './pages/user/CheckoutPage'
 
 import AdminDashboardPage from './pages/admin/AdminDashboardPage'
 import AdminCategoriesPage from './pages/admin/AdminCategoriesPage'
@@ -32,6 +34,7 @@ import AdminUsersPage from './pages/admin/AdminUsersPage'
 import AdminPaymentsPage from './pages/admin/AdminPaymentsPage'
 import AdminTransactionsPage from './pages/admin/AdminTransactionsPage'
 import AdminSettingsPage from './pages/admin/AdminSettingsPage'
+import AdminSlidersPage from './pages/admin/AdminSlidersPage'
 
 function NotFoundPage() {
   return (
@@ -51,6 +54,7 @@ function App() {
         <Route path="/products/:slug" element={<ProductDetailsPage />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/gaming" element={<GamingPage />} />
+        <Route path="/track" element={<TrackOrderPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
@@ -58,6 +62,9 @@ function App() {
 
       <Route element={<ProtectedRoute />}>
         <Route element={<UserRoute />}>
+          <Route element={<PublicLayout />}>
+            <Route path="/checkout/:slug" element={<CheckoutPage />} />
+          </Route>
           <Route element={<UserDashboardLayout />}>
             <Route path="/dashboard" element={<UserDashboardHome />} />
             <Route path="/dashboard/products" element={<ProductsPage />} />
@@ -81,6 +88,7 @@ function App() {
             <Route path="/admin/payments" element={<AdminPaymentsPage />} />
             <Route path="/admin/transactions" element={<AdminTransactionsPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/sliders" element={<AdminSlidersPage />} />
             <Route path="/admin/settings" element={<AdminSettingsPage />} />
           </Route>
         </Route>

@@ -20,6 +20,19 @@ const statusPalette = {
   expired: 'red',
   admin: 'blue',
   basic_user: 'slate',
+  placed: 'amber',
+  confirmed: 'blue',
+  packed: 'blue',
+  shipped: 'blue',
+  out_for_delivery: 'amber',
+  delivered: 'green',
+}
+
+export const PAYMENT_METHOD_LABELS = {
+  razorpay: 'Razorpay',
+  cod: 'Cash on Delivery',
+  crypto: 'Crypto',
+  wallet: 'Wallet',
 }
 
 export default function Badge({ status, children, color }) {
@@ -27,7 +40,7 @@ export default function Badge({ status, children, color }) {
 
   return (
     <span className={clsx('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize', palettes[palette])}>
-      {children ?? status?.replace('_', ' ')}
+      {children ?? status?.replaceAll('_', ' ')}
     </span>
   )
 }

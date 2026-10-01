@@ -1,4 +1,4 @@
-import { Gamepad2, LayoutDashboard, LogOut, Menu, ShieldCheck, User, X } from 'lucide-react'
+import { Gamepad2, MapPin, LayoutDashboard, LogOut, Menu, ShieldCheck, User, X } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
@@ -6,17 +6,18 @@ import Button from '../ui/Button'
 import ThemeToggle from '../ui/ThemeToggle'
 
 const navLinkClass = ({ isActive }) =>
-  `text-sm font-medium transition-colors ${isActive ? 'text-brand-400' : 'text-slate-600 hover:text-slate-900'}`
+  `text-sm font-medium transition-colors ${isActive ? 'text-maroon-ink font-semibold' : 'text-slate-600 hover:text-slate-900'}`
 
 const mobileNavLinkClass = ({ isActive }) =>
   `flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-    isActive ? 'bg-brand-500/15 text-brand-300' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+    isActive ? 'bg-brand-500/15 text-maroon-ink' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
   }`
 
 const links = [
   { to: '/', label: 'Home', end: true },
   { to: '/products', label: 'Products' },
   { to: '/categories', label: 'Categories' },
+  { to: '/track', label: 'Track Order', icon: MapPin },
   { to: '/gaming', label: 'Gaming', icon: Gamepad2 },
 ]
 
@@ -28,16 +29,19 @@ export default function PublicNavbar() {
   const closeMobile = () => setMobileOpen(false)
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200 bg-surface-0/85 backdrop-blur-lg">
+    <header className="sticky top-0 z-40 border-b border-slate-200 bg-surface-1/90 backdrop-blur-lg">
+      <div className="bg-maroon-velvet px-4 py-1.5 text-center text-xs font-medium tracking-wide text-brand-100">
+        Pure quality · Secure payments · Live order tracking
+      </div>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link to="/" className="flex items-center gap-2 text-lg font-bold text-slate-900" onClick={closeMobile}>
-          <ShieldCheck className="h-6 w-6 text-brand-400" />
+        <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold text-maroon-ink" onClick={closeMobile}>
+          <ShieldCheck className="h-7 w-7 text-brand-600" />
           <span>
             Digital<span className="text-gradient-gold">Marketplace</span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 sm:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           {links.map((link) => (
             <NavLink key={link.to} to={link.to} className={navLinkClass} end={link.end}>
               <span className="inline-flex items-center gap-1.5">
@@ -49,9 +53,9 @@ export default function PublicNavbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle className="hidden sm:inline-flex" />
+          <ThemeToggle className="hidden lg:inline-flex" />
 
-          <div className="hidden items-center gap-2 sm:flex">
+          <div className="hidden items-center gap-2 lg:flex">
             {user ? (
               <>
                 <Button
@@ -79,7 +83,7 @@ export default function PublicNavbar() {
           </div>
 
           <button
-            className="rounded-lg p-2 text-slate-700 hover:bg-slate-100 sm:hidden"
+            className="rounded-lg p-2 text-slate-700 hover:bg-slate-100 lg:hidden"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -89,7 +93,7 @@ export default function PublicNavbar() {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-slate-200 bg-surface-0/95 px-4 py-3 sm:hidden">
+        <div className="border-t border-slate-200 bg-surface-1/95 px-4 py-3 lg:hidden">
           <nav className="flex flex-col gap-1">
             {links.map((link) => (
               <NavLink key={link.to} to={link.to} className={mobileNavLinkClass} end={link.end} onClick={closeMobile}>

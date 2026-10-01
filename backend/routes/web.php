@@ -9,3 +9,4 @@ Route::get('/', function () {
 
 Route::get('/media/products/{product}/thumbnail', [MediaController::class, 'productThumbnail']);
 Route::get('/media/categories/{category}/image', [MediaController::class, 'categoryImage']);
+Route::get('/media/sliders/{slider}/image', [MediaController::class, 'sliderImage']);

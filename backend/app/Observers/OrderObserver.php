@@ -30,6 +30,12 @@ class OrderObserver
     {
         if ($order->wasChanged('payment_status') && $order->payment_status === Order::PAYMENT_PAID) {
             $this->referrals->rewardForOrder($order);
+
+            // Prepaid (Razorpay / crypto) shipped orders enter the delivery
+            // pipeline once paid. COD orders already have a "placed" event.
+            if ($order->hasShipping() && ! $order->tracking_status) {
+                $order->addTrackingEvent('placed', null, 'Order placed — payment received');
+            }
         }
     }
 }

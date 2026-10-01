@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#08070c" />
+    <meta name="theme-color" content="#7a2318" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
 
     <title>DigitalMarketplace — Premium Digital Products, Paid in Crypto</title>
     <meta
@@ -36,7 +39,7 @@
       (function () {
         try {
           var t = localStorage.getItem('theme');
-          document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+          document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
         } catch (e) {}
       })();
     </script>

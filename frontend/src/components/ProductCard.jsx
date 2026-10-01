@@ -42,18 +42,18 @@ export default function ProductCard({ product }) {
         transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) ${hovering ? 'scale(1.02)' : 'scale(1)'}`,
         transition: hovering ? 'transform 80ms linear' : 'transform 400ms ease-out',
       }}
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface-1 shadow-sm shadow-black/30 will-change-transform hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-900/30"
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface-1 shadow-sm shadow-maroon-900/10 will-change-transform hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-900/30"
     >
       {hovering && (
         <div
           className="pointer-events-none absolute inset-0 z-10 opacity-70 transition-opacity"
           style={{
-            background: `radial-gradient(320px circle at ${glow.x}% ${glow.y}%, rgba(59,130,246,0.18), transparent 60%)`,
+            background: `radial-gradient(320px circle at ${glow.x}% ${glow.y}%, rgba(216,171,56,0.22), transparent 60%)`,
           }}
         />
       )}
 
-      <div className="relative flex h-40 items-center justify-center overflow-hidden bg-surface-2">
+      <div className="relative flex h-48 items-center justify-center overflow-hidden bg-surface-2">
         {product.thumbnail_url && !imgFailed ? (
           <img
             src={product.thumbnail_url}
@@ -70,11 +70,11 @@ export default function ProductCard({ product }) {
 
       <div className="relative flex flex-1 flex-col gap-2 p-4">
         {product.category?.name && (
-          <span className="text-xs font-medium uppercase tracking-wide text-brand-400">
+          <span className="text-xs font-medium uppercase tracking-wide text-brand-600">
             {product.category.name}
           </span>
         )}
-        <h3 className="line-clamp-1 font-semibold text-slate-900 group-hover:text-brand-300">{product.name}</h3>
+        <h3 className="line-clamp-1 font-semibold text-slate-900 group-hover:text-brand-600">{product.name}</h3>
         <p className="line-clamp-2 text-sm text-slate-500">{product.short_description}</p>
         <div className="mt-auto flex items-center justify-between pt-2">
           <span className="text-lg font-bold text-gradient-gold transition-transform duration-300 group-hover:scale-105">
