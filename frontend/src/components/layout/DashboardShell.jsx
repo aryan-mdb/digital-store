@@ -1,8 +1,9 @@
-import { LogOut, Menu, ShieldCheck } from 'lucide-react'
+import { Home, LogOut, Menu } from 'lucide-react'
 import { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import clsx from 'clsx'
+import BrandLogo from '../ui/BrandLogo'
 import ThemeToggle from '../ui/ThemeToggle'
 
 /**
@@ -23,10 +24,15 @@ export default function DashboardShell({ sections, brandLabel, children }) {
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-2 border-b border-brand-300/15 px-5 py-5 font-display text-lg text-[#fdf3dc]">
-        <ShieldCheck className="h-6 w-6 text-brand-300" />
-        <span className="font-bold">{brandLabel}</span>
-      </div>
+      <Link
+        to="/"
+        onClick={() => setMobileOpen(false)}
+        className="block border-b border-brand-300/15 px-5 py-4 transition hover:bg-white/5"
+        title="Go to store home"
+      >
+        <BrandLogo onDark />
+        <span className="mt-2 block text-xs font-semibold uppercase tracking-[0.18em] text-brand-300/70">{brandLabel}</span>
+      </Link>
 
       <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-2">
         {sections.map((section, idx) => (
@@ -61,7 +67,14 @@ export default function DashboardShell({ sections, brandLabel, children }) {
         ))}
       </nav>
 
-      <div className="border-t border-white/10 px-3 py-4">
+      <div className="space-y-1 border-t border-white/10 px-3 py-4">
+        <Link
+          to="/"
+          onClick={() => setMobileOpen(false)}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#f1dfb8]/80 hover:bg-white/10 hover:text-[#fdf3dc]"
+        >
+          <Home className="h-4 w-4" /> Back to Store
+        </Link>
         <button
           onClick={handleLogout}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#f1dfb8]/80 hover:bg-white/10 hover:text-[#fdf3dc]"
@@ -90,6 +103,13 @@ export default function DashboardShell({ sections, brandLabel, children }) {
           </button>
           <div className="flex-1" />
           <div className="flex items-center gap-3">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            >
+              <Home className="h-4 w-4" />
+              <span className="hidden sm:inline">Visit Store</span>
+            </Link>
             <ThemeToggle />
             <div className="text-right">
               <p className="text-sm font-medium text-slate-900">{user?.name}</p>

@@ -49,7 +49,7 @@ export default function UserDashboardHome() {
         {orders.length === 0 ? (
           <EmptyState
             title="No orders yet"
-            message="Browse the catalog and buy your first digital product."
+            message="Browse our ghee collection and place your first order."
             action={
               <Link to="/products" className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">
                 Browse Products
