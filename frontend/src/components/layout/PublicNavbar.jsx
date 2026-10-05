@@ -7,11 +7,11 @@ import BrandLogo from '../ui/BrandLogo'
 import ThemeToggle from '../ui/ThemeToggle'
 
 const navLinkClass = ({ isActive }) =>
-  `text-sm font-medium transition-colors ${isActive ? 'text-maroon-ink font-semibold' : 'text-slate-600 hover:text-slate-900'}`
+  `text-sm font-medium transition-colors ${isActive ? 'text-forest-ink font-semibold' : 'text-slate-600 hover:text-slate-900'}`
 
 const mobileNavLinkClass = ({ isActive }) =>
   `flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-    isActive ? 'bg-brand-500/15 text-maroon-ink' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+    isActive ? 'bg-brand-500/15 text-forest-ink' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
   }`
 
 const links = [
@@ -31,7 +31,7 @@ export default function PublicNavbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-surface-1/90 backdrop-blur-lg">
-      <div className="bg-maroon-velvet px-4 py-1.5 text-center text-xs font-medium tracking-wide text-brand-100">
+      <div className="bg-forest-velvet px-4 py-1.5 text-center text-xs font-medium tracking-wide text-brand-100">
         पवित्र स्वाद • शुद्धता का भरोसा<span className="hidden sm:inline">  ·  100% Pure Cow Ghee  ·  Free doorstep delivery</span>
       </div>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">

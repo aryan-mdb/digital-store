@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------
-   Heritage palette — antique gold, temple maroon and parchment cream,
-   taken from the brand's packaging artwork. Every bg-brand-*,
+   PAYAN palette — forest green, antique gold, ghee yellow and cream,
+   taken from the brand's round logo label. Every bg-brand-*,
    text-brand-*, border-brand-* class in the app is driven by these
    tokens, so this single block re-themes every button, link and active
    nav state across the whole site.
@@ -23,50 +23,58 @@
   --color-brand-800: #684a19;
   --color-brand-900: #4d3614;
 
-  /* Temple maroon (wordmark / borders) */
-  --color-maroon-50: #fbefec;
-  --color-maroon-100: #f4d7d0;
-  --color-maroon-200: #e5aa9c;
-  --color-maroon-300: #cf7563;
-  --color-maroon-400: #ab4434;
-  --color-maroon-500: #8d2b1f;
-  --color-maroon-600: #7a2318;
-  --color-maroon-700: #631c13;
-  --color-maroon-800: #4b150f;
-  --color-maroon-900: #33100b;
+  /* Forest green (PAYAN wordmark / "A2 COW GHEE" banner) */
+  --color-forest-50: #eef6ef;
+  --color-forest-100: #d6eadb;
+  --color-forest-200: #acd4b6;
+  --color-forest-300: #79b48a;
+  --color-forest-400: #4b9061;
+  --color-forest-500: #2f7445;
+  --color-forest-600: #22603a;
+  --color-forest-700: #1d5132;
+  --color-forest-800: #173f27;
+  --color-forest-900: #102c1b;
 
-  /* Leaf green ("PURE COW GHEE" tagline) */
-  --color-leaf-500: #2f6d36;
-  --color-leaf-600: #25592b;
+  /* Ghee yellow (the golden pour) */
+  --color-ghee-50: #fffbea;
+  --color-ghee-100: #fff4c7;
+  --color-ghee-200: #ffe88f;
+  --color-ghee-300: #fbd75a;
+  --color-ghee-400: #f5c531;
+  --color-ghee-500: #e5ad12;
 
-  /* Defaults = light "parchment" theme. Overridden under [data-theme="dark"]. */
-  --color-surface-0: #f7eedb;
-  --color-surface-1: #fffaee;
-  --color-surface-2: #f2e5c6;
-  --color-surface-3: #e8d5a9;
+  /* Leaf green (secondary accents) */
+  --color-leaf-500: #2f7445;
+  --color-leaf-600: #22603a;
+
+  /* Defaults = light "cream & ghee" theme. Overridden under [data-theme="dark"]. */
+  --color-surface-0: #fdf8e9;
+  --color-surface-1: #fffdf6;
+  --color-surface-2: #fbf0cf;
+  --color-surface-3: #f5e2a8;
 
   --animate-fade-up: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   --animate-spin-slow: spin 40s linear infinite;
 }
 
 :root {
-  --ink: #3a1a10;
-  --line: rgba(141, 43, 31, 0.16);
-  --line-strong: rgba(141, 43, 31, 0.28);
+  --ink: #24301f;
+  --line: rgba(29, 81, 50, 0.14);
+  --line-strong: rgba(29, 81, 50, 0.26);
   color-scheme: light;
 }
 
 /* ---------------------------------------------------------------------
-   Dark "carved wood" theme. data-theme is set on <html> (by an inline
+   Dark "evening field" theme. data-theme is set on <html> (by an inline
    script in index.html, before paint, and kept in sync by ThemeContext)
    — light parchment is the default with no attribute needed.
 --------------------------------------------------------------------- */
 [data-theme="dark"] {
-  --color-surface-0: #170d08;
-  --color-surface-1: #22150d;
-  --color-surface-2: #2d1c12;
-  --color-surface-3: #3b2618;
-  --ink: #f6ead0;
+  --color-surface-0: #121a12;
+  --color-surface-1: #1a251b;
+  --color-surface-2: #223024;
+  --color-surface-3: #2d3e2f;
+  --ink: #f7f0d8;
   --line: rgba(216, 171, 56, 0.14);
   --line-strong: rgba(216, 171, 56, 0.26);
   color-scheme: dark;
@@ -80,17 +88,17 @@ body {
   @apply bg-surface-0 font-sans antialiased;
   color: var(--ink);
   background-image:
-    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(216, 171, 56, 0.22), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(141, 43, 31, 0.08), transparent),
-    radial-gradient(ellipse 50% 40% at 50% 110%, rgba(216, 171, 56, 0.12), transparent);
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(245, 197, 49, 0.26), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(47, 116, 69, 0.08), transparent),
+    radial-gradient(ellipse 50% 40% at 50% 110%, rgba(245, 197, 49, 0.16), transparent);
   background-attachment: fixed;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 [data-theme="dark"] body {
   background-image:
-    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(216, 171, 56, 0.14), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(141, 43, 31, 0.22), transparent);
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(245, 197, 49, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(47, 116, 69, 0.22), transparent);
 }
 
 h1, h2, h3, .font-display {
@@ -106,8 +114,8 @@ h1, h2, h3, .font-display {
    Palette remap. The app's components were written against Tailwind's
    neutral slate palette (bg-white cards, slate-900 text, slate-200
    borders). Rather than touch every page, those exact utility classes
-   are repointed here — warm parchment tones in light mode, carved-wood
-   browns in dark mode.
+   are repointed here — cream and ghee tones in light mode, deep field
+   greens in dark mode.
 --------------------------------------------------------------------- */
 .bg-white { background-color: var(--color-surface-1) !important; }
 .bg-slate-50 { background-color: var(--color-surface-0) !important; }
@@ -117,40 +125,40 @@ h1, h2, h3, .font-display {
 .hover\:bg-slate-100:hover { background-color: var(--color-surface-3) !important; }
 .hover\:bg-slate-200:hover { background-color: var(--color-surface-3) !important; }
 
-/* Permanently-dark surfaces (sidebar, banners) become deep maroon. */
-.bg-slate-900 { background-color: #3a120c !important; }
+/* Permanently-dark surfaces (sidebar, banners) become logo green. */
+.bg-slate-900 { background-color: #1d5132 !important; }
 
 .border-slate-100 { border-color: var(--line) !important; }
 .border-slate-200 { border-color: var(--line) !important; }
 .border-slate-300 { border-color: var(--line-strong) !important; }
 .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: var(--line) !important; }
 
-:root:not([data-theme="dark"]) .text-slate-900 { color: #3a1a10 !important; }
-:root:not([data-theme="dark"]) .text-slate-800 { color: #4a2416 !important; }
-:root:not([data-theme="dark"]) .text-slate-700 { color: #5b3322 !important; }
-:root:not([data-theme="dark"]) .text-slate-600 { color: #6e4a34 !important; }
-:root:not([data-theme="dark"]) .text-slate-500 { color: #85634a !important; }
-:root:not([data-theme="dark"]) .text-slate-400 { color: #a3846a !important; }
-:root:not([data-theme="dark"]) .hover\:text-slate-900:hover { color: #3a1a10 !important; }
-:root:not([data-theme="dark"]) .hover\:text-slate-600:hover { color: #5b3322 !important; }
-:root:not([data-theme="dark"]) .placeholder-slate-400::placeholder { color: #b19676; }
+:root:not([data-theme="dark"]) .text-slate-900 { color: #1f2b1c !important; }
+:root:not([data-theme="dark"]) .text-slate-800 { color: #2c3826 !important; }
+:root:not([data-theme="dark"]) .text-slate-700 { color: #3e4734 !important; }
+:root:not([data-theme="dark"]) .text-slate-600 { color: #545a43 !important; }
+:root:not([data-theme="dark"]) .text-slate-500 { color: #6d6e55 !important; }
+:root:not([data-theme="dark"]) .text-slate-400 { color: #94927a !important; }
+:root:not([data-theme="dark"]) .hover\:text-slate-900:hover { color: #1f2b1c !important; }
+:root:not([data-theme="dark"]) .hover\:text-slate-600:hover { color: #3e4734 !important; }
+:root:not([data-theme="dark"]) .placeholder-slate-400::placeholder { color: #aaa78c; }
 
-[data-theme="dark"] .bg-slate-300 { background-color: #4a3020 !important; }
+[data-theme="dark"] .bg-slate-300 { background-color: #3a4d3c !important; }
 [data-theme="dark"] .text-slate-900 { color: #f8edd3 !important; }
 [data-theme="dark"] .text-slate-800 { color: #efdfbd !important; }
 [data-theme="dark"] .text-slate-700 { color: #dcc8a0 !important; }
 [data-theme="dark"] .text-slate-600 { color: #c2aa80 !important; }
-[data-theme="dark"] .text-slate-500 { color: #a38a66 !important; }
-[data-theme="dark"] .text-slate-400 { color: #866f52 !important; }
+[data-theme="dark"] .text-slate-500 { color: #a9a582 !important; }
+[data-theme="dark"] .text-slate-400 { color: #8a8a6c !important; }
 [data-theme="dark"] .hover\:text-slate-900:hover { color: #f8edd3 !important; }
 [data-theme="dark"] .hover\:text-slate-600:hover { color: #dcc8a0 !important; }
-[data-theme="dark"] .placeholder-slate-400::placeholder { color: #6f5b43; }
+[data-theme="dark"] .placeholder-slate-400::placeholder { color: #6b6f55; }
 [data-theme="dark"] .bg-brand-50 { background-color: rgba(216, 171, 56, 0.12) !important; }
 [data-theme="dark"] .bg-brand-100 { background-color: rgba(216, 171, 56, 0.18) !important; }
 [data-theme="dark"] .text-brand-700 { color: var(--color-brand-300) !important; }
 [data-theme="dark"] .text-brand-600 { color: var(--color-brand-400) !important; }
 
-/* Status badges / tinted callouts — keep them readable on dark wood. */
+/* Status badges / tinted callouts — keep them readable on dark green. */
 [data-theme="dark"] .bg-emerald-50, [data-theme="dark"] .bg-emerald-100 { background-color: rgba(52, 168, 83, 0.15) !important; }
 [data-theme="dark"] .bg-amber-50, [data-theme="dark"] .bg-amber-100 { background-color: rgba(216, 171, 56, 0.15) !important; }
 [data-theme="dark"] .bg-red-50, [data-theme="dark"] .bg-red-100 { background-color: rgba(220, 80, 60, 0.15) !important; }
@@ -161,7 +169,7 @@ h1, h2, h3, .font-display {
 [data-theme="dark"] .text-blue-700 { color: #a9c4f5 !important; }
 
 /* ---------------------------------------------------------------------
-   Heritage flourishes
+   Brand flourishes
 --------------------------------------------------------------------- */
 
 /* Gold-foil text, as on the jar lid. Name kept for existing usages. */
@@ -177,7 +185,7 @@ h1, h2, h3, .font-display {
   background-clip: text;
 }
 
-/* Always-bright foil, for text sitting on maroon / dark surfaces in either theme. */
+/* Always-bright foil, for text sitting on green / dark surfaces in either theme. */
 @utility text-foil-bright {
   background: linear-gradient(135deg, #f9edc6 0%, #e6c35c 40%, #d8ab38 70%, #f1da8c 100%);
   -webkit-background-clip: text;
@@ -186,10 +194,10 @@ h1, h2, h3, .font-display {
 }
 
 /* Declared with @utility (not plain classes) so hover:/group-hover: variants work. */
-@utility text-maroon-ink {
-  color: var(--color-maroon-600);
+@utility text-forest-ink {
+  color: var(--color-forest-700);
   [data-theme="dark"] & {
-    color: #e8b8a4;
+    color: #b9dcc1;
   }
 }
 
@@ -197,11 +205,27 @@ h1, h2, h3, .font-display {
   background-image: linear-gradient(135deg, #845f1a 0%, #c4952a 22%, #f1da8c 48%, #c4952a 72%, #845f1a 100%);
 }
 
-@utility bg-maroon-velvet {
-  background-color: #4b150f;
+/* Logo-green surface (footer, sidebar, small banners). */
+@utility bg-forest-velvet {
+  background-color: #1d5132;
   background-image:
-    radial-gradient(ellipse 70% 80% at 20% 0%, rgba(216, 171, 56, 0.18), transparent),
-    linear-gradient(160deg, #6b1f15 0%, #4b150f 55%, #2a0b07 100%);
+    radial-gradient(ellipse 70% 80% at 20% 0%, rgba(245, 197, 49, 0.2), transparent),
+    linear-gradient(160deg, #2f7445 0%, #1d5132 55%, #153c25 100%);
+}
+
+/* Light, sunny ghee surface for the big hero / feature bands. */
+@utility bg-ghee-glow {
+  background-color: #fdf0c2;
+  background-image:
+    radial-gradient(ellipse 60% 90% at 78% 40%, rgba(255, 255, 255, 0.85), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 0% 100%, rgba(47, 116, 69, 0.1), transparent),
+    linear-gradient(120deg, #fff8dd 0%, #fde9a0 55%, #f7cf57 100%);
+  [data-theme="dark"] & {
+    background-color: #1f2a1c;
+    background-image:
+      radial-gradient(ellipse 60% 90% at 78% 40%, rgba(245, 197, 49, 0.22), transparent 70%),
+      linear-gradient(120deg, #1a251b 0%, #223024 60%, #3a3a1c 100%);
+  }
 }
 
 .glow-gold {
@@ -212,18 +236,18 @@ h1, h2, h3, .font-display {
   box-shadow: 0 0 0 1px rgba(196, 149, 42, 0.4), 0 20px 60px -12px rgba(196, 149, 42, 0.6);
 }
 
-/* Paper-label card: parchment with a thin double gold rule. */
+/* Label card: cream with a thin double gold/green rule. */
 .card-label {
   background-color: var(--color-surface-1);
   border: 1px solid rgba(196, 149, 42, 0.45);
-  box-shadow: inset 0 0 0 4px var(--color-surface-1), inset 0 0 0 5px rgba(141, 43, 31, 0.18), 0 10px 30px -15px rgba(58, 26, 16, 0.35);
+  box-shadow: inset 0 0 0 4px var(--color-surface-1), inset 0 0 0 5px rgba(29, 81, 50, 0.16), 0 10px 30px -15px rgba(60, 50, 10, 0.3);
 }
 
-/* The scalloped maroon band printed along the top and bottom of the label. */
+/* Scalloped green-and-gold border band, echoing the label's ornamental rim. */
 .ornament-band {
   height: 14px;
   background-color: transparent;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Crect width='28' height='4' fill='%237a2318'/%3E%3Cpath d='M0 4 Q7 14 14 4 Q21 14 28 4 Z' fill='%237a2318'/%3E%3Ccircle cx='14' cy='9.5' r='1.6' fill='%23c4952a'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Crect width='28' height='4' fill='%231d5132'/%3E%3Cpath d='M0 4 Q7 14 14 4 Q21 14 28 4 Z' fill='%231d5132'/%3E%3Ccircle cx='14' cy='9.5' r='1.6' fill='%23c4952a'/%3E%3C/svg%3E");
   background-repeat: repeat-x;
   background-size: 28px 14px;
 }
@@ -231,7 +255,7 @@ h1, h2, h3, .font-display {
 
 .bg-grid-pattern {
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(141, 43, 31, 0.14) 1px, transparent 0);
+    radial-gradient(circle at 1px 1px, rgba(29, 81, 50, 0.14) 1px, transparent 0);
   background-size: 22px 22px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black, transparent);
 }
@@ -317,4 +341,4 @@ h1, h2, h3, .font-display {
 }
 
 /* Maroon outlines (label-style icon roundels) turn gold on dark wood. */
-[data-theme="dark"] .border-maroon-600\/70 { border-color: rgba(216, 171, 56, 0.55) !important; }
+[data-theme="dark"] .border-forest-600\/70 { border-color: rgba(216, 171, 56, 0.55) !important; }

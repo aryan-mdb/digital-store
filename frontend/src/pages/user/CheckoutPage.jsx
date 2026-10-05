@@ -120,7 +120,7 @@ export default function CheckoutPage() {
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <div className="mb-8 text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-700">Secure checkout</p>
-        <h1 className="mt-1 text-3xl font-bold text-maroon-ink sm:text-4xl">Complete your order</h1>
+        <h1 className="mt-1 text-3xl font-bold text-forest-ink sm:text-4xl">Complete your order</h1>
       </div>
 
       <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
@@ -187,7 +187,7 @@ export default function CheckoutPage() {
                     <span
                       className={clsx(
                         'flex h-11 w-11 shrink-0 items-center justify-center rounded-full',
-                        method === m.key ? 'bg-gold-foil text-maroon-900' : 'bg-slate-100 text-slate-500'
+                        method === m.key ? 'bg-gold-foil text-forest-900' : 'bg-slate-100 text-slate-500'
                       )}
                     >
                       <m.icon className="h-5 w-5" />
@@ -221,7 +221,7 @@ export default function CheckoutPage() {
           <div className="card-label sticky top-24 rounded-2xl">
             <div className="ornament-band rounded-t-2xl" />
             <div className="p-6">
-              <h2 className="mb-4 text-center text-lg font-bold text-maroon-ink">Order summary</h2>
+              <h2 className="mb-4 text-center text-lg font-bold text-forest-ink">Order summary</h2>
               <div className="flex gap-4">
                 <div className="h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
                   {product.thumbnail_url ? (
@@ -242,7 +242,7 @@ export default function CheckoutPage() {
                 {isPhysical && <Row label="Delivery" value={<span className="font-semibold text-leaf-600">FREE</span>} />}
                 <div className="flex items-center justify-between border-t border-slate-200 pt-3">
                   <dt className="font-semibold text-slate-900">Total</dt>
-                  <dd className="font-display text-2xl font-bold text-maroon-ink">{formatCurrency(payable, product.currency)}</dd>
+                  <dd className="font-display text-2xl font-bold text-forest-ink">{formatCurrency(payable, product.currency)}</dd>
                 </div>
               </dl>
 

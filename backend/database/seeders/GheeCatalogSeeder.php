@@ -21,14 +21,50 @@ class GheeCatalogSeeder extends Seeder
 {
     private const FLAG = 'catalog_payan_ghee_v1';
 
+    /** v2: images refreshed for the green & ghee-yellow logo theme. */
+    private const FLAG_V2 = 'catalog_payan_ghee_v2_images';
+
     private const OLD_DEMO_CATEGORIES = ['software', 'templates', 'ebooks', 'courses', 'graphics'];
 
     public function run(): void
     {
-        if (Setting::get(self::FLAG)) {
-            return;
+        if (! Setting::get(self::FLAG)) {
+            $this->seedCatalog();
         }
 
+        if (! Setting::get(self::FLAG_V2)) {
+            $this->refreshImagesForLogoTheme();
+        }
+    }
+
+    /**
+     * Swap the original maroon-background artwork for the light versions
+     * (and the client's round A2 label) on rows this seeder created.
+     */
+    private function refreshImagesForLogoTheme(): void
+    {
+        $categoryImages = ['a2-desi-cow-ghee' => 'category-a2.jpg', 'gift-combo-packs' => 'category-gift.jpg'];
+        foreach ($categoryImages as $slug => $file) {
+            Category::where('slug', $slug)->update($this->image($file, 'image'));
+        }
+
+        $productImages = ['payan-a2-desi-cow-ghee-1l' => 'product-a2-label.jpg', 'payan-family-combo-2x1l' => 'product-combo.jpg'];
+        foreach ($productImages as $slug => $file) {
+            Product::where('slug', $slug)->update($this->image($file, 'thumbnail'));
+        }
+
+        // Slider rows are updated one by one so updated_at changes and the
+        // image URL's cache-busting ?v= parameter picks up the new file.
+        $slideImages = ['PAYAN Pure Cow Ghee' => 'slide-1.jpg', '100% Pure. Naturally Rich.' => 'slide-2.jpg'];
+        foreach ($slideImages as $title => $file) {
+            Slider::where('title', $title)->get()->each(fn (Slider $s) => $s->update($this->image($file, 'image')));
+        }
+
+        Setting::set(self::FLAG_V2, now()->toDateTimeString());
+    }
+
+    private function seedCatalog(): void
+    {
         $adminId = User::where('role', User::ROLE_ADMIN)->value('id');
 
         $oldCategoryIds = Category::whereIn('slug', self::OLD_DEMO_CATEGORIES)->pluck('id');
@@ -144,7 +180,7 @@ class GheeCatalogSeeder extends Seeder
                 'short' => 'Family size jar of pure A2 desi cow ghee.',
                 'description' => 'Our signature A2 Desi Cow Ghee in a family-size jar. Perfect for rotis, dal tadka, sweets and everything in between.'.$promise."\n\nNet quantity: 1 litre · Packed in a food-grade glass jar",
                 'price' => 1399,
-                'image' => 'product-label-closeup.jpg',
+                'image' => 'product-a2-label.jpg',
             ],
             'payan-cow-ghee-tin-250ml' => [
                 'category' => 'a2-desi-cow-ghee',

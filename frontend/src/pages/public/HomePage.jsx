@@ -54,7 +54,7 @@ export default function HomePage() {
         <div className="card-label grid grid-cols-2 gap-y-6 rounded-2xl px-4 py-6 sm:grid-cols-4">
           {PROMISES.map((p) => (
             <div key={p.title} className="flex flex-col items-center gap-2 px-2 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-maroon-600/70 text-maroon-ink">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-forest-600/70 text-forest-ink">
                 <p.icon className="h-6 w-6" strokeWidth={1.6} />
               </div>
               <p className="text-sm font-bold uppercase tracking-wide text-slate-900">{p.title}</p>
@@ -103,7 +103,7 @@ export default function HomePage() {
             <li key={step.title} className="card-label relative rounded-2xl p-6 text-center">
               <span className="absolute left-4 top-3 font-display text-3xl font-extrabold text-brand-500/30">{i + 1}</span>
               <div className="bg-gold-foil mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full p-[3px]">
-                <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-maroon-ink">
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-forest-ink">
                   <step.icon className="h-7 w-7" strokeWidth={1.6} />
                 </div>
               </div>
@@ -125,7 +125,7 @@ export default function HomePage() {
           <div className="mt-10 text-center">
             <Link
               to="/products"
-              className="inline-flex items-center gap-2 rounded-xl border-2 border-maroon-600 px-6 py-2.5 font-semibold text-maroon-ink transition hover:bg-maroon-600 hover:text-brand-100"
+              className="inline-flex items-center gap-2 rounded-xl border-2 border-forest-600 px-6 py-2.5 font-semibold text-forest-ink transition hover:bg-forest-600 hover:text-brand-100"
             >
               View all ghee
             </Link>
@@ -134,21 +134,21 @@ export default function HomePage() {
       )}
 
       {/* Tracking + WhatsApp band */}
-      <section className="bg-maroon-velvet relative overflow-hidden">
+      <section className="bg-ghee-glow relative overflow-hidden">
         <div className="ornament-band flip" />
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-4 py-14 sm:px-6 md:grid-cols-2">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-300">Always in the loop</p>
-            <h2 className="mt-2 text-3xl font-bold text-[#fdf3dc] sm:text-4xl">
-              Track your order <span className="text-foil-bright">live</span>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-700">Always in the loop</p>
+            <h2 className="mt-2 text-3xl font-bold text-forest-ink sm:text-4xl">
+              Track your order <span className="text-gradient-gold">live</span>
             </h2>
-            <p className="mt-3 max-w-md text-[#f1dfb8]/85">
+            <p className="mt-3 max-w-md text-slate-600">
               From packing to your doorstep — see every step and the current location on the map, any time.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 to="/track"
-                className="inline-flex items-center gap-2 rounded-xl bg-gold-foil px-5 py-2.5 font-bold text-maroon-900 transition hover:brightness-105"
+                className="inline-flex items-center gap-2 rounded-xl bg-forest-700 px-5 py-2.5 font-bold text-ghee-100 shadow-md transition hover:bg-forest-600"
               >
                 <MapPin className="h-4 w-4" /> Track Order
               </Link>
@@ -168,9 +168,9 @@ export default function HomePage() {
             {['Order placed', 'Packed with care', 'Shipped & on the way', 'Delivered to your door'].map((step, i) => (
               <li
                 key={step}
-                className="flex items-center gap-4 rounded-xl border border-brand-300/20 bg-black/15 px-4 py-3 text-[#fdf3dc] backdrop-blur"
+                className="flex items-center gap-4 rounded-xl border border-forest-700/15 bg-white/70 px-4 py-3 text-slate-800 shadow-sm backdrop-blur"
               >
-                <span className="bg-gold-foil flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-display font-bold text-maroon-900">
+                <span className="bg-gold-foil flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-display font-bold text-forest-900">
                   {i + 1}
                 </span>
                 <span className="font-medium">{step}</span>

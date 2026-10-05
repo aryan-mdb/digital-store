@@ -20,7 +20,7 @@ export default function PublicLayout() {
         <Outlet />
       </main>
 
-      <footer className="bg-maroon-velvet mt-16 text-[#f1dfb8]">
+      <footer className="bg-forest-velvet mt-16 text-[#f1dfb8]">
         <div className="ornament-band flip" />
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
           <div className="lg:col-span-2">

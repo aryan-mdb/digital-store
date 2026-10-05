@@ -41,7 +41,7 @@ export async function payWithRazorpay(orderId) {
       name: checkout.name,
       description: checkout.description,
       prefill: checkout.prefill,
-      theme: { color: '#7a2318' },
+      theme: { color: '#1d5132' },
       handler: async (response) => {
         try {
           const { data: order } = await razorpayService.verify(orderId, response)

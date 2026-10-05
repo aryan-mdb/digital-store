@@ -53,7 +53,7 @@ export default function DashboardShell({ sections, brandLabel, children }) {
                     clsx(
                       'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                       isActive
-                        ? 'bg-gold-foil text-maroon-900 shadow-md shadow-black/20'
+                        ? 'bg-gold-foil text-forest-900 shadow-md shadow-black/20'
                         : 'text-[#f1dfb8]/80 hover:bg-white/10 hover:text-[#fdf3dc]'
                     )
                   }
@@ -87,11 +87,11 @@ export default function DashboardShell({ sections, brandLabel, children }) {
 
   return (
     <div className="flex min-h-screen bg-slate-50">
-      <aside className="bg-maroon-velvet sticky top-0 hidden h-screen w-64 shrink-0 lg:block">{SidebarContent}</aside>
+      <aside className="bg-forest-velvet sticky top-0 hidden h-screen w-64 shrink-0 lg:block">{SidebarContent}</aside>
 
       {mobileOpen && (
         <div className="fixed inset-0 z-50 flex lg:hidden">
-          <div className="bg-maroon-velvet w-64">{SidebarContent}</div>
+          <div className="bg-forest-velvet w-64">{SidebarContent}</div>
           <div className="flex-1 bg-slate-900/50" onClick={() => setMobileOpen(false)} />
         </div>
       )}
@@ -115,7 +115,7 @@ export default function DashboardShell({ sections, brandLabel, children }) {
               <p className="text-sm font-medium text-slate-900">{user?.name}</p>
               <p className="text-xs capitalize text-slate-500">{user?.role?.replace('_', ' ')}</p>
             </div>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-foil text-sm font-bold text-maroon-900">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-foil text-sm font-bold text-forest-900">
               {user?.name?.charAt(0).toUpperCase()}
             </div>
           </div>

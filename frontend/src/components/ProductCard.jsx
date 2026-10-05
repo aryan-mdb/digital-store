@@ -42,7 +42,7 @@ export default function ProductCard({ product }) {
         transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) ${hovering ? 'scale(1.02)' : 'scale(1)'}`,
         transition: hovering ? 'transform 80ms linear' : 'transform 400ms ease-out',
       }}
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface-1 shadow-sm shadow-maroon-900/10 will-change-transform hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-900/30"
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface-1 shadow-sm shadow-forest-900/10 will-change-transform hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-900/30"
     >
       {hovering && (
         <div

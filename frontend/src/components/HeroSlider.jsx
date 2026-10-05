@@ -27,7 +27,7 @@ export default function HeroSlider() {
   const defaultSlides = useMemo(() => buildDefaultSlides(settings), [settings])
 
   if (remoteSlides === null) {
-    return <div className="bg-maroon-velvet h-[440px] sm:h-[520px]" />
+    return <div className="bg-ghee-glow h-[440px] sm:h-[520px]" />
   }
 
   return <Carousel slides={remoteSlides.length > 0 ? remoteSlides : defaultSlides} />
@@ -80,14 +80,14 @@ function Carousel({ slides }) {
           <button
             onClick={() => go(active - 1)}
             aria-label="Previous slide"
-            className="absolute bottom-5 right-20 z-20 hidden h-10 w-10 items-center justify-center rounded-full border border-brand-300/40 bg-black/25 text-brand-100 backdrop-blur transition hover:bg-black/40 sm:flex"
+            className="absolute bottom-5 right-20 z-20 hidden h-10 w-10 items-center justify-center rounded-full border border-forest-700/30 bg-white/70 text-forest-700 shadow-sm backdrop-blur transition hover:bg-white sm:flex"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
             onClick={() => go(active + 1)}
             aria-label="Next slide"
-            className="absolute bottom-5 right-6 z-20 hidden h-10 w-10 items-center justify-center rounded-full border border-brand-300/40 bg-black/25 text-brand-100 backdrop-blur transition hover:bg-black/40 sm:flex"
+            className="absolute bottom-5 right-6 z-20 hidden h-10 w-10 items-center justify-center rounded-full border border-forest-700/30 bg-white/70 text-forest-700 shadow-sm backdrop-blur transition hover:bg-white sm:flex"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -99,14 +99,14 @@ function Carousel({ slides }) {
                 onClick={() => go(i)}
                 aria-label={`Go to slide ${i + 1}`}
                 className={clsx(
-                  'relative h-2 overflow-hidden rounded-full bg-brand-100/30 transition-all',
-                  i === active ? 'w-10' : 'w-2 hover:bg-brand-100/60'
+                  'relative h-2 overflow-hidden rounded-full bg-forest-700/25 transition-all',
+                  i === active ? 'w-10' : 'w-2 hover:bg-forest-700/50'
                 )}
               >
                 {i === active && (
                   <span
                     key={active}
-                    className="absolute inset-0 origin-left bg-brand-300"
+                    className="absolute inset-0 origin-left bg-forest-600"
                     style={{
                       animation: `slide-progress ${SLIDE_MS}ms linear forwards`,
                       animationPlayState: paused ? 'paused' : 'running',
@@ -128,7 +128,7 @@ function Carousel({ slides }) {
 function SlideCta({ slide, className }) {
   if (!slide.button_text || !slide.button_link) return null
   const classes = clsx(
-    'glow-gold relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gold-foil px-6 py-3 font-bold text-maroon-900 transition hover:brightness-105',
+    'relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-forest-700 px-6 py-3 font-bold text-ghee-100 shadow-lg shadow-forest-900/25 transition hover:bg-forest-600',
     className
   )
   const inner = (
@@ -152,7 +152,7 @@ function ImageSlide({ slide, isActive }) {
   const hasText = slide.title || slide.subtitle || slide.button_text
 
   return (
-    <div className="relative h-full w-full bg-maroon-900">
+    <div className="relative h-full w-full bg-ghee-100">
       <img
         src={slide.image_url}
         alt={slide.title || 'Banner'}
@@ -160,17 +160,17 @@ function ImageSlide({ slide, isActive }) {
       />
       {hasText && (
         <>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#2a0b07]/85 via-[#2a0b07]/45 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#fff8dd]/90 via-[#fff8dd]/55 to-transparent sm:from-[#fff8dd]/80 sm:via-[#fff8dd]/30" />
           <div className="absolute inset-0 mx-auto flex max-w-7xl items-center px-6 sm:px-12">
             <div className="max-w-xl">
               {slide.title && (
-                <h2 className={clsx('text-3xl font-extrabold leading-tight text-[#fdf3dc] sm:text-5xl', isActive && 'animate-fade-up')}>
+                <h2 className={clsx('text-3xl font-extrabold leading-tight text-forest-700 sm:text-5xl', isActive && 'animate-fade-up')}>
                   {slide.title}
                 </h2>
               )}
               {slide.subtitle && (
                 <p
-                  className={clsx('mt-4 text-base text-[#f1dfb8] sm:text-lg', isActive && 'animate-fade-up')}
+                  className={clsx('mt-4 text-base text-[#3e4734] sm:text-lg', isActive && 'animate-fade-up')}
                   style={{ animationDelay: '120ms' }}
                 >
                   {slide.subtitle}
@@ -191,26 +191,26 @@ function DefaultSlide({ slide, isActive }) {
   const Icon = slide.icon
 
   return (
-    <div className="bg-maroon-velvet relative h-full w-full overflow-hidden">
+    <div className="bg-ghee-glow relative h-full w-full overflow-hidden">
       {/* rising gold motes */}
       <div className="pointer-events-none absolute inset-0">
         {PARTICLES.map((p, i) => (
           <span
             key={i}
-            className="animate-rise absolute bottom-[-20px] rounded-full bg-brand-300/70 blur-[1px]"
+            className="animate-rise absolute bottom-[-20px] rounded-full bg-ghee-400/70 blur-[1px]"
             style={{ left: `${p.left}%`, width: p.size, height: p.size, animationDuration: `${p.dur}s`, animationDelay: `${p.delay}s` }}
           />
         ))}
       </div>
 
-      <Mandala className="animate-spin-slow pointer-events-none absolute -right-28 top-1/2 h-[560px] w-[560px] -translate-y-1/2 opacity-40 sm:right-[-60px] lg:right-10 lg:opacity-60" />
+      <Mandala className="animate-spin-slow pointer-events-none absolute -right-28 top-1/2 h-[560px] w-[560px] -translate-y-1/2 opacity-50 sm:right-[-60px] lg:right-10 lg:opacity-70" />
 
       <div className="relative mx-auto flex h-full max-w-7xl items-center px-6 sm:px-12">
         <div className="max-w-2xl">
           {slide.eyebrow && (
             <span
               className={clsx(
-                'mb-5 inline-flex items-center gap-2 rounded-full border border-brand-300/40 bg-brand-300/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-brand-200',
+                'mb-5 inline-flex items-center gap-2 rounded-full border border-forest-700/25 bg-white/60 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-forest-700',
                 isActive && 'animate-fade-up'
               )}
             >
@@ -218,13 +218,13 @@ function DefaultSlide({ slide, isActive }) {
             </span>
           )}
           <h2
-            className={clsx('text-4xl font-extrabold leading-[1.1] text-[#fdf3dc] sm:text-6xl', isActive && 'animate-fade-up')}
+            className={clsx('text-4xl font-extrabold leading-[1.1] text-forest-700 sm:text-6xl', isActive && 'animate-fade-up')}
             style={{ animationDelay: '100ms' }}
           >
-            {slide.title} <span className="text-foil-bright">{slide.highlight}</span>
+            {slide.title} <span className="text-gradient-gold">{slide.highlight}</span>
           </h2>
           <p
-            className={clsx('mt-5 max-w-lg text-base text-[#f1dfb8]/90 sm:text-lg', isActive && 'animate-fade-up')}
+            className={clsx('mt-5 max-w-lg text-base text-[#3e4734] sm:text-lg', isActive && 'animate-fade-up')}
             style={{ animationDelay: '220ms' }}
           >
             {slide.subtitle}
@@ -238,8 +238,8 @@ function DefaultSlide({ slide, isActive }) {
       {Icon && (
         <div className="pointer-events-none absolute right-[12%] top-1/2 hidden -translate-y-1/2 lg:block">
           <div className={clsx('relative', isActive && 'animate-float-slow')}>
-            <div className="bg-gold-foil flex h-40 w-40 items-center justify-center rounded-full shadow-2xl shadow-black/50">
-              <div className="flex h-32 w-32 items-center justify-center rounded-full border-2 border-maroon-700/40 bg-maroon-700">
+            <div className="bg-gold-foil flex h-40 w-40 items-center justify-center rounded-full shadow-2xl shadow-brand-900/30">
+              <div className="flex h-32 w-32 items-center justify-center rounded-full border-2 border-forest-700/40 bg-forest-700">
                 <Icon className="h-14 w-14 text-brand-200" strokeWidth={1.5} />
               </div>
             </div>
@@ -256,7 +256,7 @@ function Mandala({ className }) {
   const inner = Array.from({ length: 8 }, (_, i) => i * 45)
   return (
     <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
-      <g fill="none" stroke="#e6c35c" strokeWidth="0.6">
+      <g fill="none" stroke="#c4952a" strokeWidth="0.6">
         <circle cx="100" cy="100" r="96" />
         <circle cx="100" cy="100" r="90" strokeDasharray="2 3" />
         <circle cx="100" cy="100" r="62" />
@@ -269,7 +269,7 @@ function Mandala({ className }) {
           <path key={deg} d="M100 70 Q110 85 100 100 Q90 85 100 70 Z" transform={`rotate(${deg} 100 100)`} />
         ))}
         {petals.map((deg) => (
-          <circle key={`d${deg}`} cx="100" cy="7" r="1.6" fill="#e6c35c" transform={`rotate(${deg + 11.25} 100 100)`} />
+          <circle key={`d${deg}`} cx="100" cy="7" r="1.6" fill="#c4952a" transform={`rotate(${deg + 11.25} 100 100)`} />
         ))}
       </g>
     </svg>

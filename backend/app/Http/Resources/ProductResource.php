@@ -19,7 +19,8 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'price' => (float) $this->price,
             'currency' => $this->currency,
-            'thumbnail_url' => $this->thumbnail_mime ? url("/media/products/{$this->id}/thumbnail") : null,
+            // ?v= busts the year-long media cache when the image is replaced.
+            'thumbnail_url' => $this->thumbnail_mime ? url("/media/products/{$this->id}/thumbnail").'?v='.$this->updated_at?->timestamp : null,
             'status' => $this->status,
             'has_file' => (bool) $this->product_file, // never expose the actual path/url
             'category' => new CategoryResource($this->whenLoaded('category')),

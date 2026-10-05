@@ -14,7 +14,7 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'image_url' => $this->image_mime ? url("/media/categories/{$this->id}/image") : null,
+            'image_url' => $this->image_mime ? url("/media/categories/{$this->id}/image").'?v='.$this->updated_at?->timestamp : null,
             'status' => $this->status,
             'products_count' => $this->when(isset($this->products_count), $this->products_count),
             'created_at' => $this->created_at,

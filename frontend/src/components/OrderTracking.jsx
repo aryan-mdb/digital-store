@@ -31,7 +31,7 @@ export default function OrderTracking({ order }) {
 
   return (
     <Card className="overflow-hidden">
-      <div className="bg-maroon-velvet flex items-center justify-between px-5 py-4 text-[#fdf3dc]">
+      <div className="bg-forest-velvet flex items-center justify-between px-5 py-4 text-[#fdf3dc]">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-brand-200">Delivery status</p>
           <p className="font-display text-xl font-bold">
@@ -65,7 +65,7 @@ export default function OrderTracking({ order }) {
                   <span
                     className={clsx(
                       'relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 transition',
-                      done ? 'border-brand-500 bg-gold-foil text-maroon-900' : 'border-slate-300 bg-white text-slate-400'
+                      done ? 'border-brand-500 bg-gold-foil text-forest-900' : 'border-slate-300 bg-white text-slate-400'
                     )}
                   >
                     {isCurrent && <span className="animate-ping-soft absolute inset-0 rounded-full bg-brand-400/50" />}

@@ -77,7 +77,7 @@ export default function ProductDetailsPage() {
 
         <div>
           {product.category?.name && <Badge color="amber">{product.category.name}</Badge>}
-          <h1 className="mt-3 text-3xl font-bold leading-tight text-maroon-ink sm:text-4xl">{product.name}</h1>
+          <h1 className="mt-3 text-3xl font-bold leading-tight text-forest-ink sm:text-4xl">{product.name}</h1>
           <p className="mt-3 text-slate-600">{product.short_description}</p>
 
           <div className="mt-6 flex items-baseline gap-3">

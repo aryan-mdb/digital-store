@@ -48,9 +48,9 @@ export default function TrackOrderPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <div className="mb-8 text-center">
         <div className="bg-gold-foil mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full shadow-lg">
-          <PackageSearch className="h-8 w-8 text-maroon-800" />
+          <PackageSearch className="h-8 w-8 text-forest-800" />
         </div>
-        <h1 className="text-3xl font-bold text-maroon-ink sm:text-4xl">Track your order</h1>
+        <h1 className="text-3xl font-bold text-forest-ink sm:text-4xl">Track your order</h1>
         <p className="mt-2 text-slate-500">Enter your order number and the mobile number used at checkout.</p>
       </div>
 
