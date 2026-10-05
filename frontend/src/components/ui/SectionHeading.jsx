@@ -1,7 +1,7 @@
 /** Label-style heading: small gold eyebrow, serif maroon title, ornamental flourish. */
 export default function SectionHeading({ eyebrow, title, subtitle, className = '' }) {
   return (
-    <div className={`mb-8 text-center ${className}`}>
+    <div className={`mb-8 text-center ${className}`} data-reveal="up">
       {eyebrow && <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-700">{eyebrow}</p>}
       <h2 className="mt-1 text-3xl font-bold text-forest-ink sm:text-4xl">{title}</h2>
       <Flourish className="mx-auto mt-3 h-4 w-48 text-brand-500" />

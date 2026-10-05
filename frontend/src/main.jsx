@@ -7,6 +7,7 @@ import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { SiteSettingsProvider } from './context/SiteSettingsContext'
+import MotionEffects from './components/MotionEffects'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')).render(
         <SiteSettingsProvider>
           <AuthProvider>
             <App />
+            <MotionEffects />
             <Toaster
               position="top-right"
               toastOptions={{

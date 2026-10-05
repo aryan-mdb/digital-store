@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react'
 
 const variants = {
   primary:
-    'bg-gold-foil text-forest-900 font-bold shadow-md shadow-brand-900/25 hover:brightness-105 focus-visible:outline-brand-500',
+    'btn-shine bg-gold-foil text-forest-900 font-bold shadow-md shadow-brand-900/25 hover:-translate-y-0.5 hover:shadow-lg hover:brightness-105 focus-visible:outline-brand-500',
   maroon: 'bg-forest-600 text-brand-100 font-semibold shadow-md shadow-forest-900/30 hover:bg-forest-700 focus-visible:outline-forest-500',
   whatsapp: 'bg-[#25D366] text-white font-semibold hover:bg-[#1ebe5b] focus-visible:outline-[#25D366]',
   secondary: 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50',
@@ -30,7 +30,7 @@ export default function Button({
     <button
       disabled={disabled || loading}
       className={clsx(
-        'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors',
+        'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 active:scale-[0.96]',
         'disabled:cursor-not-allowed disabled:opacity-60',
         'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
         variants[variant],

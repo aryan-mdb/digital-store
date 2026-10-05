@@ -7,7 +7,7 @@ import BrandLogo from '../ui/BrandLogo'
 import ThemeToggle from '../ui/ThemeToggle'
 
 const navLinkClass = ({ isActive }) =>
-  `text-sm font-medium transition-colors ${isActive ? 'text-forest-ink font-semibold' : 'text-slate-600 hover:text-slate-900'}`
+  `nav-underline text-sm font-medium transition-colors ${isActive ? 'active text-forest-ink font-semibold' : 'text-slate-600 hover:text-slate-900'}`
 
 const mobileNavLinkClass = ({ isActive }) =>
   `flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${

@@ -45,6 +45,30 @@ function Carousel({ slides }) {
 
   const go = (i) => setActive(((i % count) + count) % count)
 
+  // Parallax: slides drift down and fade slightly as the page scrolls past.
+  // Written straight to the DOM (no re-render per scroll frame).
+  const parallaxRef = useRef(null)
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    let frame = null
+    const onScroll = () => {
+      if (frame) return
+      frame = requestAnimationFrame(() => {
+        frame = null
+        const y = Math.min(window.scrollY, 600)
+        if (parallaxRef.current) {
+          parallaxRef.current.style.transform = `translate3d(0, ${y * 0.35}px, 0)`
+          parallaxRef.current.style.opacity = String(1 - y / 900)
+        }
+      })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }, [])
+
   const onTouchStart = (e) => (touchX.current = e.touches[0].clientX)
   const onTouchEnd = (e) => {
     if (touchX.current === null) return
@@ -62,18 +86,20 @@ function Carousel({ slides }) {
       onTouchEnd={onTouchEnd}
       aria-roledescription="carousel"
     >
-      {slides.map((slide, i) => (
-        <div
-          key={slide.id}
-          className={clsx(
-            'absolute inset-0 transition-opacity duration-700 ease-out',
-            i === active ? 'z-10 opacity-100' : 'pointer-events-none z-0 opacity-0'
-          )}
-          aria-hidden={i !== active}
-        >
-          {slide.image_url ? <ImageSlide slide={slide} isActive={i === active} /> : <DefaultSlide slide={slide} isActive={i === active} />}
-        </div>
-      ))}
+      <div ref={parallaxRef} className="absolute inset-0 will-change-transform">
+        {slides.map((slide, i) => (
+          <div
+            key={slide.id}
+            className={clsx(
+              'absolute inset-0 transition-opacity duration-700 ease-out',
+              i === active ? 'z-10 opacity-100' : 'pointer-events-none z-0 opacity-0'
+            )}
+            aria-hidden={i !== active}
+          >
+            {slide.image_url ? <ImageSlide slide={slide} isActive={i === active} /> : <DefaultSlide slide={slide} isActive={i === active} />}
+          </div>
+        ))}
+      </div>
 
       {count > 1 && (
         <>

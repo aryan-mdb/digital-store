@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatCurrency } from '../utils/format'
@@ -6,12 +7,13 @@ import ImagePlaceholder from './ui/ImagePlaceholder'
 
 const MAX_TILT = 8
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, revealDelay = 0 }) {
   const cardRef = useRef(null)
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [glow, setGlow] = useState({ x: 50, y: 50 })
   const [hovering, setHovering] = useState(false)
   const [imgFailed, setImgFailed] = useState(false)
+  const [pressed, setPressed] = useState(false)
 
   const handleMouseMove = (e) => {
     const rect = cardRef.current?.getBoundingClientRect()
@@ -31,18 +33,28 @@ export default function ProductCard({ product }) {
     setTilt({ x: 0, y: 0 })
   }
 
+  const scale = pressed ? 'scale(0.97)' : hovering ? 'scale(1.02)' : 'scale(1)'
+
   return (
+    <div data-reveal="up" style={{ '--reveal-delay': `${revealDelay}ms` }} className="h-full">
     <Link
       ref={cardRef}
+      data-ripple
+      onPointerDown={() => setPressed(true)}
+      onPointerUp={() => setPressed(false)}
+      onPointerCancel={() => setPressed(false)}
       to={`/products/${product.slug}`}
       onMouseEnter={() => setHovering(true)}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleLeave}
-      style={{
-        transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) ${hovering ? 'scale(1.02)' : 'scale(1)'}`,
-        transition: hovering ? 'transform 80ms linear' : 'transform 400ms ease-out',
+      onMouseLeave={() => {
+        handleLeave()
+        setPressed(false)
       }}
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface-1 shadow-sm shadow-forest-900/10 will-change-transform hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-900/30"
+      style={{
+        transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) ${scale}`,
+        transition: hovering && !pressed ? 'transform 80ms linear' : 'transform 300ms ease-out',
+      }}
+      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface-1 shadow-sm shadow-forest-900/10 will-change-transform hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-900/30"
     >
       {hovering && (
         <div
@@ -66,6 +78,9 @@ export default function ProductCard({ product }) {
           <ImagePlaceholder />
         )}
         <div className="animate-shimmer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <span className="absolute bottom-3 right-3 inline-flex translate-y-3 items-center gap-1 rounded-full bg-forest-700 px-3 py-1 text-xs font-semibold text-ghee-100 opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          View <ArrowRight className="h-3 w-3" />
+        </span>
       </div>
 
       <div className="relative flex flex-1 flex-col gap-2 p-4">
@@ -84,5 +99,6 @@ export default function ProductCard({ product }) {
         </div>
       </div>
     </Link>
+    </div>
   )
 }
