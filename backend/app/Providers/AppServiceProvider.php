@@ -7,6 +7,7 @@ use App\Observers\OrderObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,5 +30,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Order::observe(OrderObserver::class);
+
+        // Behind a hosting proxy PHP may see plain http; generated links
+        // (e.g. /media image URLs) must still be https in production.
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
