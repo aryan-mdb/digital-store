@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /dashboard
 
-Sitemap: https://digital-store-frontend-h4h0.onrender.com/sitemap.xml
+Sitemap: https://payanfoods.com/sitemap.xml
