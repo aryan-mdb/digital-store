@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(GheeCatalogSeeder::class);
 
-        if ($isFreshDatabase) {
+        // Demo shoppers only outside production (factories need the dev-only faker package).
+        if ($isFreshDatabase && ! app()->isProduction()) {
             User::factory(5)->create();
         }
     }
