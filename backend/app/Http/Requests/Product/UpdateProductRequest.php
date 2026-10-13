@@ -23,6 +23,7 @@ class UpdateProductRequest extends FormRequest
             'status' => ['nullable', 'in:active,inactive'],
             'thumbnail' => ['nullable', 'image', 'max:20480'],
             'product_file' => ['nullable', 'file', 'max:102400'],
+            'remove_product_file' => ['sometimes', 'boolean'],
         ];
     }
 }

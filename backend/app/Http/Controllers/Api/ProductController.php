@@ -93,7 +93,7 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $data = $request->safe()->except(['thumbnail', 'product_file']);
+        $data = $request->safe()->except(['thumbnail', 'product_file', 'remove_product_file']);
 
         if ($request->hasFile('thumbnail')) {
             $data = array_merge($data, $this->files->thumbnailDataFromUpload($request->file('thumbnail')));
@@ -101,6 +101,10 @@ class ProductController extends Controller
 
         if ($request->hasFile('product_file')) {
             $data['product_file'] = $this->files->replaceProductFile($product, $request->file('product_file'));
+        } elseif ($request->boolean('remove_product_file')) {
+            // Admin switched a download product to a shipped one.
+            $this->files->deleteAll($product);
+            $data['product_file'] = null;
         }
 
         $product->update($data);

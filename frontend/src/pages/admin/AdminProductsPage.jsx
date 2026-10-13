@@ -26,6 +26,7 @@ const emptyForm = {
   status: 'active',
   thumbnail: null,
   product_file: null,
+  digital: false,
 }
 
 export default function AdminProductsPage() {
@@ -85,6 +86,7 @@ export default function AdminProductsPage() {
       status: product.status,
       thumbnail: null,
       product_file: null,
+      digital: Boolean(product.has_file),
     })
     setModalOpen(true)
   }
@@ -102,7 +104,9 @@ export default function AdminProductsPage() {
       payload.append('currency', form.currency || 'INR')
       payload.append('status', form.status)
       if (form.thumbnail) payload.append('thumbnail', form.thumbnail)
-      if (form.product_file) payload.append('product_file', form.product_file)
+      if (form.digital && form.product_file) payload.append('product_file', form.product_file)
+      // Unticking "digital" on an existing download product turns it into a shipped product.
+      if (editing?.has_file && !form.digital) payload.append('remove_product_file', '1')
 
       if (editing) {
         await productService.update(editing.id, payload)
@@ -289,16 +293,35 @@ export default function AdminProductsPage() {
           </Select>
 
           <Input
-            label="Thumbnail"
+            label={editing ? 'Product photo (leave blank to keep current)' : 'Product photo'}
             type="file"
             accept="image/*"
             onChange={(e) => setForm({ ...form, thumbnail: e.target.files[0] })}
           />
-          <Input
-            label={editing ? 'Downloadable File (leave blank to keep current)' : 'Downloadable File (optional — leave blank for physical products)'}
-            type="file"
-            onChange={(e) => setForm({ ...form, product_file: e.target.files[0] })}
-          />
+          <p className="-mt-2 text-xs text-slate-500">Large photos are resized and compressed automatically.</p>
+
+          <label className="flex items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm">
+            <input
+              type="checkbox"
+              className="mt-0.5 h-4 w-4 accent-[#22603a]"
+              checked={form.digital}
+              onChange={(e) => setForm({ ...form, digital: e.target.checked })}
+            />
+            <span>
+              <span className="font-medium text-slate-800">Digital product (download after payment)</span>
+              <span className="block text-xs text-slate-500">
+                Leave unticked for ghee and other shipped products — they get a delivery address, Cash on Delivery and order tracking.
+              </span>
+            </span>
+          </label>
+          {form.digital && (
+            <Input
+              label={editing?.has_file ? 'Download file (leave blank to keep current)' : 'Download file'}
+              type="file"
+              required={!editing?.has_file}
+              onChange={(e) => setForm({ ...form, product_file: e.target.files[0] })}
+            />
+          )}
         </form>
       </Modal>
 

@@ -8,6 +8,7 @@ use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Support\ImageOptimizer;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -48,8 +49,7 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $data['image_data'] = base64_encode(file_get_contents($request->file('image')->getRealPath()));
-            $data['image_mime'] = $request->file('image')->getMimeType();
+            [$data['image_data'], $data['image_mime']] = ImageOptimizer::fromUpload($request->file('image'), 600);
         }
 
         $category = Category::create($data);
@@ -62,8 +62,7 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $data['image_data'] = base64_encode(file_get_contents($request->file('image')->getRealPath()));
-            $data['image_mime'] = $request->file('image')->getMimeType();
+            [$data['image_data'], $data['image_mime']] = ImageOptimizer::fromUpload($request->file('image'), 600);
         }
 
         $category->update($data);

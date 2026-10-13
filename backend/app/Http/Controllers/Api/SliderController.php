@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Concerns\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Slider;
+use App\Support\ImageOptimizer;
 use Illuminate\Http\Request;
 
 /**
@@ -74,8 +75,7 @@ class SliderController extends Controller
         unset($data['image']);
 
         if ($request->hasFile('image')) {
-            $data['image_data'] = base64_encode(file_get_contents($request->file('image')->getRealPath()));
-            $data['image_mime'] = $request->file('image')->getMimeType();
+            [$data['image_data'], $data['image_mime']] = ImageOptimizer::fromUpload($request->file('image'), 1920);
         }
 
         return $data;

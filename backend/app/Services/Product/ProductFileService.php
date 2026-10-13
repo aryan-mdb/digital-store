@@ -3,6 +3,7 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
+use App\Support\ImageOptimizer;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,9 +40,11 @@ class ProductFileService
      */
     public function thumbnailDataFromUpload(UploadedFile $file): array
     {
+        [$data, $mime] = ImageOptimizer::fromUpload($file);
+
         return [
-            'thumbnail_data' => base64_encode(file_get_contents($file->getRealPath())),
-            'thumbnail_mime' => $file->getMimeType(),
+            'thumbnail_data' => $data,
+            'thumbnail_mime' => $mime,
         ];
     }
 
