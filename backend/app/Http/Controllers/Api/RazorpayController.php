@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\Product;
 use App\Services\Order\OrderService;
 use App\Services\Payment\RazorpayService;
 use App\Services\StoreSettings;
@@ -56,7 +57,7 @@ class RazorpayController extends Controller
             'key_id' => $this->razorpay->keyId(),
             'razorpay_order_id' => $razorpayOrderId,
             'amount' => (int) round((float) $order->total_amount * 100),
-            'currency' => strtoupper($order->currency ?: 'INR'),
+            'currency' => Product::normalizeCurrency($order->currency),
             'name' => config('app.name'),
             'description' => 'Order '.$order->order_number,
             'prefill' => [

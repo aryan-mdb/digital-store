@@ -66,7 +66,7 @@ class OrderService
                 'order_number' => Order::generateOrderNumber(),
                 'total_amount' => $remaining,
                 'wallet_amount_used' => $walletAmountUsed,
-                'currency' => $product->currency,
+                'currency' => Product::normalizeCurrency($product->currency),
                 'status' => $isFullyCovered ? Order::STATUS_COMPLETED : Order::STATUS_PENDING,
                 'payment_status' => $isFullyCovered ? Order::PAYMENT_PAID : Order::PAYMENT_PENDING,
                 'payment_method' => $isFullyCovered ? Order::METHOD_WALLET : $paymentMethod,

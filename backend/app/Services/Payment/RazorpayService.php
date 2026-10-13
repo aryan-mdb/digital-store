@@ -3,6 +3,7 @@
 namespace App\Services\Payment;
 
 use App\Models\Order;
+use App\Models\Product;
 use App\Services\StoreSettings;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
@@ -33,7 +34,7 @@ class RazorpayService
             ->post(self::API_BASE.'/orders', [
                 // Razorpay amounts are in the currency's smallest unit (paise/cents).
                 'amount' => (int) round((float) $order->total_amount * 100),
-                'currency' => strtoupper($order->currency ?: 'INR'),
+                'currency' => Product::normalizeCurrency($order->currency),
                 'receipt' => $order->order_number,
                 'notes' => ['order_id' => (string) $order->id],
             ]);

@@ -45,7 +45,24 @@ class Product extends Model
             if (empty($product->slug)) {
                 $product->slug = Str::slug($product->name).'-'.Str::random(6);
             }
+
+            $product->currency = self::normalizeCurrency($product->currency);
         });
+    }
+
+    /**
+     * Payment gateways need an ISO 4217 code, but admins naturally type
+     * "₹" or "Rs" — map those (and anything unrecognised) to INR.
+     */
+    public static function normalizeCurrency(?string $currency): string
+    {
+        $value = strtoupper(trim((string) $currency));
+
+        return match (true) {
+            in_array($value, ['$', 'US$', 'USD'], true) => 'USD',
+            preg_match('/^[A-Z]{3}$/', $value) === 1 => $value, // already an ISO code, e.g. INR
+            default => 'INR', // ₹, Rs, Rs., rupee, empty …
+        };
     }
 
     /**

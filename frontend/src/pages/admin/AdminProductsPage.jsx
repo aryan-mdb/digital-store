@@ -22,7 +22,7 @@ const emptyForm = {
   short_description: '',
   description: '',
   price: '',
-  currency: 'USD',
+  currency: 'INR',
   status: 'active',
   thumbnail: null,
   product_file: null,
@@ -81,7 +81,7 @@ export default function AdminProductsPage() {
       short_description: product.short_description || '',
       description: product.description || '',
       price: product.price,
-      currency: product.currency,
+      currency: product.currency === 'USD' ? 'USD' : 'INR',
       status: product.status,
       thumbnail: null,
       product_file: null,
@@ -99,7 +99,7 @@ export default function AdminProductsPage() {
       payload.append('short_description', form.short_description || '')
       payload.append('description', form.description || '')
       payload.append('price', form.price)
-      payload.append('currency', form.currency || 'USD')
+      payload.append('currency', form.currency || 'INR')
       payload.append('status', form.status)
       if (form.thumbnail) payload.append('thumbnail', form.thumbnail)
       if (form.product_file) payload.append('product_file', form.product_file)
@@ -273,11 +273,14 @@ export default function AdminProductsPage() {
               value={form.price}
               onChange={(e) => setForm({ ...form, price: e.target.value })}
             />
-            <Input
+            <Select
               label="Currency"
               value={form.currency}
               onChange={(e) => setForm({ ...form, currency: e.target.value })}
-            />
+            >
+              <option value="INR">₹ INR (Indian Rupee)</option>
+              <option value="USD">$ USD (US Dollar)</option>
+            </Select>
           </div>
 
           <Select label="Status" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>

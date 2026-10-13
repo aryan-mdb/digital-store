@@ -76,7 +76,7 @@ class ProductController extends Controller
     {
         $data = $request->safe()->except(['thumbnail', 'product_file']);
         $data['created_by'] = $request->user()->id;
-        $data['currency'] = $data['currency'] ?? 'USD';
+        $data['currency'] = $data['currency'] ?? 'INR';
 
         if ($request->hasFile('thumbnail')) {
             $data = array_merge($data, $this->files->thumbnailDataFromUpload($request->file('thumbnail')));

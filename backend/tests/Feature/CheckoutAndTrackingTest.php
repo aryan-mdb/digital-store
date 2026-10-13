@@ -219,6 +219,28 @@ class CheckoutAndTrackingTest extends TestCase
         ])->assertOk()->assertJsonPath('data.payment_status', 'paid');
     }
 
+    public function test_rupee_symbol_currency_is_stored_as_inr_and_razorpay_gets_inr(): void
+    {
+        $product = Product::factory()->create(['price' => 699, 'currency' => '₹', 'product_file' => null]);
+        $this->assertSame('INR', $product->fresh()->currency);
+        $this->assertSame('USD', Product::normalizeCurrency('$'));
+        $this->assertSame('INR', Product::normalizeCurrency('Rs.'));
+
+        Http::fake(['api.razorpay.com/*' => Http::response(['id' => 'order_INR1'], 200)]);
+
+        $orderId = $this->actingAs($this->buyer)->postJson('/api/orders', [
+            'product_id' => $product->id,
+            'payment_method' => 'razorpay',
+            'shipping' => $this->shipping,
+        ])->assertCreated()->json('data.id');
+
+        $this->actingAs($this->buyer)->postJson("/api/payments/razorpay/{$orderId}")
+            ->assertOk()
+            ->assertJsonPath('data.currency', 'INR');
+
+        Http::assertSent(fn ($request) => $request['currency'] === 'INR' && $request['amount'] === 69900);
+    }
+
     public function test_ten_digit_whatsapp_number_gets_india_code(): void
     {
         Setting::set('whatsapp_number', '7973968515');
