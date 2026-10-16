@@ -1,93 +1,29 @@
-import { Gift, ShieldCheck } from 'lucide-react'
-import { useState } from 'react'
+import { ShieldCheck } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
-import { apiErrorMessage } from '../../services/api'
-import Button from '../../components/ui/Button'
-import { Input } from '../../components/ui/Input'
+import OtpForm from '../../components/OtpForm'
 import usePageMeta from '../../hooks/usePageMeta'
 
 export default function RegisterPage() {
-  usePageMeta('Sign Up', 'Create a free PAYAN account to order pure cow ghee and track your deliveries.')
-  const { register } = useAuth()
+  usePageMeta('Sign Up', 'Create your PAYAN account with email or mobile verification.')
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const referralCode = searchParams.get('ref') || ''
-  const [form, setForm] = useState({ name: '', email: '', password: '', password_confirmation: '' })
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    try {
-      await register(referralCode ? { ...form, referral_code: referralCode } : form)
-      toast.success('Account created! Welcome aboard.')
-      navigate('/dashboard', { replace: true })
-    } catch (error) {
-      toast.error(apiErrorMessage(error))
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-sm">
-        <div className="mb-8 flex flex-col items-center gap-2 text-center">
-          <ShieldCheck className="h-9 w-9 text-brand-500" />
-          <h1 className="text-2xl font-bold text-slate-900">Create your account</h1>
-          <p className="text-sm text-slate-500">Pure cow ghee, delivered to your door</p>
-        </div>
-
-        {referralCode && (
-          <div className="mb-4 flex items-center gap-2 rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-sm text-brand-700">
-            <Gift className="h-4 w-4 shrink-0" />
-            You were invited with referral code <span className="font-mono font-semibold">{referralCode}</span>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <Input
-            label="Full name"
-            required
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
-          <Input
-            label="Email"
-            type="email"
-            required
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
-          <Input
-            label="Password"
-            type="password"
-            required
-            minLength={8}
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-          />
-          <Input
-            label="Confirm password"
-            type="password"
-            required
-            value={form.password_confirmation}
-            onChange={(e) => setForm({ ...form, password_confirmation: e.target.value })}
-          />
-          <Button type="submit" className="w-full" loading={loading}>
-            Create Account
-          </Button>
-        </form>
-
-        <p className="mt-4 text-center text-sm text-slate-600">
-          Already have an account?{' '}
-          <Link to="/login" className="font-medium text-brand-600 hover:underline">
-            Sign in
-          </Link>
-        </p>
+  return <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-8">
+    <div className="w-full max-w-sm">
+      <div className="mb-8 flex flex-col items-center gap-2 text-center">
+        <ShieldCheck className="h-9 w-9 text-brand-500" />
+        <h1 className="text-2xl font-bold text-slate-900">Create your account</h1>
+        <p className="text-sm text-slate-500">Register with your mobile number or email</p>
       </div>
+      {referralCode && <p className="mb-4 text-sm text-brand-700">Invited with code: {referralCode}</p>}
+      <OtpForm purpose="register" referralCode={referralCode} onSuccess={() => {
+        toast.success('Account verified. Welcome aboard!')
+        navigate('/dashboard', { replace: true })
+      }} />
+      <p className="mt-4 text-center text-sm text-slate-600">Already have an account?{' '}
+        <Link to="/login" className="font-medium text-brand-600 hover:underline">Sign in</Link>
+      </p>
     </div>
-  )
+  </div>
 }

@@ -54,6 +54,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const logout = useCallback(async () => {
+    // Clear the local session even when the server is unavailable.
     try {
       await authService.logout()
     } catch {
@@ -71,8 +72,16 @@ export function AuthProvider({ children }) {
     return data
   }, [])
 
+  const verifyOtp = useCallback(async (payload) => {
+    const { data } = await authService.verifyOtp(payload)
+    localStorage.setItem('auth_token', data.token)
+    localStorage.setItem('auth_user', JSON.stringify(data.user))
+    setUser(data.user)
+    return data.user
+  }, [])
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser, isAdmin: user?.role === 'admin' }}>
+    <AuthContext.Provider value={{ user, loading, login, register, verifyOtp, logout, refreshUser, isAdmin: user?.role === 'admin' }}>
       {children}
     </AuthContext.Provider>
   )

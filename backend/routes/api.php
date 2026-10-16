@@ -24,8 +24,10 @@ use Illuminate\Support\Facades\Route;
 | Public
 |--------------------------------------------------------------------------
 */
-Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:6,1');
+// New accounts must complete /otp/send and /otp/verify.
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
+Route::post('/otp/send', [\App\Http\Controllers\Api\Auth\OtpController::class, 'send'])->middleware('throttle:6,1');
+Route::post('/otp/verify', [\App\Http\Controllers\Api\Auth\OtpController::class, 'verify'])->middleware('throttle:10,1');
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);

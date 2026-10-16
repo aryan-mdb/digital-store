@@ -7,6 +7,7 @@ import { apiErrorMessage } from '../../services/api'
 import Button from '../../components/ui/Button'
 import { Input } from '../../components/ui/Input'
 import usePageMeta from '../../hooks/usePageMeta'
+import OtpForm from '../../components/OtpForm'
 
 export default function LoginPage() {
   usePageMeta('Login', 'Sign in to your PAYAN account.')
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const location = useLocation()
   const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
+  const [usePassword, setUsePassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -37,10 +39,13 @@ export default function LoginPage() {
         <div className="mb-8 flex flex-col items-center gap-2 text-center">
           <ShieldCheck className="h-9 w-9 text-brand-500" />
           <h1 className="text-2xl font-bold text-slate-900">Welcome back</h1>
-          <p className="text-sm text-slate-500">Sign in to continue to your account</p>
+          <p className="text-sm text-slate-500">Use your mobile OTP to sign in or create an account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        {!usePassword ? <OtpForm purpose="login" onSuccess={(user) => {
+          toast.success('Welcome back!')
+          navigate(location.state?.from?.pathname || (user.role === 'admin' ? '/admin' : '/dashboard'), { replace: true })
+        }} /> : <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <Input
             label="Email"
             type="email"
@@ -58,7 +63,10 @@ export default function LoginPage() {
           <Button type="submit" className="w-full" loading={loading}>
             Sign In
           </Button>
-        </form>
+        </form>}
+        <button type="button" onClick={() => setUsePassword(!usePassword)} className="mt-4 w-full text-sm text-brand-600">
+          {usePassword ? 'Sign in with OTP' : 'Sign in with email & password'}
+        </button>
 
         <p className="mt-4 text-center text-sm text-slate-600">
           Don&apos;t have an account?{' '}
