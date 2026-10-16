@@ -4,15 +4,15 @@ Run `php artisan migrate` and `php artisan config:clear` with PHP 8.2+.
 
 ## Mobile
 
-Create a Twilio Verify service with six-digit codes and configure backend environment variables:
+Configure an approved MSG91 Flow/SMS template with a `var1` variable for the six-digit OTP:
 
 ```
-TWILIO_ACCOUNT_SID=
-TWILIO_AUTH_TOKEN=
-TWILIO_VERIFY_SERVICE_SID=
+MSG91_AUTH_KEY=
+MSG91_FLOW_ID=
+MSG91_OTP_VARIABLE=var1
 ```
 
-Enable recipient countries in Verify geographic permissions. Trial recipients must be verified in the Twilio console first. Trial credits/time are limited; public customer SMS requires a paid account. https://www.twilio.com/docs/usage/trials/try-out-verify
+Keep the auth key only in the server `.env`. The Flow API sends the generated code; Laravel stores only its hash and checks it locally. Complete MSG91 balance, KYC, sender and DLT/template requirements before sending live SMS. API acceptance does not guarantee delivery; check MSG91 delivery reports for failures. Existing Twilio challenges must be requested again after switching.
 
 Ten-digit Indian numbers use +91 automatically; other countries require +country code. Missing credentials return a delivery error, never a simulated success.
 

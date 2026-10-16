@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'twilio' => [
-        'account_sid' => env('TWILIO_ACCOUNT_SID'),
-        'auth_token' => env('TWILIO_AUTH_TOKEN'),
-        'verify_service_sid' => env('TWILIO_VERIFY_SERVICE_SID'),
+    'msg91' => [
+        'auth_key' => env('MSG91_AUTH_KEY'),
+        'flow_id' => env('MSG91_FLOW_ID'),
+        'otp_variable' => env('MSG91_OTP_VARIABLE', 'var1'),
     ],
 
     /*

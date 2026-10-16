@@ -59,19 +59,19 @@ class OtpAuthTest extends TestCase
         $this->assertDatabaseCount('personal_access_tokens', 1);
     }
 
-    public function test_phone_registration_uses_provider_verification(): void
+    public function test_phone_registration_sends_msg91_code_and_checks_its_hash(): void
     {
-        config(['services.twilio' => ['account_sid' => 'account', 'auth_token' => 'secret', 'verify_service_sid' => 'service']]);
-        Http::fake([
-            '*/Verifications' => Http::response(['sid' => 'verification', 'status' => 'pending']),
-            '*/VerificationCheck' => Http::response(['status' => 'approved']),
-        ]);
+        config(['services.msg91' => ['auth_key' => 'secret', 'flow_id' => 'flow', 'otp_variable' => 'var1']]);
+        Http::fake(['*/flow/' => Http::response(['type' => 'success', 'message' => 'request-id'])]);
         $sent = $this->postJson('/api/otp/send', ['channel' => 'phone', 'identifier' => '9876543210', 'purpose' => 'register', 'name' => 'Asha'])->assertOk();
         $this->assertDatabaseCount('users', 0);
-        $this->postJson('/api/otp/verify', ['challenge_id' => $sent->json('data.challenge_id'), 'code' => '123456'])
+        $code = Http::recorded()[0][0]['var1'];
+        $this->assertTrue(Hash::check($code, DB::table('otp_challenges')->first()->code_hash));
+        $this->postJson('/api/otp/verify', ['challenge_id' => $sent->json('data.challenge_id'), 'code' => $code])
             ->assertOk()->assertJsonPath('data.user.phone', '+919876543210')->assertJsonPath('data.user.email', null);
         $this->assertNotNull(User::first()->phone_verified_at);
-        Http::assertSent(fn ($request) => str_ends_with($request->url(), '/VerificationCheck') && $request['VerificationSid'] === 'verification');
+        Http::assertSent(fn ($request) => $request['mobiles'] === '919876543210' && $request['flow_id'] === 'flow' && $request->hasHeader('authkey', 'secret'));
+        Http::assertSentCount(1);
     }
 
     public function test_email_delivery_does_not_create_account_and_resend_is_throttled(): void
@@ -83,19 +83,18 @@ class OtpAuthTest extends TestCase
         $this->postJson('/api/otp/send', $payload)->assertStatus(429);
     }
 
-    public function test_new_mobile_can_login_only_after_provider_approves_the_code(): void
+    public function test_new_mobile_requires_correct_code_and_prevents_replay(): void
     {
-        config(['services.twilio' => ['account_sid' => 'account', 'auth_token' => 'secret', 'verify_service_sid' => 'service']]);
-        Http::fake([
-            '*/Verifications' => Http::response(['sid' => 'verification', 'status' => 'pending']),
-            '*/VerificationCheck' => Http::sequence()->push(['status' => 'pending'])->push(['status' => 'approved']),
-        ]);
+        config(['services.msg91' => ['auth_key' => 'secret', 'flow_id' => 'flow', 'otp_variable' => 'var1']]);
+        Http::fake(['*/flow/' => Http::response(['type' => 'success'])]);
         $sent = $this->postJson('/api/otp/send', ['channel' => 'phone', 'identifier' => '9876543210', 'purpose' => 'login'])->assertOk();
         $this->assertDatabaseCount('users', 0);
-        $payload = ['challenge_id' => $sent->json('data.challenge_id'), 'code' => '123456'];
+        $code = Http::recorded()[0][0]['var1'];
+        $payload = ['challenge_id' => $sent->json('data.challenge_id'), 'code' => $code === '999999' ? '888888' : '999999'];
         $this->postJson('/api/otp/verify', $payload)->assertStatus(422);
         $this->assertDatabaseCount('personal_access_tokens', 0);
         $this->assertDatabaseCount('users', 0);
+        $payload['code'] = $code;
         $this->postJson('/api/otp/verify', $payload)->assertOk()->assertJsonPath('data.user.phone', '+919876543210');
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('personal_access_tokens', 1);
@@ -112,12 +111,12 @@ class OtpAuthTest extends TestCase
             ->assertStatus(429)->assertHeader('Retry-After');
     }
 
-    public function test_trial_number_rejection_is_clear_and_does_not_create_a_challenge(): void
+    public function test_msg91_error_even_with_http_success_does_not_create_a_challenge(): void
     {
-        config(['services.twilio' => ['account_sid' => 'account', 'auth_token' => 'secret', 'verify_service_sid' => 'service']]);
-        Http::fake(['*/Verifications' => Http::response(['code' => 21608], 400)]);
+        config(['services.msg91' => ['auth_key' => 'secret', 'flow_id' => 'flow', 'otp_variable' => 'var1']]);
+        Http::fake(['*/flow/' => Http::response(['type' => 'error', 'message' => 'Invalid template'])]);
         $this->postJson('/api/otp/send', ['channel' => 'phone', 'identifier' => '9876543210', 'purpose' => 'login'])
-            ->assertStatus(503)->assertJsonPath('message', 'This number is not enabled for SMS on our trial account. Contact support to enable your number.');
+            ->assertStatus(503)->assertJsonPath('message', 'SMS could not be sent. Please try again later or contact support.');
         $this->assertDatabaseCount('otp_challenges', 0);
         $this->assertDatabaseCount('users', 0);
     }

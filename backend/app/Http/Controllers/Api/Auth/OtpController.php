@@ -66,17 +66,19 @@ class OtpController extends Controller
         $sid = null;
         try {
             if ($data['channel'] === 'phone') {
-                $response = $this->twilio('Verifications', ['To' => $identifier, 'Channel' => 'sms']);
-                if (! $response->successful() || $response->json('status') !== 'pending' || ! $response->json('sid')) {
-                    $message = match ((int) $response->json('code')) {
-                        21608 => 'This number is not enabled for SMS on our trial account. Contact support to enable your number.',
-                        21408, 60605 => 'SMS delivery is not enabled for this country. Please contact support.',
-                        60203 => 'Too many SMS requests. Please wait a few minutes before trying again.',
-                        default => 'SMS could not be sent. Please try again later or contact support.',
-                    };
-                    return $this->error($message, null, 503);
+                $settings = config('services.msg91');
+                if (empty($settings['auth_key']) || empty($settings['flow_id'])) {
+                    throw new \RuntimeException('SMS provider is not configured.');
                 }
-                $sid = $response->json('sid');
+                $response = Http::acceptJson()->withHeaders(['authkey' => $settings['auth_key']])->timeout(15)
+                    ->post('https://api.msg91.com/api/v5/flow/', [
+                        'flow_id' => $settings['flow_id'],
+                        'mobiles' => ltrim($identifier, '+'),
+                        $settings['otp_variable'] => $code,
+                    ]);
+                if (! $response->successful() || $response->json('type') !== 'success') {
+                    return $this->error('SMS could not be sent. Please try again later or contact support.', null, 503);
+                }
             } else {
                 if (app()->isProduction() && in_array(config('mail.default'), ['log', 'array'])) {
                     return $this->error('Email delivery is not configured. Contact support.', null, 503);
@@ -94,7 +96,7 @@ class OtpController extends Controller
             'id' => $id, 'channel' => $data['channel'], 'identifier' => $identifier,
             'purpose' => $data['purpose'], 'name' => $data['name'] ?? null,
             'referral_code' => $data['referral_code'] ?? null,
-            'code_hash' => $data['channel'] === 'email' ? Hash::make($code) : null,
+            'code_hash' => Hash::make($code),
             'provider_sid' => $sid, 'attempts' => 0, 'expires_at' => now()->addMinutes(5),
         ]);
         return $this->success(['challenge_id' => $id, 'expires_in' => 300, 'resend_after' => 60],
@@ -111,11 +113,7 @@ class OtpController extends Controller
             }
             DB::table('otp_challenges')->where('id', $challenge->id)->increment('attempts');
             try {
-                $valid = $challenge->channel === 'email'
-                    ? Hash::check($data['code'], $challenge->code_hash)
-                    : (($response = $this->twilio('VerificationCheck', [
-                        'VerificationSid' => $challenge->provider_sid, 'Code' => $data['code'],
-                    ]))->successful() && $response->json('status') === 'approved');
+                $valid = ! empty($challenge->code_hash) && Hash::check($data['code'], $challenge->code_hash);
             } catch (\Throwable $exception) {
                 return $this->error('Verification is unavailable. Please try again later.', null, 503);
             }
@@ -146,13 +144,4 @@ class OtpController extends Controller
         });
     }
 
-    private function twilio(string $path, array $payload)
-    {
-        $settings = config('services.twilio');
-        if (empty($settings['account_sid']) || empty($settings['auth_token']) || empty($settings['verify_service_sid'])) {
-            throw new \RuntimeException('SMS provider is not configured.');
-        }
-        return Http::asForm()->withBasicAuth($settings['account_sid'], $settings['auth_token'])->timeout(15)
-            ->post('https://verify.twilio.com/v2/Services/'.rawurlencode($settings['verify_service_sid']).'/'.$path, $payload);
-    }
 }
