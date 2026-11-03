@@ -26,6 +26,20 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // A ready-made shopper for client demos, since sign-up needs an OTP.
+        if (env('DEMO_USER_EMAIL') && env('DEMO_USER_PASSWORD')) {
+            User::updateOrCreate(
+                ['email' => (string) env('DEMO_USER_EMAIL')],
+                [
+                    'name' => 'Demo Customer',
+                    'password' => Hash::make((string) env('DEMO_USER_PASSWORD')),
+                    'role' => User::ROLE_BASIC_USER,
+                    'status' => User::STATUS_ACTIVE,
+                    'email_verified_at' => now(),
+                ]
+            );
+        }
+
         $isFreshDatabase = ! Category::query()->exists();
 
         $this->call(LernCatalogSeeder::class);
