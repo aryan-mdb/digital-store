@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the default admin, the PAYAN ghee catalog and (on a fresh
+     * Seed the default admin, the LERN guide catalog and (on a fresh
      * database) 5 demo basic users.
      */
     public function run(): void
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         $isFreshDatabase = ! Category::query()->exists();
 
-        $this->call(GheeCatalogSeeder::class);
+        $this->call(LernCatalogSeeder::class);
 
         // Demo shoppers only outside production (factories need the dev-only faker package).
         if ($isFreshDatabase && ! app()->isProduction()) {
