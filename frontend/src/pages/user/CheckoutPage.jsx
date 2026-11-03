@@ -187,7 +187,7 @@ export default function CheckoutPage() {
                     <span
                       className={clsx(
                         'flex h-11 w-11 shrink-0 items-center justify-center rounded-full',
-                        method === m.key ? 'bg-gold-foil text-forest-900' : 'bg-slate-100 text-slate-500'
+                        method === m.key ? 'bg-gold-foil text-white' : 'bg-slate-100 text-slate-500'
                       )}
                     >
                       <m.icon className="h-5 w-5" />

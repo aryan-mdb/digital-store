@@ -3,29 +3,29 @@ import { useState } from 'react'
 
 const QUESTIONS = [
   {
-    q: 'What is the traditional "bilona" method of making ghee?',
+    q: 'What do the four letters of LERN stand for?',
     options: [
-      'Boiling milk directly',
-      'Churning curd by hand to get makhan, then slow-cooking it',
-      'Mixing oil with butter',
-      'Using a machine to separate cream',
+      'Look, Explore, Read, Note',
+      'Learn, Earn, Return, Nurture',
+      'Lead, Engage, Reach, Network',
+      'Listen, Edit, Run, Next',
     ],
     answer: 1,
   },
   {
-    q: 'PAYAN ghee is made from the milk of which cows?',
-    options: ['Desi cows', 'Buffaloes', 'Goats', 'Camels'],
+    q: 'Where do you read a guide after buying it?',
+    options: ['In your dashboard', 'Only by email', 'On a printed copy', 'Nowhere'],
     answer: 0,
   },
   {
-    q: 'Which of these is NOT a way to pay at PAYAN?',
-    options: ['UPI via Razorpay', 'Cash on Delivery', 'Debit / credit card', 'Cheque by post'],
+    q: 'Which of these is NOT a way to pay at LERN?',
+    options: ['UPI via Razorpay', 'Crypto (USDT)', 'Debit / credit card', 'Cheque by post'],
     answer: 3,
   },
   {
-    q: 'What does a good desi ghee look like when it sets?',
-    options: ['Thin and watery', 'Grainy (danedar) and golden', 'Bright white', 'Green'],
-    answer: 1,
+    q: 'Which step of the LERN method is about habits and systems?',
+    options: ['Learn', 'Earn', 'Return', 'Nurture'],
+    answer: 3,
   },
   {
     q: 'What can you use your wallet balance for?',

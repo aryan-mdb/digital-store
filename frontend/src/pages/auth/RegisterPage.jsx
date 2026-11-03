@@ -5,7 +5,7 @@ import OtpForm from '../../components/OtpForm'
 import usePageMeta from '../../hooks/usePageMeta'
 
 export default function RegisterPage() {
-  usePageMeta('Sign Up', 'Create your PAYAN account with email or mobile verification.')
+  usePageMeta('Sign Up', 'Create your LERN account with email or mobile verification.')
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const referralCode = searchParams.get('ref') || ''

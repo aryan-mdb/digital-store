@@ -1,83 +1,79 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------
-   PAYAN palette — forest green, antique gold, ghee yellow and cream,
-   taken from the brand's round logo label. Every bg-brand-*,
-   text-brand-*, border-brand-* class in the app is driven by these
-   tokens, so this single block re-themes every button, link and active
-   nav state across the whole site.
+   LERN palette — near-black surfaces with a single neon-red accent.
+   Every bg-brand-*, text-brand-*, border-brand-* class in the app is
+   driven by these tokens, so this block re-themes every button, link
+   and active nav state across the whole site. The forest/ghee scales
+   are kept as names (older components use them) but now resolve to
+   the neon accent and to light text respectively.
 --------------------------------------------------------------------- */
 @theme {
-  --font-sans: "Mukta", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  /* Antique gold (lid / foil) */
-  --color-brand-50: #fdf8e8;
-  --color-brand-100: #f9edc6;
-  --color-brand-200: #f1da8c;
-  --color-brand-300: #e6c35c;
-  --color-brand-400: #d8ab38;
-  --color-brand-500: #c4952a;
-  --color-brand-600: #a67a1e;
-  --color-brand-700: #845f1a;
-  --color-brand-800: #684a19;
-  --color-brand-900: #4d3614;
+  /* Neon red accent */
+  --color-brand-50: #fff0f2;
+  --color-brand-100: #ffdce1;
+  --color-brand-200: #ffb3be;
+  --color-brand-300: #ff8093;
+  --color-brand-400: #ff5269;
+  --color-brand-500: #ff2e4d;
+  --color-brand-600: #e81c3c;
+  --color-brand-700: #c21330;
+  --color-brand-800: #9a1229;
+  --color-brand-900: #6f0f1f;
 
-  /* Forest green (PAYAN wordmark / "A2 COW GHEE" banner) */
-  --color-forest-50: #eef6ef;
-  --color-forest-100: #d6eadb;
-  --color-forest-200: #acd4b6;
-  --color-forest-300: #79b48a;
-  --color-forest-400: #4b9061;
-  --color-forest-500: #2f7445;
-  --color-forest-600: #22603a;
-  --color-forest-700: #1d5132;
-  --color-forest-800: #173f27;
-  --color-forest-900: #102c1b;
+  /* Former "forest" — mid shades are the accent (buttons), the deep end is page black. */
+  --color-forest-50: #fff0f2;
+  --color-forest-100: #ffdce1;
+  --color-forest-200: #ffb3be;
+  --color-forest-300: #ff8093;
+  --color-forest-400: #ff5269;
+  --color-forest-500: #ff2e4d;
+  --color-forest-600: #ff2e4d;
+  --color-forest-700: #e81c3c;
+  --color-forest-800: #111114;
+  --color-forest-900: #08080a;
 
-  /* Ghee yellow (the golden pour) */
-  --color-ghee-50: #fffbea;
-  --color-ghee-100: #fff4c7;
-  --color-ghee-200: #ffe88f;
-  --color-ghee-300: #fbd75a;
-  --color-ghee-400: #f5c531;
-  --color-ghee-500: #e5ad12;
+  /* Former "ghee" — light text tones used on accent surfaces. */
+  --color-ghee-50: #ffffff;
+  --color-ghee-100: #ffffff;
+  --color-ghee-200: #ececf1;
+  --color-ghee-300: #ff8093;
+  --color-ghee-400: #ff2e4d;
+  --color-ghee-500: #e81c3c;
 
-  /* Leaf green (secondary accents) */
-  --color-leaf-500: #2f7445;
-  --color-leaf-600: #22603a;
+  --color-leaf-500: #ff2e4d;
+  --color-leaf-600: #e81c3c;
 
-  /* Defaults = light "cream & ghee" theme. Overridden under [data-theme="dark"]. */
-  --color-surface-0: #fdf8e9;
-  --color-surface-1: #fffdf6;
-  --color-surface-2: #fbf0cf;
-  --color-surface-3: #f5e2a8;
+  /* Surfaces: page, raised card, soft input/hover, line. */
+  --color-surface-0: #08080a;
+  --color-surface-1: #111114;
+  --color-surface-2: #18181c;
+  --color-surface-3: #26262c;
 
   --animate-fade-up: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   --animate-spin-slow: spin 40s linear infinite;
 }
 
-:root {
-  --ink: #24301f;
-  --line: rgba(29, 81, 50, 0.14);
-  --line-strong: rgba(29, 81, 50, 0.26);
-  color-scheme: light;
+/* The site is dark-only, so both theme attributes resolve to the same values. */
+:root,
+[data-theme="dark"],
+[data-theme="light"] {
+  --ink: #ececf1;
+  --muted: #8b8b96;
+  --line: #26262c;
+  --line-strong: #34343c;
+  --neon: #ff2e4d;
+  --neon-soft: rgba(255, 46, 77, 0.14);
+  --glow: 0 0 18px rgba(255, 46, 77, 0.55), 0 0 42px rgba(255, 46, 77, 0.25);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  color-scheme: dark;
 }
 
-/* ---------------------------------------------------------------------
-   Dark "evening field" theme. data-theme is set on <html> (by an inline
-   script in index.html, before paint, and kept in sync by ThemeContext)
-   — light parchment is the default with no attribute needed.
---------------------------------------------------------------------- */
-[data-theme="dark"] {
-  --color-surface-0: #121a12;
-  --color-surface-1: #1a251b;
-  --color-surface-2: #223024;
-  --color-surface-3: #2d3e2f;
-  --ink: #f7f0d8;
-  --line: rgba(216, 171, 56, 0.14);
-  --line-strong: rgba(216, 171, 56, 0.26);
-  color-scheme: dark;
+html {
+  scroll-behavior: smooth;
 }
 
 html, body, #root {
@@ -87,180 +83,284 @@ html, body, #root {
 body {
   @apply bg-surface-0 font-sans antialiased;
   color: var(--ink);
-  background-image:
-    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(245, 197, 49, 0.26), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(47, 116, 69, 0.08), transparent),
-    radial-gradient(ellipse 50% 40% at 50% 110%, rgba(245, 197, 49, 0.16), transparent);
-  background-attachment: fixed;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  line-height: 1.65;
+  overflow-x: hidden;
 }
 
-[data-theme="dark"] body {
-  background-image:
-    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(245, 197, 49, 0.12), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(47, 116, 69, 0.22), transparent);
-}
-
-h1, h2, h3, .font-display {
+h1, h2, h3, h4, .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 * {
   box-sizing: border-box;
 }
 
+::selection {
+  background: var(--neon);
+  color: #fff;
+}
+
 /* ---------------------------------------------------------------------
    Palette remap. The app's components were written against Tailwind's
    neutral slate palette (bg-white cards, slate-900 text, slate-200
    borders). Rather than touch every page, those exact utility classes
-   are repointed here — cream and ghee tones in light mode, deep field
-   greens in dark mode.
+   are repointed here to the dark LERN surfaces.
 --------------------------------------------------------------------- */
 .bg-white { background-color: var(--color-surface-1) !important; }
 .bg-slate-50 { background-color: var(--color-surface-0) !important; }
 .bg-slate-100 { background-color: var(--color-surface-2) !important; }
 .bg-slate-200 { background-color: var(--color-surface-3) !important; }
+.bg-slate-300 { background-color: #34343c !important; }
 .hover\:bg-slate-50:hover { background-color: var(--color-surface-2) !important; }
 .hover\:bg-slate-100:hover { background-color: var(--color-surface-3) !important; }
 .hover\:bg-slate-200:hover { background-color: var(--color-surface-3) !important; }
 
-/* Permanently-dark surfaces (sidebar, banners) become logo green. */
-.bg-slate-900 { background-color: #1d5132 !important; }
+/* Permanently-dark surfaces (sidebar, banners). */
+.bg-slate-900 { background-color: #050506 !important; }
 
 .border-slate-100 { border-color: var(--line) !important; }
 .border-slate-200 { border-color: var(--line) !important; }
 .border-slate-300 { border-color: var(--line-strong) !important; }
 .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: var(--line) !important; }
 
-:root:not([data-theme="dark"]) .text-slate-900 { color: #1f2b1c !important; }
-:root:not([data-theme="dark"]) .text-slate-800 { color: #2c3826 !important; }
-:root:not([data-theme="dark"]) .text-slate-700 { color: #3e4734 !important; }
-:root:not([data-theme="dark"]) .text-slate-600 { color: #545a43 !important; }
-:root:not([data-theme="dark"]) .text-slate-500 { color: #6d6e55 !important; }
-:root:not([data-theme="dark"]) .text-slate-400 { color: #94927a !important; }
-:root:not([data-theme="dark"]) .hover\:text-slate-900:hover { color: #1f2b1c !important; }
-:root:not([data-theme="dark"]) .hover\:text-slate-600:hover { color: #3e4734 !important; }
-:root:not([data-theme="dark"]) .placeholder-slate-400::placeholder { color: #aaa78c; }
+.text-slate-900 { color: #ececf1 !important; }
+.text-slate-800 { color: #dcdce3 !important; }
+.text-slate-700 { color: #c4c4cc !important; }
+.text-slate-600 { color: #a4a4ae !important; }
+.text-slate-500 { color: #8b8b96 !important; }
+.text-slate-400 { color: #6c6c76 !important; }
+.hover\:text-slate-900:hover { color: #ffffff !important; }
+.hover\:text-slate-600:hover { color: #c4c4cc !important; }
+.placeholder-slate-400::placeholder { color: #5c5c66; }
+.bg-brand-50 { background-color: var(--neon-soft) !important; }
+.bg-brand-100 { background-color: rgba(255, 46, 77, 0.2) !important; }
+.text-brand-700 { color: var(--color-brand-400) !important; }
+.text-brand-600 { color: var(--color-brand-500) !important; }
 
-[data-theme="dark"] .bg-slate-300 { background-color: #3a4d3c !important; }
-[data-theme="dark"] .text-slate-900 { color: #f8edd3 !important; }
-[data-theme="dark"] .text-slate-800 { color: #efdfbd !important; }
-[data-theme="dark"] .text-slate-700 { color: #dcc8a0 !important; }
-[data-theme="dark"] .text-slate-600 { color: #c2aa80 !important; }
-[data-theme="dark"] .text-slate-500 { color: #a9a582 !important; }
-[data-theme="dark"] .text-slate-400 { color: #8a8a6c !important; }
-[data-theme="dark"] .hover\:text-slate-900:hover { color: #f8edd3 !important; }
-[data-theme="dark"] .hover\:text-slate-600:hover { color: #dcc8a0 !important; }
-[data-theme="dark"] .placeholder-slate-400::placeholder { color: #6b6f55; }
-[data-theme="dark"] .bg-brand-50 { background-color: rgba(216, 171, 56, 0.12) !important; }
-[data-theme="dark"] .bg-brand-100 { background-color: rgba(216, 171, 56, 0.18) !important; }
-[data-theme="dark"] .text-brand-700 { color: var(--color-brand-300) !important; }
-[data-theme="dark"] .text-brand-600 { color: var(--color-brand-400) !important; }
+/* Status badges / tinted callouts — keep them readable on black. */
+.bg-emerald-50, .bg-emerald-100 { background-color: rgba(126, 226, 168, 0.12) !important; }
+.bg-amber-50, .bg-amber-100 { background-color: rgba(255, 196, 107, 0.12) !important; }
+.bg-red-50, .bg-red-100 { background-color: rgba(255, 107, 129, 0.12) !important; }
+.bg-blue-50, .bg-blue-100 { background-color: rgba(138, 180, 255, 0.12) !important; }
+.text-emerald-700 { color: #7ee2a8 !important; }
+.text-amber-700 { color: #ffc46b !important; }
+.text-red-700 { color: #ff8a9b !important; }
+.text-blue-700 { color: #8ab4ff !important; }
 
-/* Status badges / tinted callouts — keep them readable on dark green. */
-[data-theme="dark"] .bg-emerald-50, [data-theme="dark"] .bg-emerald-100 { background-color: rgba(52, 168, 83, 0.15) !important; }
-[data-theme="dark"] .bg-amber-50, [data-theme="dark"] .bg-amber-100 { background-color: rgba(216, 171, 56, 0.15) !important; }
-[data-theme="dark"] .bg-red-50, [data-theme="dark"] .bg-red-100 { background-color: rgba(220, 80, 60, 0.15) !important; }
-[data-theme="dark"] .bg-blue-50, [data-theme="dark"] .bg-blue-100 { background-color: rgba(96, 140, 220, 0.15) !important; }
-[data-theme="dark"] .text-emerald-700 { color: #7fd69a !important; }
-[data-theme="dark"] .text-amber-700 { color: #f1d27a !important; }
-[data-theme="dark"] .text-red-700 { color: #f19a8a !important; }
-[data-theme="dark"] .text-blue-700 { color: #a9c4f5 !important; }
+/* Form fields default to the soft surface with a neon focus ring. */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select {
+  color: var(--ink);
+}
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  border-color: var(--neon) !important;
+  box-shadow: 0 0 0 3px var(--neon-soft) !important;
+  outline: none;
+}
 
 /* ---------------------------------------------------------------------
-   Brand flourishes
+   Brand flourishes. Older class names are kept so existing pages pick
+   up the neon look without edits.
 --------------------------------------------------------------------- */
-
-/* Gold-foil text, as on the jar lid. Name kept for existing usages. */
+.text-neon,
 .text-gradient-gold {
-  background: linear-gradient(135deg, #a67a1e 0%, #e6c35c 35%, #c4952a 60%, #845f1a 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-[data-theme="dark"] .text-gradient-gold {
-  background: linear-gradient(135deg, #f9edc6 0%, #e6c35c 40%, #c4952a 70%, #f1da8c 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
+  color: var(--neon);
+  text-shadow: var(--glow);
 }
 
-/* Always-bright foil, for text sitting on green / dark surfaces in either theme. */
 @utility text-foil-bright {
-  background: linear-gradient(135deg, #f9edc6 0%, #e6c35c 40%, #d8ab38 70%, #f1da8c 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--neon);
+  text-shadow: var(--glow);
 }
 
-/* Declared with @utility (not plain classes) so hover:/group-hover: variants work. */
 @utility text-forest-ink {
-  color: var(--color-forest-700);
-  [data-theme="dark"] & {
-    color: #b9dcc1;
-  }
+  color: var(--ink);
 }
 
 @utility bg-gold-foil {
-  background-image: linear-gradient(135deg, #845f1a 0%, #c4952a 22%, #f1da8c 48%, #c4952a 72%, #845f1a 100%);
+  background-color: var(--neon);
+  color: #fff;
 }
 
-/* Logo-green surface (footer, sidebar, small banners). */
+/* Footer, sidebar and small banners. */
 @utility bg-forest-velvet {
-  background-color: #1d5132;
-  background-image:
-    radial-gradient(ellipse 70% 80% at 20% 0%, rgba(245, 197, 49, 0.2), transparent),
-    linear-gradient(160deg, #2f7445 0%, #1d5132 55%, #153c25 100%);
+  background-color: #050506;
+  color: var(--ink);
 }
 
-/* Light, sunny ghee surface for the big hero / feature bands. */
+/* Big feature bands. */
 @utility bg-ghee-glow {
-  background-color: #fdf0c2;
-  background-image:
-    radial-gradient(ellipse 60% 90% at 78% 40%, rgba(255, 255, 255, 0.85), transparent 70%),
-    radial-gradient(ellipse 50% 60% at 0% 100%, rgba(47, 116, 69, 0.1), transparent),
-    linear-gradient(120deg, #fff8dd 0%, #fde9a0 55%, #f7cf57 100%);
-  [data-theme="dark"] & {
-    background-color: #1f2a1c;
-    background-image:
-      radial-gradient(ellipse 60% 90% at 78% 40%, rgba(245, 197, 49, 0.22), transparent 70%),
-      linear-gradient(120deg, #1a251b 0%, #223024 60%, #3a3a1c 100%);
-  }
+  background-color: var(--color-surface-1);
+  background-image: radial-gradient(600px circle at 50% 0%, rgba(255, 46, 77, 0.18), transparent 60%);
 }
 
-.glow-gold {
-  box-shadow: 0 0 0 1px rgba(196, 149, 42, 0.35), 0 8px 30px -8px rgba(196, 149, 42, 0.55);
-}
-
+.glow-gold,
 .glow-gold-lg {
-  box-shadow: 0 0 0 1px rgba(196, 149, 42, 0.4), 0 20px 60px -12px rgba(196, 149, 42, 0.6);
+  box-shadow: var(--glow);
 }
 
-/* Label card: cream with a thin double gold/green rule. */
 .card-label {
   background-color: var(--color-surface-1);
-  border: 1px solid rgba(196, 149, 42, 0.45);
-  box-shadow: inset 0 0 0 4px var(--color-surface-1), inset 0 0 0 5px rgba(29, 81, 50, 0.16), 0 10px 30px -15px rgba(60, 50, 10, 0.3);
+  border: 1px solid var(--line);
 }
 
-/* Scalloped green-and-gold border band, echoing the label's ornamental rim. */
-.ornament-band {
-  height: 14px;
-  background-color: transparent;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Crect width='28' height='4' fill='%231d5132'/%3E%3Cpath d='M0 4 Q7 14 14 4 Q21 14 28 4 Z' fill='%231d5132'/%3E%3Ccircle cx='14' cy='9.5' r='1.6' fill='%23c4952a'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-size: 28px 14px;
-}
-.ornament-band.flip { transform: scaleY(-1); }
+/* The ghee label's scalloped border has no place in this design. */
+.ornament-band { display: none; }
 
 .bg-grid-pattern {
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(29, 81, 50, 0.14) 1px, transparent 0);
-  background-size: 22px 22px;
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black, transparent);
 }
-[data-theme="dark"] .bg-grid-pattern {
-  background-image: radial-gradient(circle at 1px 1px, rgba(216, 171, 56, 0.16) 1px, transparent 0);
+
+/* ---------------------------------------------------------------------
+   LERN components — eyebrow, pill buttons, glow cards, hero, marquee.
+--------------------------------------------------------------------- */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--neon);
+  margin: 0 0 14px;
+}
+
+.btn-neon,
+.btn-ghost-neon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border: 1px solid var(--neon);
+  transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease), border-color 0.3s, background 0.3s;
+}
+.btn-neon { background: var(--neon); color: #fff; }
+.btn-ghost-neon { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-neon:hover, .btn-ghost-neon:hover { box-shadow: var(--glow); transform: translateY(-2px); }
+.btn-ghost-neon:hover { border-color: var(--neon); color: #fff; }
+
+.neon-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-surface-1);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: transform 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s;
+}
+.neon-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 0%), var(--neon-soft), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: 1;
+}
+.neon-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 46, 77, 0.5);
+  box-shadow: 0 20px 50px -20px rgba(255, 46, 77, 0.35);
+}
+.neon-card:hover::before { opacity: 1; }
+
+.neon-tag {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--neon);
+  border: 1px solid rgba(255, 46, 77, 0.4);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.logo-mark {
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--neon);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--neon);
+  box-shadow: var(--glow);
+}
+
+/* Hero: perspective grid floor + drifting red orb. */
+.hero-grid {
+  position: absolute;
+  inset: -50% -10% 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: perspective(700px) rotateX(58deg);
+  transform-origin: center top;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 45%, transparent 95%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 45%, transparent 95%);
+  animation: grid-move 9s linear infinite;
+  opacity: 0.55;
+}
+@keyframes grid-move { to { background-position: 0 64px, 0 0; } }
+
+.hero-orb {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  right: -120px;
+  top: 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 46, 77, 0.55), rgba(255, 46, 77, 0.08) 55%, transparent 70%);
+  filter: blur(30px);
+  animation: orb-float 10s ease-in-out infinite;
+}
+@keyframes orb-float { 50% { transform: translate(-40px, 30px) scale(1.06); } }
+@media (max-width: 600px) {
+  .hero-orb { width: 320px; height: 320px; right: -140px; }
+}
+
+.hero-line { display: block; opacity: 0; transform: translateY(24px); animation: hero-rise 0.9s var(--ease) forwards; }
+.hero-initial { color: var(--neon); text-shadow: var(--glow); animation: flicker 6s infinite; }
+.hero-fade { opacity: 0; animation: hero-rise 0.9s var(--ease) forwards; }
+@keyframes hero-rise { to { opacity: 1; transform: none; } }
+@keyframes flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93% { opacity: 0.35; } 94% { opacity: 1; } 96% { opacity: 0.5; } 97% { opacity: 1; }
+}
+
+.marquee-track { display: flex; gap: 48px; width: max-content; animation: marquee 32s linear infinite; }
+.marquee-track span { font-family: var(--font-display); color: var(--muted); white-space: nowrap; font-size: 1.05rem; }
+.marquee-track span::before { content: "✦"; color: var(--neon); margin-right: 48px; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* Animated gradient border for the "best value" panel. */
+.sheen-border {
+  border-radius: 20px;
+  padding: 2px;
+  background: linear-gradient(120deg, var(--line), var(--neon), var(--line));
+  background-size: 200% 200%;
+  animation: sheen 6s linear infinite;
+}
+@keyframes sheen { to { background-position: 200% 0; } }
+
+.cta-glow {
+  background: radial-gradient(600px circle at 50% 0%, rgba(255, 46, 77, 0.18), transparent 60%), var(--color-surface-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-grid, .hero-orb, .hero-initial, .marquee-track, .sheen-border { animation: none !important; }
+  .hero-line, .hero-fade { opacity: 1; transform: none; animation: none !important; }
 }
 
 @keyframes shimmer {
@@ -268,7 +368,7 @@ h1, h2, h3, .font-display {
   100% { background-position: 200% 0; }
 }
 .animate-shimmer {
-  background-image: linear-gradient(110deg, transparent 40%, rgba(255, 248, 225, 0.45) 50%, transparent 60%);
+  background-image: linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, 0.12) 50%, transparent 60%);
   background-size: 200% 100%;
   animation: shimmer 2.8s ease-in-out infinite;
 }
@@ -419,9 +519,7 @@ h1, h2, h3, .font-display {
   height: 6px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: rgba(196, 149, 42, 0.45);
+  background-color: rgba(255, 46, 77, 0.45);
   border-radius: 999px;
 }
 
-/* Maroon outlines (label-style icon roundels) turn gold on dark wood. */
-[data-theme="dark"] .border-forest-600\/70 { border-color: rgba(216, 171, 56, 0.55) !important; }

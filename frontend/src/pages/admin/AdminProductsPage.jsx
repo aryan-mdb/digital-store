@@ -310,7 +310,7 @@ export default function AdminProductsPage() {
             <span>
               <span className="font-medium text-slate-800">Digital product (download after payment)</span>
               <span className="block text-xs text-slate-500">
-                Leave unticked for ghee and other shipped products — they get a delivery address, Cash on Delivery and order tracking.
+                Leave unticked for physical products — they get a delivery address, Cash on Delivery and order tracking.
               </span>
             </span>
           </label>

@@ -12,8 +12,8 @@ import usePageMeta from '../../hooks/usePageMeta'
 
 export default function ProductsPage() {
   usePageMeta(
-    'Shop All Products',
-    'Shop PAYAN pure cow ghee — A2 desi ghee, hand-churned bilona ghee and gift packs. Pay online or Cash on Delivery.'
+    'All Guides',
+    'Practical digital guides on AI automation, marketing, sales and self-development. Pay with UPI, cards or crypto.'
   )
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
@@ -57,10 +57,34 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <h1 className="mb-6 text-2xl font-bold text-slate-900">All Products</h1>
+    <div className="mx-auto max-w-[1160px] px-5 pb-16 pt-14 sm:pt-20">
+      <p className="eyebrow">Guides</p>
+      <h1 className="mb-3 text-[clamp(1.9rem,4vw,2.8rem)] font-bold text-slate-900">Every guide, one place.</h1>
+      <p className="mb-8 max-w-[60ch] text-[1.05rem] text-slate-500">Pick a topic, or browse them all. Pay with UPI, cards or crypto — access is instant.</p>
 
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+      {categories.length > 0 && (
+        <div className="mb-6 flex flex-wrap gap-2">
+          {[{ id: '', name: 'All' }, ...categories].map((c) => {
+            const active = String(c.id) === categoryId
+            return (
+              <button
+                key={c.id || 'all'}
+                type="button"
+                onClick={() => updateParam('category_id', c.id)}
+                className={`rounded-full border px-[18px] py-2 text-[0.92rem] transition-all ${
+                  active
+                    ? 'border-brand-500 bg-[var(--neon-soft)] text-white shadow-[var(--glow)]'
+                    : 'border-slate-200 text-slate-500 hover:border-slate-500 hover:text-slate-900'
+                }`}
+              >
+                {c.name}
+              </button>
+            )
+          })}
+        </div>
+      )}
+
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center">
         <form
           className="relative flex-1"
           onSubmit={(e) => {
@@ -72,19 +96,10 @@ export default function ProductsPage() {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search products..."
-            className="w-full rounded-lg border border-slate-300 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+            placeholder="Search guides..."
+            className="w-full rounded-full border border-slate-200 bg-slate-100 py-2.5 pl-9 pr-4 text-sm text-slate-900 placeholder-slate-400 outline-none"
           />
         </form>
-
-        <Select value={categoryId} onChange={(e) => updateParam('category_id', e.target.value)} className="sm:w-48">
-          <option value="">All categories</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </Select>
 
         <Select value={sort} onChange={(e) => updateParam('sort', e.target.value)} className="sm:w-44">
           <option value="newest">Newest</option>
@@ -95,18 +110,23 @@ export default function ProductsPage() {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-64 animate-pulse rounded-xl bg-slate-100" />
+            <div key={i} className="h-64 animate-pulse rounded-[14px] bg-slate-100" />
           ))}
         </div>
       ) : products.length === 0 ? (
-        <EmptyState title="No products found" message="Try adjusting your search or filters." />
+        <EmptyState title="No guides found" message="Try adjusting your search or filters." />
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5">
             {products.map((product, i) => (
-              <ProductCard key={product.id} product={product} revealDelay={(i % 4) * 90} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                index={((meta?.current_page ?? 1) - 1) * 12 + i}
+                revealDelay={(i % 4) * 90}
+              />
             ))}
           </div>
           <div className="mt-6">

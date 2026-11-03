@@ -1,104 +1,55 @@
-import { ArrowRight } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatCurrency } from '../utils/format'
 import Badge from './ui/Badge'
-import ImagePlaceholder from './ui/ImagePlaceholder'
 
-const MAX_TILT = 8
+const pad = (n) => String(n).padStart(2, '0')
 
-export default function ProductCard({ product, revealDelay = 0 }) {
-  const cardRef = useRef(null)
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
-  const [glow, setGlow] = useState({ x: 50, y: 50 })
-  const [hovering, setHovering] = useState(false)
+export default function ProductCard({ product, index, revealDelay = 0 }) {
   const [imgFailed, setImgFailed] = useState(false)
-  const [pressed, setPressed] = useState(false)
 
-  const handleMouseMove = (e) => {
-    const rect = cardRef.current?.getBoundingClientRect()
-    if (!rect) return
-    const px = (e.clientX - rect.left) / rect.width
-    const py = (e.clientY - rect.top) / rect.height
-
-    setTilt({
-      x: (py - 0.5) * -MAX_TILT * 2,
-      y: (px - 0.5) * MAX_TILT * 2,
-    })
-    setGlow({ x: px * 100, y: py * 100 })
+  // Feeds the radial glow in .neon-card::before so it follows the pointer.
+  const trackGlow = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    e.currentTarget.style.setProperty('--mx', `${e.clientX - rect.left}px`)
+    e.currentTarget.style.setProperty('--my', `${e.clientY - rect.top}px`)
   }
-
-  const handleLeave = () => {
-    setHovering(false)
-    setTilt({ x: 0, y: 0 })
-  }
-
-  const scale = pressed ? 'scale(0.97)' : hovering ? 'scale(1.02)' : 'scale(1)'
 
   return (
     <div data-reveal="up" style={{ '--reveal-delay': `${revealDelay}ms` }} className="h-full">
-    <Link
-      ref={cardRef}
-      data-ripple
-      onPointerDown={() => setPressed(true)}
-      onPointerUp={() => setPressed(false)}
-      onPointerCancel={() => setPressed(false)}
-      to={`/products/${product.slug}`}
-      onMouseEnter={() => setHovering(true)}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => {
-        handleLeave()
-        setPressed(false)
-      }}
-      style={{
-        transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) ${scale}`,
-        transition: hovering && !pressed ? 'transform 80ms linear' : 'transform 300ms ease-out',
-      }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface-1 shadow-sm shadow-forest-900/10 will-change-transform hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-900/30"
-    >
-      {hovering && (
-        <div
-          className="pointer-events-none absolute inset-0 z-10 opacity-70 transition-opacity"
-          style={{
-            background: `radial-gradient(320px circle at ${glow.x}% ${glow.y}%, rgba(216,171,56,0.22), transparent 60%)`,
-          }}
-        />
-      )}
-
-      <div className="relative flex h-48 items-center justify-center overflow-hidden bg-surface-2">
-        {product.thumbnail_url && !imgFailed ? (
-          <img
-            src={product.thumbnail_url}
-            alt={product.name}
-            loading="lazy"
-            onError={() => setImgFailed(true)}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-        ) : (
-          <ImagePlaceholder />
+      <Link
+        to={`/products/${product.slug}`}
+        onMouseMove={trackGlow}
+        className="neon-card group flex h-full flex-col gap-3 p-[26px] hover:no-underline"
+      >
+        {product.thumbnail_url && !imgFailed && (
+          <div className="-mx-[26px] -mt-[26px] mb-2 h-44 overflow-hidden border-b border-slate-200">
+            <img
+              src={product.thumbnail_url}
+              alt={product.name}
+              loading="lazy"
+              onError={() => setImgFailed(true)}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </div>
         )}
-        <div className="animate-shimmer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-        <span className="absolute bottom-3 right-3 inline-flex translate-y-3 items-center gap-1 rounded-full bg-forest-700 px-3 py-1 text-xs font-semibold text-ghee-100 opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-          View <ArrowRight className="h-3 w-3" />
-        </span>
-      </div>
 
-      <div className="relative flex flex-1 flex-col gap-2 p-4">
-        {product.category?.name && (
-          <span className="text-xs font-medium uppercase tracking-wide text-brand-600">
-            {product.category.name}
-          </span>
-        )}
-        <h3 className="line-clamp-1 font-semibold text-slate-900 group-hover:text-brand-600">{product.name}</h3>
-        <p className="line-clamp-2 text-sm text-slate-500">{product.short_description}</p>
-        <div className="mt-auto flex items-center justify-between pt-2">
-          <span className="text-lg font-bold text-gradient-gold transition-transform duration-300 group-hover:scale-105">
-            {formatCurrency(product.price, product.currency)}
-          </span>
-          {product.is_purchased && <Badge color="green">Owned</Badge>}
+        <div className="flex items-center justify-between gap-2">
+          <span className="font-display text-[0.85rem] text-slate-500">{index != null ? `GUIDE ${pad(index + 1)}` : 'GUIDE'}</span>
+          {product.category?.name && <span className="neon-tag">{product.category.name}</span>}
         </div>
-      </div>
-    </Link>
+        <h3 className="mt-1.5 text-[1.3rem] font-bold text-slate-900">{product.name}</h3>
+        <p className="line-clamp-3 flex-1 text-[0.95rem] text-slate-500">{product.short_description}</p>
+
+        <div className="mt-2 flex items-center justify-between gap-3">
+          <span className="font-display text-[1.3rem] font-bold text-slate-900">{formatCurrency(product.price, product.currency)}</span>
+          {product.is_purchased ? (
+            <Badge color="green">Owned</Badge>
+          ) : (
+            <span className="btn-neon px-[18px]! py-[9px]! text-[0.9rem]!">Buy guide</span>
+          )}
+        </div>
+      </Link>
     </div>
   )
 }

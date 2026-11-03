@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const SITE_NAME = 'PAYAN Pure Cow Ghee'
+const SITE_NAME = 'The LERN Project'
 
 function setMeta(name, content, attr = 'name') {
   if (!content) return

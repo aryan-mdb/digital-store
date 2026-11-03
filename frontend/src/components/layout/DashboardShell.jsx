@@ -27,10 +27,10 @@ export default function DashboardShell({ sections, brandLabel, children }) {
       <Link
         to="/"
         onClick={() => setMobileOpen(false)}
-        className="block border-b border-brand-300/15 px-5 py-4 transition hover:bg-white/5"
+        className="block border-b border-white/10 px-5 py-4 transition hover:bg-white/5"
         title="Go to store home"
       >
-        <BrandLogo onDark />
+        <BrandLogo />
         <span className="mt-2 block text-xs font-semibold uppercase tracking-[0.18em] text-brand-300/70">{brandLabel}</span>
       </Link>
 
@@ -53,8 +53,8 @@ export default function DashboardShell({ sections, brandLabel, children }) {
                     clsx(
                       'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                       isActive
-                        ? 'bg-gold-foil text-forest-900 shadow-md shadow-black/20'
-                        : 'text-[#f1dfb8]/80 hover:bg-white/10 hover:text-[#fdf3dc]'
+                        ? 'bg-gold-foil text-white shadow-[var(--glow)]'
+                        : 'text-[#a4a4ae]/80 hover:bg-white/10 hover:text-[#ffffff]'
                     )
                   }
                 >
@@ -71,13 +71,13 @@ export default function DashboardShell({ sections, brandLabel, children }) {
         <Link
           to="/"
           onClick={() => setMobileOpen(false)}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#f1dfb8]/80 hover:bg-white/10 hover:text-[#fdf3dc]"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#a4a4ae]/80 hover:bg-white/10 hover:text-[#ffffff]"
         >
           <Home className="h-4 w-4" /> Back to Store
         </Link>
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#f1dfb8]/80 hover:bg-white/10 hover:text-[#fdf3dc]"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#a4a4ae]/80 hover:bg-white/10 hover:text-[#ffffff]"
         >
           <LogOut className="h-4 w-4" /> Logout
         </button>
@@ -115,7 +115,7 @@ export default function DashboardShell({ sections, brandLabel, children }) {
               <p className="text-sm font-medium text-slate-900">{user?.name}</p>
               <p className="text-xs capitalize text-slate-500">{user?.role?.replace('_', ' ')}</p>
             </div>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-foil text-sm font-bold text-forest-900">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-foil text-sm font-bold text-white">
               {user?.name?.charAt(0).toUpperCase()}
             </div>
           </div>

@@ -1,6 +1,2 @@
 User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /dashboard
-
-Sitemap: https://payanfoods.com/sitemap.xml
+Disallow: /

@@ -10,7 +10,7 @@ import usePageMeta from '../../hooks/usePageMeta'
 import OtpForm from '../../components/OtpForm'
 
 export default function LoginPage() {
-  usePageMeta('Login', 'Sign in to your PAYAN account.')
+  usePageMeta('Login', 'Sign in to your LERN account.')
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()

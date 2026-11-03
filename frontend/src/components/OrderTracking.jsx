@@ -65,7 +65,7 @@ export default function OrderTracking({ order }) {
                   <span
                     className={clsx(
                       'relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 transition',
-                      done ? 'border-brand-500 bg-gold-foil text-forest-900' : 'border-slate-300 bg-white text-slate-400'
+                      done ? 'border-brand-500 bg-gold-foil text-white' : 'border-slate-300 bg-white text-slate-400'
                     )}
                   >
                     {isCurrent && <span className="animate-ping-soft absolute inset-0 rounded-full bg-brand-400/50" />}
