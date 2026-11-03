@@ -47,6 +47,11 @@ class DownloadController extends Controller
 
         $filename = $product->slug.'.'.pathinfo($product->product_file, PATHINFO_EXTENSION);
 
+        // ?inline=1 lets the browser show the file (e.g. a PDF) instead of saving it.
+        if ($request->boolean('inline')) {
+            return Storage::disk('local')->response($product->product_file, $filename);
+        }
+
         return Storage::disk('local')->download($product->product_file, $filename);
     }
 }

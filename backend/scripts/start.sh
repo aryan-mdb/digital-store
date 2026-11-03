@@ -18,4 +18,8 @@ php artisan migrate --force
 php artisan db:seed --force
 php artisan storage:link || true
 
+# Seeding runs as root and the private disk creates 0700 folders, so hand
+# storage back to Apache's user or product files look missing to downloads.
+chown -R www-data:www-data storage bootstrap/cache
+
 exec apache2-foreground

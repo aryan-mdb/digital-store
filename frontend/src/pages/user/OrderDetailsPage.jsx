@@ -1,4 +1,4 @@
-import { Banknote, Download, MapPin, Phone } from 'lucide-react'
+import { Banknote, BookOpen, Download, MapPin, Phone } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link, useParams } from 'react-router-dom'
@@ -41,10 +41,21 @@ export default function OrderDetailsPage() {
   if (!order) return <FullPageSpinner />
 
   const handleDownload = async (item) => {
-    setDownloading(item.id)
+    setDownloading(`dl-${item.id}`)
     try {
       await downloadService.download(item.id, item.product_name)
       toast.success('Download started')
+    } catch (error) {
+      toast.error(apiErrorMessage(error))
+    } finally {
+      setDownloading(null)
+    }
+  }
+
+  const handleView = async (item) => {
+    setDownloading(`view-${item.id}`)
+    try {
+      await downloadService.view(item.id)
     } catch (error) {
       toast.error(apiErrorMessage(error))
     } finally {
@@ -138,9 +149,14 @@ export default function OrderDetailsPage() {
                 </div>
               </div>
               {item.can_download ? (
-                <Button size="sm" variant="secondary" loading={downloading === item.id} onClick={() => handleDownload(item)}>
-                  <Download className="h-4 w-4" /> Download
-                </Button>
+                <div className="flex flex-wrap justify-end gap-2">
+                  <Button size="sm" variant="secondary" loading={downloading === `view-${item.id}`} onClick={() => handleView(item)}>
+                    <BookOpen className="h-4 w-4" /> Read
+                  </Button>
+                  <Button size="sm" loading={downloading === `dl-${item.id}`} onClick={() => handleDownload(item)}>
+                    <Download className="h-4 w-4" /> Download
+                  </Button>
+                </div>
               ) : !item.is_physical ? (
                 <span className="text-xs text-slate-400">Available after payment</span>
               ) : null}

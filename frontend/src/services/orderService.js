@@ -22,21 +22,60 @@ export const razorpayService = {
   verify: (orderId, payload) => api.post(`/payments/razorpay/${orderId}/verify`, payload).then((r) => r.data),
 }
 
+const EXTENSIONS = { 'application/pdf': 'pdf', 'application/zip': 'zip', 'image/png': 'png', 'image/jpeg': 'jpg' }
+
+/**
+ * Downloads are authenticated (Bearer token), so a plain <a href> can't
+ * be used — fetch the file as a blob through the axios instance (which
+ * attaches the token). With responseType 'blob' a JSON error body also
+ * arrives as a Blob, so it is parsed back for apiErrorMessage().
+ */
+async function fetchFile(orderItemId, params) {
+  try {
+    const response = await api.get(`/downloads/${orderItemId}`, { params, responseType: 'blob' })
+    return response.data
+  } catch (error) {
+    const body = error?.response?.data
+    if (body instanceof Blob) {
+      try {
+        error.response.data = JSON.parse(await body.text())
+      } catch {
+        // not JSON — leave the generic message
+      }
+    }
+    throw error
+  }
+}
+
 export const downloadService = {
-  /**
-   * Downloads are authenticated (Bearer token), so a plain <a href> can't
-   * be used — fetch the file as a blob through the axios instance (which
-   * attaches the token) and save it client-side.
-   */
   async download(orderItemId, suggestedName = 'download') {
-    const response = await api.get(`/downloads/${orderItemId}`, { responseType: 'blob' })
-    const blobUrl = window.URL.createObjectURL(response.data)
+    const blob = await fetchFile(orderItemId)
+    const ext = EXTENSIONS[blob.type]
+    const blobUrl = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = blobUrl
-    link.download = suggestedName
+    link.download = ext && !suggestedName.includes('.') ? `${suggestedName}.${ext}` : suggestedName
     document.body.appendChild(link)
     link.click()
     link.remove()
     window.URL.revokeObjectURL(blobUrl)
+  },
+
+  /**
+   * Opens the file in a new tab (the browser's PDF viewer for guides).
+   * The tab is opened before the request so popup blockers allow it.
+   */
+  async view(orderItemId) {
+    const tab = window.open('', '_blank')
+    try {
+      const blob = await fetchFile(orderItemId, { inline: 1 })
+      const blobUrl = window.URL.createObjectURL(blob)
+      if (tab) tab.location.href = blobUrl
+      else window.location.href = blobUrl
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 60_000)
+    } catch (error) {
+      tab?.close()
+      throw error
+    }
   },
 }
