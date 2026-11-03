@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Gift, Lightbulb, RotateCcw, Sparkles } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 import ScoreSaver from './games/ScoreSaver'
 
 // kind: 'discount' | 'tip' | 'miss' — decides which result card and messages show.
@@ -54,9 +55,13 @@ const pick = (list, avoid) => {
   return options[Math.floor(Math.random() * options.length)]
 }
 
-function readSpins() {
+// Spins are counted per account (guests share one count), so signing in
+// as someone else on the same browser starts a fresh daily allowance.
+const storageKey = (userId) => `${STORAGE_KEY}:${userId ?? 'guest'}`
+
+function readSpins(userId) {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY))
+    const saved = JSON.parse(localStorage.getItem(storageKey(userId)))
     const today = new Date().toDateString()
     return saved?.day === today ? saved.count : 0
   } catch {
@@ -64,9 +69,9 @@ function readSpins() {
   }
 }
 
-function saveSpins(count) {
+function saveSpins(userId, count) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ day: new Date().toDateString(), count }))
+    localStorage.setItem(storageKey(userId), JSON.stringify({ day: new Date().toDateString(), count }))
   } catch {
     // storage unavailable — spins just won't persist
   }
@@ -87,14 +92,18 @@ function slicePath(i) {
 export default function SpinWheel() {
   const [rotation, setRotation] = useState(0)
   const [spinning, setSpinning] = useState(false)
-  const [spinsUsed, setSpinsUsed] = useState(readSpins)
+  const { user } = useAuth()
+  const userId = user?.id
+  const [spinsUsed, setSpinsUsed] = useState(() => readSpins(userId))
   const [result, setResult] = useState(null)
 
-  // Reset the counter if the page stays open past midnight.
+  // Re-read when the account changes, and every minute so the count resets past midnight.
   useEffect(() => {
-    const timer = setInterval(() => setSpinsUsed(readSpins()), 60_000)
+    setSpinsUsed(readSpins(userId))
+    setResult(null)
+    const timer = setInterval(() => setSpinsUsed(readSpins(userId)), 60_000)
     return () => clearInterval(timer)
-  }, [])
+  }, [userId])
 
   const spinsLeft = Math.max(0, SPINS_PER_DAY - spinsUsed)
   const locked = spinning || spinsLeft === 0
@@ -115,7 +124,7 @@ export default function SpinWheel() {
     window.setTimeout(() => {
       const prize = SEGMENTS[winner]
       const used = spinsUsed + 1
-      saveSpins(used)
+      saveSpins(userId, used)
       setSpinsUsed(used)
       setSpinning(false)
       setResult((prev) => ({
