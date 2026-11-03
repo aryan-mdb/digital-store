@@ -39,14 +39,14 @@ export default function ProductCard({ product, index, revealDelay = 0 }) {
           {product.category?.name && <span className="neon-tag">{product.category.name}</span>}
         </div>
         <h3 className="mt-1.5 text-[1.3rem] font-bold text-slate-900">{product.name}</h3>
-        <p className="line-clamp-3 flex-1 text-[0.95rem] text-slate-500">{product.short_description}</p>
+        <p className="line-clamp-3 text-[0.95rem] text-slate-500">{product.short_description}</p>
 
-        <div className="mt-2 flex items-center justify-between gap-3">
+        <div className="mt-auto flex items-center justify-between gap-3 pt-2">
           <span className="font-display text-[1.3rem] font-bold text-slate-900">{formatCurrency(product.price, product.currency)}</span>
           {product.is_purchased ? (
             <Badge color="green">Owned</Badge>
           ) : (
-            <span className="btn-neon px-[18px]! py-[9px]! text-[0.9rem]!">Buy guide</span>
+            <span className="btn-neon shrink-0 whitespace-nowrap px-[18px]! py-[9px]! text-[0.9rem]!">Buy guide</span>
           )}
         </div>
       </Link>
