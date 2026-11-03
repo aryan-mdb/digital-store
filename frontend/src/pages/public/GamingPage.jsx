@@ -18,7 +18,7 @@ export default function GamingPage() {
     'Gaming Arcade',
     'Play the daily spin wheel, test your knowledge in the quiz challenge, or race the clock in memory match — free mini-games on LERN.'
   )
-  const [active, setActive] = useState('spin')
+  const [active, setActive] = useState(() => (GAMES.some((g) => g.key === location.hash.slice(1)) ? location.hash.slice(1) : 'spin'))
   const ActiveGame = GAMES.find((g) => g.key === active)?.Component
 
   return (
@@ -28,14 +28,12 @@ export default function GamingPage() {
 
       <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
         <div className="mb-10 text-center">
-          <span className="mx-auto mb-4 inline-flex items-center gap-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700">
-            <Gamepad2 className="h-3.5 w-3.5" /> Arcade
-          </span>
-          <h1 className="text-3xl font-extrabold text-slate-900 sm:text-5xl">
-            Gaming <span className="text-gradient-gold">Arcade</span>
+          <p className="eyebrow">Play</p>
+          <h1 className="text-[clamp(2rem,5vw,3.2rem)] font-bold text-slate-900">
+            Learn by <span className="text-neon">playing.</span>
           </h1>
-          <p className="mx-auto mt-3 max-w-lg text-slate-400">
-            Take a break, play a round and earn bragging rights. New games added regularly.
+          <p className="mx-auto mt-3 max-w-lg text-slate-500">
+            Spin for a daily tip, test yourself on a subject, or train your memory — a quick break that still teaches.
           </p>
         </div>
 
@@ -43,11 +41,12 @@ export default function GamingPage() {
           {GAMES.map((game) => (
             <button
               key={game.key}
+              type="button"
               onClick={() => setActive(game.key)}
-              className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
+              className={`inline-flex items-center gap-2 rounded-full border px-[18px] py-2 text-[0.92rem] font-medium transition-all ${
                 active === game.key
-                  ? 'border-brand-500/50 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 text-white'
-                  : 'border-slate-200 bg-slate-100 text-slate-600 hover:border-brand-500/30 hover:bg-slate-200'
+                  ? 'border-brand-500 bg-[var(--neon-soft)] text-white shadow-[var(--glow)]'
+                  : 'border-slate-200 text-slate-500 hover:border-slate-500 hover:text-slate-900'
               }`}
             >
               <game.icon className="h-4 w-4" /> {game.label}
@@ -55,7 +54,7 @@ export default function GamingPage() {
           ))}
         </div>
 
-        <div className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-surface-1 p-6 shadow-lg shadow-black/30 sm:p-10">
+        <div className="mx-auto max-w-xl rounded-[20px] border border-slate-200 bg-surface-1 p-6 shadow-[0_30px_80px_-30px_rgba(255,46,77,0.35)] sm:p-10">
           {ActiveGame && <ActiveGame />}
         </div>
 
