@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DownloadController;
+use App\Http\Controllers\Api\GameScoreController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProductController;
@@ -35,6 +36,7 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product:slug}', [ProductController::class, 'show']);
 
 Route::get('/site-settings', SiteSettingsController::class);
+Route::get('/games/leaderboard', [GameScoreController::class, 'leaderboard']);
 Route::get('/sliders', [SliderController::class, 'index']);
 Route::post('/track-order', [OrderController::class, 'track'])->middleware('throttle:10,1');
 
@@ -69,6 +71,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/wallet/transactions', [WalletController::class, 'transactions']);
 
     Route::get('/referrals', [ReferralController::class, 'show']);
+
+    Route::post('/games/scores', [GameScoreController::class, 'store'])->middleware('throttle:30,1');
 });
 
 /*

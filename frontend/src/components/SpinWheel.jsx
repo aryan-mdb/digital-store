@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Gift, Lightbulb, RotateCcw, Sparkles } from 'lucide-react'
+import ScoreSaver from './games/ScoreSaver'
 
 // kind: 'discount' | 'tip' | 'miss' — decides which result card and messages show.
+// points: what the spin adds to the leaderboard.
 const SEGMENTS = [
-  { label: '10% OFF', kind: 'discount', fill: '#ff2e4d' },
-  { label: 'Daily Tip', kind: 'tip', fill: '#18181c' },
-  { label: '5% OFF', kind: 'discount', fill: '#5c1421' },
-  { label: 'Try Again', kind: 'miss', fill: '#111114' },
-  { label: '20% OFF', kind: 'discount', fill: '#ff2e4d' },
-  { label: 'Daily Tip', kind: 'tip', fill: '#18181c' },
-  { label: '15% OFF', kind: 'discount', fill: '#5c1421' },
-  { label: 'So Close', kind: 'miss', fill: '#111114' },
+  { label: '10% OFF', kind: 'discount', fill: '#ff2e4d', points: 100 },
+  { label: 'Daily Tip', kind: 'tip', fill: '#18181c', points: 50 },
+  { label: '5% OFF', kind: 'discount', fill: '#5c1421', points: 50 },
+  { label: 'Try Again', kind: 'miss', fill: '#111114', points: 0 },
+  { label: '20% OFF', kind: 'discount', fill: '#ff2e4d', points: 200 },
+  { label: 'Daily Tip', kind: 'tip', fill: '#18181c', points: 50 },
+  { label: '15% OFF', kind: 'discount', fill: '#5c1421', points: 150 },
+  { label: 'So Close', kind: 'miss', fill: '#111114', points: 0 },
 ]
 
 // A different line is picked each spin so the result never reads the same twice in a row.
@@ -118,6 +120,7 @@ export default function SpinWheel() {
       setSpinning(false)
       setResult((prev) => ({
         ...prize,
+        id: Date.now(),
         text: prize.kind === 'tip' ? pick(TIPS, prev?.text) : pick(MESSAGES[prize.kind], prev?.text),
       }))
     }, SPIN_MS)
@@ -217,6 +220,12 @@ export default function SpinWheel() {
             {result.kind === 'discount' ? `You won ${result.label}!` : result.kind === 'tip' ? 'Your tip for today' : result.label}
           </p>
           <p className="mt-1 text-sm text-slate-500">{result.text}</p>
+          {result.points > 0 && (
+            <div className="mt-3">
+              <p className="mb-2 font-display text-sm font-bold text-brand-500">+{result.points} points</p>
+              <ScoreSaver game="spin" score={result.points} details={{ prize: result.label }} roundId={result.id} />
+            </div>
+          )}
         </div>
       )}
 

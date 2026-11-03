@@ -1,25 +1,34 @@
-import { Brain, Gamepad2, HelpCircle, Lock, Sparkles, Trophy } from 'lucide-react'
-import { useState } from 'react'
+import { Brain, Gamepad2, HelpCircle, Trophy } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import SpinWheel from '../../components/SpinWheel'
 import QuizGame from '../../components/QuizGame'
 import MemoryGame from '../../components/MemoryGame'
+import Leaderboard from '../../components/games/Leaderboard'
 import usePageMeta from '../../hooks/usePageMeta'
 
 const GAMES = [
   { key: 'spin', label: 'Spin Wheel', icon: Gamepad2, Component: SpinWheel },
   { key: 'quiz', label: 'Quiz Challenge', icon: HelpCircle, Component: QuizGame },
   { key: 'memory', label: 'Memory Match', icon: Brain, Component: MemoryGame },
+  { key: 'leaderboard', label: 'Leaderboard', icon: Trophy, Component: Leaderboard },
 ]
 
-const comingSoon = [{ icon: Trophy, title: 'Weekly Leaderboard', desc: 'Compete with other players.' }]
+const isTab = (key) => GAMES.some((g) => g.key === key)
 
 export default function GamingPage() {
   usePageMeta(
     'Gaming Arcade',
-    'Play the daily spin wheel, test your knowledge in the quiz challenge, or race the clock in memory match — free mini-games on LERN.'
+    'Play the daily spin wheel, test your knowledge in the quiz challenge, or race the clock in memory match — then climb the leaderboard on LERN.'
   )
-  const [active, setActive] = useState(() => (GAMES.some((g) => g.key === location.hash.slice(1)) ? location.hash.slice(1) : 'spin'))
+  const [active, setActive] = useState(() => (isTab(location.hash.slice(1)) ? location.hash.slice(1) : 'spin'))
   const ActiveGame = GAMES.find((g) => g.key === active)?.Component
+
+  // Games link to the leaderboard from their result screens.
+  useEffect(() => {
+    const open = (e) => isTab(e.detail) && setActive(e.detail)
+    window.addEventListener('arcade:open', open)
+    return () => window.removeEventListener('arcade:open', open)
+  }, [])
 
   return (
     <div className="relative overflow-hidden">
@@ -33,11 +42,11 @@ export default function GamingPage() {
             Learn by <span className="text-neon">playing.</span>
           </h1>
           <p className="mx-auto mt-3 max-w-lg text-slate-500">
-            Spin for a daily tip, test yourself on a subject, or train your memory — a quick break that still teaches.
+            Spin for a daily tip, test yourself on a subject, or train your memory — then see where you rank.
           </p>
         </div>
 
-        <div className="mx-auto mb-8 flex max-w-xl flex-wrap justify-center gap-2">
+        <div className="mx-auto mb-8 flex max-w-2xl flex-wrap justify-center gap-2">
           {GAMES.map((game) => (
             <button
               key={game.key}
@@ -56,29 +65,6 @@ export default function GamingPage() {
 
         <div className="mx-auto max-w-xl rounded-[20px] border border-slate-200 bg-surface-1 p-6 shadow-[0_30px_80px_-30px_rgba(255,46,77,0.35)] sm:p-10">
           {ActiveGame && <ActiveGame />}
-        </div>
-
-        <div className="mt-16">
-          <h2 className="mb-5 flex items-center gap-2 text-lg font-bold text-slate-900">
-            <Sparkles className="h-5 w-5 text-brand-600" /> More games, coming soon
-          </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {comingSoon.map((game) => (
-              <div
-                key={game.title}
-                className="group relative overflow-hidden rounded-xl border border-slate-200 bg-surface-1 p-5 opacity-70"
-              >
-                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-brand-500/15 text-brand-600">
-                  <game.icon className="h-5 w-5" />
-                </div>
-                <p className="font-semibold text-slate-900">{game.title}</p>
-                <p className="mt-1 text-sm text-slate-500">{game.desc}</p>
-                <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-[10px] font-medium text-slate-400">
-                  <Lock className="h-3 w-3" /> Soon
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

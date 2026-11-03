@@ -1,5 +1,6 @@
 import { ArrowLeft, Award, CheckCircle2, RotateCcw, XCircle } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import ScoreSaver from './games/ScoreSaver'
 
 // Each question lists its correct answer first in `a`; options are shuffled at play time.
 const SUBJECTS = [
@@ -97,6 +98,15 @@ const SUBJECTS = [
 ]
 
 const ROUND_SIZE = 5
+// 100 per correct answer, plus 10 for every second under 10 it took (max 1000 a round).
+const BASE_POINTS = 100
+const FAST_SECONDS = 10
+
+function pointsFor(correct, startedAt) {
+  if (!correct) return 0
+  const seconds = Math.floor((Date.now() - startedAt) / 1000)
+  return BASE_POINTS + Math.max(0, FAST_SECONDS - seconds) * 10
+}
 
 function shuffle(list) {
   const arr = [...list]
@@ -119,16 +129,23 @@ export default function QuizGame() {
   const [round, setRound] = useState([])
   const [step, setStep] = useState(0)
   const [score, setScore] = useState(0)
+  const [points, setPoints] = useState(0)
+  const [lastGain, setLastGain] = useState(0)
   const [selected, setSelected] = useState(null)
   const [finished, setFinished] = useState(false)
+  const [roundId, setRoundId] = useState(0)
+  const questionStartedAt = useRef(0)
 
   const start = (next) => {
     setSubject(next)
     setRound(buildRound(next))
     setStep(0)
     setScore(0)
+    setPoints(0)
     setSelected(null)
     setFinished(false)
+    setRoundId((id) => id + 1)
+    questionStartedAt.current = Date.now()
   }
 
   if (!subject) {
@@ -137,7 +154,9 @@ export default function QuizGame() {
         <div className="text-center">
           <p className="eyebrow mb-1!">Quiz challenge</p>
           <h3 className="text-2xl font-bold text-slate-900">Pick a subject</h3>
-          <p className="mt-1 text-sm text-slate-500">{ROUND_SIZE} quick questions — a new mix every round.</p>
+          <p className="mt-1 text-sm text-slate-500">
+            {ROUND_SIZE} quick questions — 100 points each, plus a bonus for answering fast.
+          </p>
         </div>
         <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           {SUBJECTS.map((s) => (
@@ -168,8 +187,11 @@ export default function QuizGame() {
         </div>
         <p className="eyebrow mb-0!">{subject.title}</p>
         <h3 className="text-2xl font-bold text-slate-900">
-          {score} / {round.length} correct
+          {points} points
         </h3>
+        <p className="-mt-2 text-sm text-slate-500">
+          {score} / {round.length} correct
+        </p>
         <p className="text-slate-500">
           {pct >= 80
             ? `You know ${subject.title} inside out! 🏆`
@@ -177,6 +199,7 @@ export default function QuizGame() {
               ? 'Solid effort — one more round and you’ll ace it. 🎯'
               : 'Good start — try again with a fresh set of questions. 🔁'}
         </p>
+        <ScoreSaver game="quiz" score={points} details={{ subject: subject.key, correct: score }} roundId={roundId} />
         <div className="mt-2 flex flex-wrap justify-center gap-2">
           <button type="button" onClick={() => start(subject)} className="btn-neon">
             <RotateCcw className="h-4 w-4" /> New questions
@@ -192,7 +215,11 @@ export default function QuizGame() {
   const handleSelect = (opt) => {
     if (selected !== null) return
     setSelected(opt)
-    if (opt === question.answer) setScore((s) => s + 1)
+    const correct = opt === question.answer
+    const gain = pointsFor(correct, questionStartedAt.current)
+    setLastGain(gain)
+    setPoints((p) => p + gain)
+    if (correct) setScore((s) => s + 1)
   }
 
   const handleNext = () => {
@@ -202,6 +229,7 @@ export default function QuizGame() {
     }
     setStep((s) => s + 1)
     setSelected(null)
+    questionStartedAt.current = Date.now()
   }
 
   return (
@@ -211,7 +239,8 @@ export default function QuizGame() {
           <ArrowLeft className="h-3.5 w-3.5" /> {subject.title}
         </button>
         <span>
-          Question {step + 1} / {round.length} · Score {score}
+          Question {step + 1} / {round.length} · {points} pts
+          {selected !== null && lastGain > 0 && <span className="ml-1.5 font-semibold text-brand-500">+{lastGain}</span>}
         </span>
       </div>
 
