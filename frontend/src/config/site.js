@@ -13,11 +13,4 @@ export const SITE = {
     { word: 'Return', rest: 'to yourself', desc: 'Come back to what you want, and why you want it.' },
     { word: 'Nurture', rest: 'your growth', desc: 'Habits and systems that keep you growing.' },
   ],
-  // Open roles on the Careers page. Empty the list to show "no open roles".
-  careers: [
-    { title: 'Content Writer (Digital Guides)', type: 'Remote · Part-time', summary: 'Research and write clear, practical guide chapters.' },
-    { title: 'Performance Marketer', type: 'Remote · Full-time', summary: 'Plan and run paid campaigns across Meta and Google.' },
-    { title: 'AI Automation Specialist', type: 'Remote · Contract', summary: 'Build and maintain the AI agents and workflows that run LERN.' },
-    { title: 'Affiliate Partnerships Manager', type: 'Remote · Full-time', summary: 'Recruit, support and grow our affiliate community.' },
-  ],
 }

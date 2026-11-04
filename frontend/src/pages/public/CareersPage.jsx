@@ -1,6 +1,5 @@
 import { CheckCircle2 } from 'lucide-react'
-import { useRef, useState } from 'react'
-import { SITE } from '../../config/site'
+import { useEffect, useRef, useState } from 'react'
 import usePageMeta from '../../hooks/usePageMeta'
 import { apiErrorMessage } from '../../services/api'
 import { careerService } from '../../services/careerService'
@@ -24,10 +23,21 @@ function Label({ text, optional, children }) {
 export default function CareersPage() {
   usePageMeta('Careers', 'Join The LERN Project — remote roles in content, marketing, AI automation and partnerships.')
   const formRef = useRef(null)
-  const [role, setRole] = useState(SITE.careers[0]?.title ?? 'General application')
+  const [openings, setOpenings] = useState(null)
+  const [role, setRole] = useState('General application')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState(false)
+
+  useEffect(() => {
+    careerService
+      .openings()
+      .then((res) => {
+        setOpenings(res.data)
+        if (res.data[0]) setRole(res.data[0].title)
+      })
+      .catch(() => setOpenings([]))
+  }, [])
 
   const applyFor = (title) => {
     setRole(title)
@@ -69,12 +79,18 @@ export default function CareersPage() {
       <div className="grid grid-cols-1 items-start gap-14 lg:grid-cols-2">
         <div>
           <h2 className="mb-5 text-[1.6rem] font-bold text-slate-900">Open roles</h2>
-          {SITE.careers.length === 0 ? (
+          {!openings ? (
+            <div className="grid gap-3">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-24 animate-pulse rounded-[14px] bg-slate-100" />
+              ))}
+            </div>
+          ) : openings.length === 0 ? (
             <p className="text-slate-500">No open roles right now — send a general application and we’ll keep it on file.</p>
           ) : (
             <div className="grid gap-3">
-              {SITE.careers.map((r) => (
-                <div key={r.title} className="neon-card flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+              {openings.map((r) => (
+                <div key={r.id} className="neon-card flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
                     <h3 className="text-[1.05rem] font-bold text-slate-900">{r.title}</h3>
                     <p className="mt-1 text-sm text-slate-500">{r.summary}</p>
@@ -121,8 +137,8 @@ export default function CareersPage() {
               <div className="grid gap-[18px] sm:grid-cols-2">
                 <Label text="Role">
                   <select name="role" required value={role} onChange={(e) => setRole(e.target.value)} className={field}>
-                    {SITE.careers.map((r) => (
-                      <option key={r.title}>{r.title}</option>
+                    {(openings ?? []).map((r) => (
+                      <option key={r.id}>{r.title}</option>
                     ))}
                     <option>General application</option>
                   </select>

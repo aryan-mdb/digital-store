@@ -1,5 +1,6 @@
 import {
   Briefcase,
+  FileUser,
   FolderTree,
   Images,
   LayoutDashboard,
@@ -31,7 +32,8 @@ const sections = [
       { to: '/admin/orders', label: 'Orders', icon: ShoppingBag },
       { to: '/admin/payments', label: 'Payments', icon: Wallet },
       { to: '/admin/transactions', label: 'Transactions', icon: Receipt },
-      { to: '/admin/careers', label: 'Job Applications', icon: Briefcase },
+      { to: '/admin/job-openings', label: 'Job Openings', icon: Briefcase },
+      { to: '/admin/careers', label: 'Job Applications', icon: FileUser },
       { to: '/admin/settings', label: 'Settings', icon: Settings },
     ],
   },

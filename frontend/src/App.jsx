@@ -23,6 +23,7 @@ import DownloadsPage from './pages/user/DownloadsPage'
 import ReaderPage from './pages/user/ReaderPage'
 import CareersPage from './pages/public/CareersPage'
 import AdminCareersPage from './pages/admin/AdminCareersPage'
+import AdminJobOpeningsPage from './pages/admin/AdminJobOpeningsPage'
 import ProfilePage from './pages/user/ProfilePage'
 import WalletPage from './pages/user/WalletPage'
 import ReferralPage from './pages/user/ReferralPage'
@@ -96,6 +97,7 @@ function App() {
             <Route path="/admin/sliders" element={<AdminSlidersPage />} />
             <Route path="/admin/settings" element={<AdminSettingsPage />} />
             <Route path="/admin/careers" element={<AdminCareersPage />} />
+            <Route path="/admin/job-openings" element={<AdminJobOpeningsPage />} />
           </Route>
         </Route>
       </Route>

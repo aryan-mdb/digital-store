@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\JobOpening;
 use App\Models\Product;
 use App\Models\Setting;
 use App\Models\User;
@@ -28,6 +29,18 @@ class LernCatalogSeeder extends Seeder
 
     private const LOCKED = ['ai-automation', 'performance-marketing'];
 
+    private const FLAG_JOBS = 'careers_openings_v1';
+
+    private function jobOpenings(): array
+    {
+        return [
+            ['title' => 'Content Writer (Digital Guides)', 'type' => 'Remote · Part-time', 'summary' => 'Research and write clear, practical guide chapters.'],
+            ['title' => 'Performance Marketer', 'type' => 'Remote · Full-time', 'summary' => 'Plan and run paid campaigns across Meta and Google.'],
+            ['title' => 'AI Automation Specialist', 'type' => 'Remote · Contract', 'summary' => 'Build and maintain the AI agents and workflows that run LERN.'],
+            ['title' => 'Affiliate Partnerships Manager', 'type' => 'Remote · Full-time', 'summary' => 'Recruit, support and grow our affiliate community.'],
+        ];
+    }
+
     public function run(): void
     {
         if (! Setting::get(self::FLAG)) {
@@ -37,6 +50,14 @@ class LernCatalogSeeder extends Seeder
         if (! Setting::get(self::FLAG_LOCKED)) {
             Product::whereIn('slug', self::LOCKED)->update(['downloadable' => false]);
             Setting::set(self::FLAG_LOCKED, now()->toDateTimeString());
+        }
+
+        // Starter roles for the Careers page; admins manage them afterwards.
+        if (! Setting::get(self::FLAG_JOBS)) {
+            foreach ($this->jobOpenings() as $i => $job) {
+                JobOpening::create([...$job, 'sort_order' => $i, 'is_active' => true]);
+            }
+            Setting::set(self::FLAG_JOBS, now()->toDateTimeString());
         }
 
         foreach (array_keys($this->guides()) as $slug) {

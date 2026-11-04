@@ -1,8 +1,18 @@
 import api from './api'
 
 export const careerService = {
+  /** Active roles for the Careers page. */
+  openings: () => api.get('/careers/openings').then((r) => r.data),
   /** @param {FormData} form — includes the CV file */
   apply: (form) => api.post('/careers/applications', form).then((r) => r.data),
+
+  openingsAdmin: {
+    list: () => api.get('/admin/job-openings').then((r) => r.data),
+    create: (payload) => api.post('/admin/job-openings', payload).then((r) => r.data),
+    update: (id, payload) => api.put(`/admin/job-openings/${id}`, payload).then((r) => r.data),
+    toggle: (id) => api.patch(`/admin/job-openings/${id}/toggle-status`).then((r) => r.data),
+    remove: (id) => api.delete(`/admin/job-openings/${id}`).then((r) => r.data),
+  },
 
   admin: {
     list: (params) => api.get('/admin/career-applications', { params }).then((r) => r.data),
