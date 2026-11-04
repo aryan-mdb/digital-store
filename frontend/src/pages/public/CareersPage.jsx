@@ -148,7 +148,7 @@ export default function CareersPage() {
                   type="file"
                   required
                   accept=".pdf,.doc,.docx"
-                  className={`${field} cursor-pointer py-2.5 file:mr-3 file:cursor-pointer file:rounded-lg file:border file:border-slate-200 file:bg-surface-1 file:px-3 file:py-1.5 file:text-slate-900`}
+                  className={`${field} cursor-pointer py-2.5 file:mr-3 file:cursor-pointer file:rounded-lg file:border file:border-[#26262c] file:bg-surface-1 file:px-3 file:py-1.5 file:text-white`}
                 />
               </Label>
               <p className="-mt-2 text-[0.82rem] text-slate-500">PDF or Word, up to {MAX_CV_MB} MB.</p>
