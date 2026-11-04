@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Admin\ReferralSettingController as AdminReferralSet
 use App\Http\Controllers\Api\Admin\StoreSettingController as AdminStoreSettingController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\CareerApplicationController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DownloadController;
 use App\Http\Controllers\Api\GameScoreController;
@@ -37,6 +38,7 @@ Route::get('/products/{product:slug}', [ProductController::class, 'show']);
 
 Route::get('/site-settings', SiteSettingsController::class);
 Route::get('/games/leaderboard', [GameScoreController::class, 'leaderboard']);
+Route::post('/careers/applications', [CareerApplicationController::class, 'store'])->middleware('throttle:5,1');
 Route::get('/sliders', [SliderController::class, 'index']);
 Route::post('/track-order', [OrderController::class, 'track'])->middleware('throttle:10,1');
 
@@ -114,6 +116,11 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
     Route::get('/users/{user}/orders', [AdminUserController::class, 'orders']);
     Route::put('/users/{user}', [AdminUserController::class, 'update']);
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy']);
+
+    Route::get('/career-applications', [CareerApplicationController::class, 'index']);
+    Route::patch('/career-applications/{application}', [CareerApplicationController::class, 'updateStatus']);
+    Route::get('/career-applications/{application}/cv', [CareerApplicationController::class, 'cv']);
+    Route::delete('/career-applications/{application}', [CareerApplicationController::class, 'destroy']);
 
     Route::get('/settings/referral', [AdminReferralSettingController::class, 'show']);
     Route::put('/settings/referral', [AdminReferralSettingController::class, 'update']);

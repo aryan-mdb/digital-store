@@ -47,9 +47,17 @@ class DownloadController extends Controller
 
         $filename = $product->slug.'.'.pathinfo($product->product_file, PATHINFO_EXTENSION);
 
-        // ?inline=1 lets the browser show the file (e.g. a PDF) instead of saving it.
+        // ?inline=1 feeds the in-app reader. Locked products are served only
+        // this way, uncached, so the dashboard reader is the one way to read them.
         if ($request->boolean('inline')) {
-            return Storage::disk('local')->response($product->product_file, $filename);
+            return Storage::disk('local')->response($product->product_file, $filename, [
+                'Cache-Control' => 'no-store, private',
+                'X-Content-Type-Options' => 'nosniff',
+            ]);
+        }
+
+        if (! $product->downloadable) {
+            return $this->error('This guide can only be read online in your dashboard.', null, 403);
         }
 
         return Storage::disk('local')->download($product->product_file, $filename);

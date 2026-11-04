@@ -17,7 +17,9 @@ class OrderItemResource extends JsonResource
             'price' => (float) $this->price,
             'quantity' => $this->quantity,
             'is_physical' => $this->product ? ! $this->product->product_file : false,
+            // can_download = may open the file at all; downloadable = may also save it (false = read online only).
             'can_download' => ($this->order?->isPaid() ?? false) && (bool) $this->product?->product_file,
+            'downloadable' => (bool) ($this->product?->downloadable ?? true),
         ];
     }
 }

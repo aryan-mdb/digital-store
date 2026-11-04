@@ -23,10 +23,20 @@ class LernCatalogSeeder extends Seeder
 {
     private const FLAG = 'catalog_lern_v1';
 
+    /** v2: premium guides become read-online only, as on the reference site. */
+    private const FLAG_LOCKED = 'catalog_lern_v2_locked';
+
+    private const LOCKED = ['ai-automation', 'performance-marketing'];
+
     public function run(): void
     {
         if (! Setting::get(self::FLAG)) {
             $this->seedCatalog();
+        }
+
+        if (! Setting::get(self::FLAG_LOCKED)) {
+            Product::whereIn('slug', self::LOCKED)->update(['downloadable' => false]);
+            Setting::set(self::FLAG_LOCKED, now()->toDateTimeString());
         }
 
         foreach (array_keys($this->guides()) as $slug) {

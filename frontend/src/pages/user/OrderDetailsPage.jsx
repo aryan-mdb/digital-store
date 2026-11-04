@@ -52,16 +52,6 @@ export default function OrderDetailsPage() {
     }
   }
 
-  const handleView = async (item) => {
-    setDownloading(`view-${item.id}`)
-    try {
-      await downloadService.view(item.id)
-    } catch (error) {
-      toast.error(apiErrorMessage(error))
-    } finally {
-      setDownloading(null)
-    }
-  }
 
   const handleRazorpay = async () => {
     setPaying(true)
@@ -150,12 +140,18 @@ export default function OrderDetailsPage() {
               </div>
               {item.can_download ? (
                 <div className="flex flex-wrap justify-end gap-2">
-                  <Button size="sm" variant="secondary" loading={downloading === `view-${item.id}`} onClick={() => handleView(item)}>
-                    <BookOpen className="h-4 w-4" /> Read
-                  </Button>
-                  <Button size="sm" loading={downloading === `dl-${item.id}`} onClick={() => handleDownload(item)}>
-                    <Download className="h-4 w-4" /> Download
-                  </Button>
+                  <Link to={`/dashboard/read/${item.id}`} state={{ title: item.product_name }}>
+                    <Button size="sm" variant="secondary">
+                      <BookOpen className="h-4 w-4" /> Read
+                    </Button>
+                  </Link>
+                  {item.downloadable ? (
+                    <Button size="sm" loading={downloading === `dl-${item.id}`} onClick={() => handleDownload(item)}>
+                      <Download className="h-4 w-4" /> Download
+                    </Button>
+                  ) : (
+                    <span className="self-center text-xs text-brand-500">Read online only</span>
+                  )}
                 </div>
               ) : !item.is_physical ? (
                 <span className="text-xs text-slate-400">Available after payment</span>

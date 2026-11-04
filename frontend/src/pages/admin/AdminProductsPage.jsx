@@ -27,6 +27,7 @@ const emptyForm = {
   thumbnail: null,
   product_file: null,
   digital: false,
+  downloadable: true,
 }
 
 export default function AdminProductsPage() {
@@ -87,6 +88,7 @@ export default function AdminProductsPage() {
       thumbnail: null,
       product_file: null,
       digital: Boolean(product.has_file),
+      downloadable: product.downloadable !== false,
     })
     setModalOpen(true)
   }
@@ -105,6 +107,7 @@ export default function AdminProductsPage() {
       payload.append('status', form.status)
       if (form.thumbnail) payload.append('thumbnail', form.thumbnail)
       if (form.digital && form.product_file) payload.append('product_file', form.product_file)
+      payload.append('downloadable', form.digital && !form.downloadable ? '0' : '1')
       // Unticking "digital" on an existing download product turns it into a shipped product.
       if (editing?.has_file && !form.digital) payload.append('remove_product_file', '1')
 
@@ -315,12 +318,28 @@ export default function AdminProductsPage() {
             </span>
           </label>
           {form.digital && (
-            <Input
-              label={editing?.has_file ? 'Download file (leave blank to keep current)' : 'Download file'}
-              type="file"
-              required={!editing?.has_file}
-              onChange={(e) => setForm({ ...form, product_file: e.target.files[0] })}
-            />
+            <>
+              <Input
+                label={editing?.has_file ? 'Guide file (leave blank to keep current)' : 'Guide file (PDF)'}
+                type="file"
+                required={!editing?.has_file}
+                onChange={(e) => setForm({ ...form, product_file: e.target.files[0] })}
+              />
+              <label className="flex items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm">
+                <input
+                  type="checkbox"
+                  className="mt-0.5 h-4 w-4 accent-[#ff2e4d]"
+                  checked={form.downloadable}
+                  onChange={(e) => setForm({ ...form, downloadable: e.target.checked })}
+                />
+                <span>
+                  <span className="font-medium text-slate-800">Allow download</span>
+                  <span className="block text-xs text-slate-500">
+                    Untick to lock it: buyers can only read it inside their dashboard, with no download or print.
+                  </span>
+                </span>
+              </label>
+            </>
           )}
         </form>
       </Modal>

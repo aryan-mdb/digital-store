@@ -39,6 +39,7 @@ export default function PublicLayout() {
               <li><Link to="/categories" className="hover:text-brand-500">Categories</Link></li>
               <li><Link to="/track" className="hover:text-brand-500">Track your order</Link></li>
               <li><Link to="/dashboard/refer-earn" className="hover:text-brand-500">Affiliate</Link></li>
+              <li><Link to="/careers" className="hover:text-brand-500">Careers</Link></li>
             </ul>
           </div>
 

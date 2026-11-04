@@ -25,6 +25,7 @@ class Product extends Model
         'price',
         'currency',
         'product_file',
+        'downloadable',
         'thumbnail',
         'thumbnail_data',
         'thumbnail_mime',
@@ -36,6 +37,7 @@ class Product extends Model
     {
         return [
             'price' => 'decimal:2',
+            'downloadable' => 'boolean',
         ];
     }
 

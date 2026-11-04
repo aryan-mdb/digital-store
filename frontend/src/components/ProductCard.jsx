@@ -40,6 +40,11 @@ export default function ProductCard({ product, index, revealDelay = 0 }) {
         </div>
         <h3 className="mt-1.5 text-[1.3rem] font-bold text-slate-900">{product.name}</h3>
         <p className="line-clamp-3 text-[0.95rem] text-slate-500">{product.short_description}</p>
+        {product.has_file && (
+          <span className="text-[0.82rem] text-slate-500">
+            {product.downloadable ? '⬇ PDF download + read online' : '◈ Premium · read in your dashboard'}
+          </span>
+        )}
 
         <div className="mt-auto flex items-center justify-between gap-3 pt-2">
           <span className="font-display text-[1.3rem] font-bold text-slate-900">{formatCurrency(product.price, product.currency)}</span>

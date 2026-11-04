@@ -23,6 +23,7 @@ class StoreProductRequest extends FormRequest
             'status' => ['nullable', 'in:active,inactive'],
             'thumbnail' => ['nullable', 'image', 'max:20480'],
             'product_file' => ['nullable', 'file', 'max:102400'], // optional: physical products have no download,
+            'downloadable' => ['sometimes', 'boolean'],
         ];
     }
 }

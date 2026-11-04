@@ -23,6 +23,7 @@ class ProductResource extends JsonResource
             'thumbnail_url' => $this->thumbnail_mime ? url("/media/products/{$this->id}/thumbnail").'?v='.$this->updated_at?->timestamp : null,
             'status' => $this->status,
             'has_file' => (bool) $this->product_file, // never expose the actual path/url
+            'downloadable' => (bool) $this->downloadable, // false = read online only
             'category' => new CategoryResource($this->whenLoaded('category')),
             'created_by' => $this->creator?->name,
             'is_purchased' => $this->when(

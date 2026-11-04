@@ -20,6 +20,9 @@ import OrdersPage from './pages/user/OrdersPage'
 import OrderDetailsPage from './pages/user/OrderDetailsPage'
 import PaymentsPage from './pages/user/PaymentsPage'
 import DownloadsPage from './pages/user/DownloadsPage'
+import ReaderPage from './pages/user/ReaderPage'
+import CareersPage from './pages/public/CareersPage'
+import AdminCareersPage from './pages/admin/AdminCareersPage'
 import ProfilePage from './pages/user/ProfilePage'
 import WalletPage from './pages/user/WalletPage'
 import ReferralPage from './pages/user/ReferralPage'
@@ -55,6 +58,7 @@ function App() {
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/gaming" element={<GamingPage />} />
         <Route path="/track" element={<TrackOrderPage />} />
+        <Route path="/careers" element={<CareersPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
@@ -73,6 +77,7 @@ function App() {
             <Route path="/dashboard/payments" element={<PaymentsPage />} />
             <Route path="/dashboard/payments/:orderId" element={<CryptoPaymentPage />} />
             <Route path="/dashboard/downloads" element={<DownloadsPage />} />
+            <Route path="/dashboard/read/:itemId" element={<ReaderPage />} />
             <Route path="/dashboard/wallet" element={<WalletPage />} />
             <Route path="/dashboard/refer-earn" element={<ReferralPage />} />
             <Route path="/dashboard/profile" element={<ProfilePage />} />
@@ -90,6 +95,7 @@ function App() {
             <Route path="/admin/users" element={<AdminUsersPage />} />
             <Route path="/admin/sliders" element={<AdminSlidersPage />} />
             <Route path="/admin/settings" element={<AdminSettingsPage />} />
+            <Route path="/admin/careers" element={<AdminCareersPage />} />
           </Route>
         </Route>
       </Route>

@@ -24,6 +24,7 @@ class UpdateProductRequest extends FormRequest
             'thumbnail' => ['nullable', 'image', 'max:20480'],
             'product_file' => ['nullable', 'file', 'max:102400'],
             'remove_product_file' => ['sometimes', 'boolean'],
+            'downloadable' => ['sometimes', 'boolean'],
         ];
     }
 }

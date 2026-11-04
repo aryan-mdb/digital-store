@@ -61,21 +61,9 @@ export const downloadService = {
     window.URL.revokeObjectURL(blobUrl)
   },
 
-  /**
-   * Opens the file in a new tab (the browser's PDF viewer for guides).
-   * The tab is opened before the request so popup blockers allow it.
-   */
-  async view(orderItemId) {
-    const tab = window.open('', '_blank')
-    try {
-      const blob = await fetchFile(orderItemId, { inline: 1 })
-      const blobUrl = window.URL.createObjectURL(blob)
-      if (tab) tab.location.href = blobUrl
-      else window.location.href = blobUrl
-      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 60_000)
-    } catch (error) {
-      tab?.close()
-      throw error
-    }
+  /** The file's bytes for the in-app reader (works for read-online-only guides too). */
+  async read(orderItemId) {
+    const blob = await fetchFile(orderItemId, { inline: 1 })
+    return blob.arrayBuffer()
   },
 }

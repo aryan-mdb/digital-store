@@ -21,6 +21,7 @@ const links = [
   { to: '/categories', label: 'Categories' },
   { to: '/track', label: 'Track Order' },
   { to: '/gaming', label: 'Play' },
+  { to: '/careers', label: 'Careers' },
 ]
 
 export default function PublicNavbar() {
